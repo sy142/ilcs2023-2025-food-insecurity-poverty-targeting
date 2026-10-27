@@ -1,6 +1,6 @@
 # Kodlar: çalıştırma sırası, süreler, ortam
 
-Bütün komutlar proje kökünden çalıştırılır (`Foods Makalesi 2/`). Göreli yollar proje köküne göredir.
+Bütün komutlar proje kökünden çalıştırılır (depo kökü). Göreli yollar proje köküne göredir.
 
 ## Sıra
 
