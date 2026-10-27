@@ -1,5 +1,7 @@
 # Food insecurity, income poverty and targeting rules in Türkiye (ILCS 2023–2025)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23685841.svg)](https://doi.org/10.5281/zenodo.23685841)
+
 Analysis code and aggregated outputs for a study of household food insecurity and
 relative income poverty in Türkiye, using the 2023–2025 cross-sections of the
 Income and Living Conditions Survey (ILCS/EU-SILC, Turkish Statistical Institute).
