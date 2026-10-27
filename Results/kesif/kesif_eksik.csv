@@ -1,0 +1,113 @@
+degisken,2023,2024,2025,katman
+HB030,0,0,0,T2 yapisal
+HB031,0,0,0,T2 yapisal
+HB050,0,0,0,T2 yapisal
+HE010,0,0,0,T3 mali baski
+HE020,0,0,0,T3 mali baski
+HE030,0,0,0,T3 mali baski
+HE040,0,0,0,T3 mali baski
+HE060,0,0,0,T3 mali baski
+HE070,0,0,0,T3 mali baski
+HE080,0,0,0,T4 ayni batarya
+HE100,0,0,0,T4 ayni batarya
+HE110,0,0,0,T4 ayni batarya
+HE120,0,0,0,T4 ayni batarya
+HH010,0,0,0,T2 yapisal
+HH020,0,0,0,T2 yapisal
+HH060,0,0,0,T2 yapisal
+HH070,0,0,0,T2 yapisal
+HH080,0,0,0,T2 yapisal
+HH100,0,0,0,T2 yapisal
+HH110,0,0,0,T2 yapisal
+HH120,0,0,0,T2 yapisal
+HH145,0,0,0,T2 yapisal
+HH180,0,0,0,T4 ayni batarya
+HH180_var,0,0,0,T2 yapisal
+HH190,0,0,0,T4 ayni batarya
+HH190_var,0,0,0,T2 yapisal
+HH200,0,0,0,T4 ayni batarya
+HH200_var,0,0,0,T2 yapisal
+HH220,0,0,0,T4 ayni batarya
+HH220_var,0,0,0,T2 yapisal
+HH230,0,0,0,T4 ayni batarya
+HH230_var,0,0,0,T2 yapisal
+HH240,0,0,0,T4 ayni batarya
+HH240_var,0,0,0,T2 yapisal
+HS010,0,0,0,T2 yapisal
+HS020,0,0,0,T2 yapisal
+HS030,0,0,0,T2 yapisal
+HS040,0,0,0,T2 yapisal
+HS050,0,0,0,T2 yapisal
+HS060,0,0,0,T2 yapisal
+HS070,0,0,0,T2 yapisal
+bagimli_oran,0,0,0,T2 yapisal
+calisan_oran,0,0,0.00387056819941167,T2 yapisal
+calisan_yok,0,0,0,T2 yapisal
+ciddi_konut_yoksunlugu,0,0,0,T2 yapisal
+cocuk_var,0,0,0,T2 yapisal
+dusuk_is_yogunlugu,21.0131557837318,21.9402121504339,22.0506270320483,T2 yapisal
+egitim_max,0,0,0.00387056819941167,T2 yapisal
+egitim_min,0,0,0.00387056819941167,T2 yapisal
+gelir_dilim10,0,0,0,T1 gelir
+goreli_kira,0,0,0,T2 yapisal
+hane_buyuklugu,0,0,0,T2 yapisal
+hane_gelir_dilim5,0,0,0,T1 gelir
+he050_orani,0,0,0,T3 mali baski
+is_yogunlugu,21.0131557837318,21.9402121504339,22.0506270320483,T2 yapisal
+kalabalik_konut,0,0,0,T2 yapisal
+kira_geliri_var,0,0,0,T1 gelir
+kira_orani,0,0,0,T1 gelir
+kiraci,0,0,0,T2 yapisal
+konut_asiri_k,0.0200545483715707,100,0.0541879547917634,T1 gelir
+konut_orani_k,0.0200545483715707,100,0.0541879547917634,T1 gelir
+log_goreli_gelir,0,0,0,T1 gelir
+m2_kisi,0,0,0,T2 yapisal
+msy_arkadas_aile,0,0,0,T4 ayni batarya
+msy_ayakkabi,0,0,0,T4 ayni batarya
+msy_beklenmedik_harcama,0,0,0,T4 ayni batarya
+msy_borc_odeme,0,0,0,T3 mali baski
+msy_bos_zaman,0,0,0,T4 ayni batarya
+msy_etsiz_sayi,0,0,0,T4 ayni batarya
+msy_giysi,0,0,0,T4 ayni batarya
+msy_harclik,0,0,0,T4 ayni batarya
+msy_internet,0,0,0,T4 ayni batarya
+msy_isinma,0,0,0,T4 ayni batarya
+msy_mobilya,0,0,0,T4 ayni batarya
+msy_otomobil,0,0,0,T4 ayni batarya
+msy_tatil,0,0,0,T4 ayni batarya
+n_0_5,0,0,0,T2 yapisal
+n_65plus,0,0,0,T2 yapisal
+n_75plus,0,0,0,T2 yapisal
+n_calisan,0,0,0,T2 yapisal
+n_cocuk,0,0,0,T2 yapisal
+n_emekli,0,0,0,T2 yapisal
+n_ev_isi,0,0,0,T2 yapisal
+n_gali,0,0,0,T2 yapisal
+n_gecici,0,0,0,T2 yapisal
+n_issiz,0,0,0,T2 yapisal
+n_karsilanmayan,0,0,0,T2 yapisal
+n_kayitsiz,0,0,0,T2 yapisal
+n_kotu_saglik,0,0,0,T2 yapisal
+n_kronik,0,0,0,T2 yapisal
+n_yetiskin,0,0,0,T2 yapisal
+n_yevmiyeli,0,0,0,T2 yapisal
+ozel_transfer_var,0,0,0,T1 gelir
+pay_emekli,0,0,0,T1 gelir
+pay_mutesebbis,0,0,0,T1 gelir
+pay_ozel_transfer,0,0,0,T1 gelir
+pay_sosyal,0,0,0,T1 gelir
+pay_ucret,0,0,0,T1 gelir
+reis_calisma7,0.0641745547890262,0.0231436837029894,0.0503173865923518,T2 yapisal
+reis_cinsiyet,0,0,0,T2 yapisal
+reis_egitim,0.0641745547890262,0.0231436837029894,0.0503173865923518,T2 yapisal
+reis_fk210,0,0,0,T2 yapisal
+reis_gali,0.0641745547890262,0.0231436837029894,0.0503173865923518,T2 yapisal
+reis_kronik,0.0641745547890262,0.0231436837029894,0.0503173865923518,T2 yapisal
+reis_medeni,0.0641745547890262,0.0231436837029894,0.0503173865923518,T2 yapisal
+reis_saglik,0.0641745547890262,0.0231436837029894,0.0503173865923518,T2 yapisal
+reis_yas,0,0,0,T2 yapisal
+sosyal_yardim_var,0,0,0,T1 gelir
+tek_yetiskin_cocuklu,0,0,0,T2 yapisal
+yasli_var,0,0,0,T2 yapisal
+yoksul_50,0,0,0,T1 gelir
+yoksulluk_acigi_60,0,0,0,T1 gelir

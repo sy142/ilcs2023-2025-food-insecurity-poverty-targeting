@@ -1,0 +1,67 @@
+degisken_1,degisken_2,H2,H_mutlak,n,etiket_1,etiket_2
+log_goreli_gelir,HB031,0.008420515590591187,0.049033802238947,400,Equivalized income relative to median (log),Region (NUTS 2)
+HB031,HH240_var,0.0085916380387425,0.02422180793661915,400,Region (NUTS 2),Owns a car
+log_goreli_gelir,HH240_var,0.0017630597566934362,0.023425499983832972,400,Equivalized income relative to median (log),Owns a car
+log_goreli_gelir,HH145,0.0019001418402006013,0.022110093010221717,400,Equivalized income relative to median (log),Satisfaction with dwelling
+log_goreli_gelir,HS010,0.0014407538356396349,0.020396192806185057,400,Equivalized income relative to median (log),"Leaking roof, damp or rot"
+hane_gelir_dilim5,HB031,0.0035855144812713194,0.0193140328901795,400,Household disposable income quintile,Region (NUTS 2)
+HB031,HS010,0.004283480877521648,0.016888163445519286,400,Region (NUTS 2),"Leaking roof, damp or rot"
+log_goreli_gelir,HS020,0.0010258152457751526,0.016859977755818437,400,Equivalized income relative to median (log),Insufficient insulation for heating
+log_goreli_gelir,HH070,0.0010770988689163615,0.01629361713708919,400,Equivalized income relative to median (log),Floor area (m²)
+HB031,HS020,0.00406571956417251,0.01602691920295198,400,Region (NUTS 2),Insufficient insulation for heating
+hane_gelir_dilim5,HS020,0.0031512094895413396,0.01588120795343461,400,Household disposable income quintile,Insufficient insulation for heating
+log_goreli_gelir,pay_sosyal,0.0008293322403196918,0.015011588552045298,400,Equivalized income relative to median (log),Share of income from social transfers
+HB031,HH070,0.004283145264266746,0.014599410521646759,400,Region (NUTS 2),Floor area (m²)
+log_goreli_gelir,reis_egitim,0.0006708235598812505,0.013853361290965042,400,Equivalized income relative to median (log),Education of reference person
+log_goreli_gelir,HH180_var,0.0006774066388225921,0.013720580324628289,400,Equivalized income relative to median (log),Owns a computer
+HS010,HS020,0.0032357830499624663,0.011828443483518155,400,"Leaking roof, damp or rot",Insufficient insulation for heating
+HB031,egitim_max,0.002527829890892684,0.011003228594594563,400,Region (NUTS 2),Highest education among adults
+HB031,HH180_var,0.0022796024782097855,0.010579836396115231,400,Region (NUTS 2),Owns a computer
+HB031,pay_sosyal,0.0019525159286930289,0.0095863874634108,400,Region (NUTS 2),Share of income from social transfers
+HB031,reis_egitim,0.0016909582329838408,0.009506866460031023,400,Region (NUTS 2),Education of reference person
+HS020,egitim_max,0.004025603399243954,0.009128591267608694,400,Insufficient insulation for heating,Highest education among adults
+log_goreli_gelir,egitim_max,0.0002800700808514887,0.008687098540205211,400,Equivalized income relative to median (log),Highest education among adults
+hane_gelir_dilim5,HH070,0.0010651744026072426,0.008524477780056827,400,Household disposable income quintile,Floor area (m²)
+log_goreli_gelir,hane_gelir_dilim5,0.00015583439869548997,0.008499439217874266,400,Equivalized income relative to median (log),Household disposable income quintile
+HS010,HH145,0.0020655296400396263,0.008463159083691612,400,"Leaking roof, damp or rot",Satisfaction with dwelling
+hane_gelir_dilim5,reis_egitim,0.000804913354574066,0.008143771202891968,400,Household disposable income quintile,Education of reference person
+HH240_var,HH180_var,0.001734865048451166,0.008142818268281674,400,Owns a car,Owns a computer
+hane_gelir_dilim5,HH145,0.0009353909850258838,0.008091960735621481,400,Household disposable income quintile,Satisfaction with dwelling
+HB031,HH145,0.0012116478697467789,0.007959278155656512,400,Region (NUTS 2),Satisfaction with dwelling
+hane_gelir_dilim5,HH240_var,0.0005314640960741861,0.007909775766344693,400,Household disposable income quintile,Owns a car
+HH240_var,HS020,0.0014339353972155407,0.007684098604946814,400,Owns a car,Insufficient insulation for heating
+hane_gelir_dilim5,pay_sosyal,0.0007929933695241489,0.007571398091736751,400,Household disposable income quintile,Share of income from social transfers
+hane_gelir_dilim5,HS010,0.0005626767892641188,0.0067968380023667825,400,Household disposable income quintile,"Leaking roof, damp or rot"
+HS010,egitim_max,0.001792071965013022,0.006733753311314703,400,"Leaking roof, damp or rot",Highest education among adults
+HH240_var,HH070,0.0012608557378755382,0.006425297523300834,400,Owns a car,Floor area (m²)
+HH180_var,reis_egitim,0.0017891557151594338,0.006407588536922922,400,Owns a computer,Education of reference person
+reis_egitim,HH070,0.0026395351117052034,0.006274482162331528,400,Education of reference person,Floor area (m²)
+HS010,HH180_var,0.0013820162913699406,0.005983440834840873,400,"Leaking roof, damp or rot",Owns a computer
+HS020,pay_sosyal,0.0014471409523092737,0.0059104531734827095,400,Insufficient insulation for heating,Share of income from social transfers
+HH240_var,pay_sosyal,0.0009824885800921238,0.005800169684976931,400,Owns a car,Share of income from social transfers
+HH145,egitim_max,0.0020528604144578197,0.005614226106615672,400,Satisfaction with dwelling,Highest education among adults
+HS020,HH070,0.0015849215296135635,0.005512913027876466,400,Insufficient insulation for heating,Floor area (m²)
+HS010,HH070,0.0013074453548857108,0.0054763711845255665,400,"Leaking roof, damp or rot",Floor area (m²)
+HH240_var,HS010,0.0006689207525518633,0.005408026428860544,400,Owns a car,"Leaking roof, damp or rot"
+HS020,HH145,0.001062856077008704,0.005246489731262071,400,Insufficient insulation for heating,Satisfaction with dwelling
+pay_sosyal,HH145,0.0014704131721542397,0.005174989832198583,400,Share of income from social transfers,Satisfaction with dwelling
+HH180_var,HH070,0.0019572714160112094,0.005123906802939401,400,Owns a computer,Floor area (m²)
+HH240_var,HH145,0.0007075345204908321,0.004886568653484737,400,Owns a car,Satisfaction with dwelling
+reis_egitim,pay_sosyal,0.0011332969571367759,0.004880376901110518,400,Education of reference person,Share of income from social transfers
+HS020,HH180_var,0.0009059274935020191,0.00452003128155389,400,Insufficient insulation for heating,Owns a computer
+HS010,reis_egitim,0.0005771873232833511,0.004399675980173806,400,"Leaking roof, damp or rot",Education of reference person
+HH240_var,reis_egitim,0.00041583770097818024,0.0041480798249161725,400,Owns a car,Education of reference person
+HH180_var,egitim_max,0.0009333297640336615,0.003992444850232285,400,Owns a computer,Highest education among adults
+hane_gelir_dilim5,egitim_max,0.00020382084924032976,0.0039667442479568,400,Household disposable income quintile,Highest education among adults
+reis_egitim,HH145,0.0006910060592716277,0.0037919665750127934,400,Education of reference person,Satisfaction with dwelling
+HH180_var,HH145,0.0008731423951772848,0.0037118890772286435,400,Owns a computer,Satisfaction with dwelling
+HH180_var,pay_sosyal,0.0007682754051202035,0.003534481290503246,400,Owns a computer,Share of income from social transfers
+HH240_var,egitim_max,0.00030073199763651506,0.0033125392334305867,400,Owns a car,Highest education among adults
+egitim_max,HH070,0.0009252061434686874,0.0030843564860214773,400,Highest education among adults,Floor area (m²)
+pay_sosyal,HH070,0.0006756042623488285,0.00290803519945372,400,Share of income from social transfers,Floor area (m²)
+HH145,HH070,0.0005930250402711453,0.002808202420739726,400,Satisfaction with dwelling,Floor area (m²)
+HS010,pay_sosyal,0.00023384742652362054,0.002572911965938006,400,"Leaking roof, damp or rot",Share of income from social transfers
+HS020,reis_egitim,0.00020384815324367927,0.0023870509630677466,400,Insufficient insulation for heating,Education of reference person
+hane_gelir_dilim5,HH180_var,6.305293190842798e-05,0.0022562173526673537,400,Household disposable income quintile,Owns a computer
+pay_sosyal,egitim_max,0.00030975870909686584,0.0020846262472662184,400,Share of income from social transfers,Highest education among adults
+reis_egitim,egitim_max,5.863832228617005e-05,0.0012033736165978299,400,Education of reference person,Highest education among adults

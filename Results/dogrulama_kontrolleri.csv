@@ -1,0 +1,116 @@
+kontrol,kaynak,beklenen,bulunan,durum
+Satir sayisi,talimat,239985,239985,Tuttu
+Sutun sayisi,talimat,266,266,Tuttu
+Her hanede tek hane_reisi,talimat,0,0,Tuttu
+"2023 HB040 toplami (milyon hane, 26,7-27,2)",talimat,26.95,26.73,Tuttu
+2023 FB030 toplami = FK070 >= 15 FK050 toplami (milyon),talimat,65.424,65.424,Tuttu
+"2024 HB040 toplami (milyon hane, 26,7-27,2)",talimat,26.95,26.95,Tuttu
+2024 FB030 toplami = FK070 >= 15 FK050 toplami (milyon),talimat,65.925,65.925,Tuttu
+"2025 HB040 toplami (milyon hane, 26,7-27,2)",talimat,26.95,27.2,Tuttu
+2025 FB030 toplami = FK070 >= 15 FK050 toplami (milyon),talimat,66.395,66.395,Tuttu
+2025 hane (hane_reisi == 1),talimat,25836,25836,Tuttu
+2025 tum fert,talimat,80206,80206,Tuttu
+2025 fert gorusmesi (f_kayit == 1),talimat,61812,61812,Tuttu
+2025 HE090 = 1 (hane),talimat,15772,15772,Tuttu
+2025 HE090 = 2 (hane),talimat,10064,10064,Tuttu
+"2025 yoksul_60 (FK050, tum fertler, %)",talimat,20.6,20.6,Tuttu
+"2025 Gini (esdeger gelir, FK050)",talimat,0.41,0.41,Tuttu
+"2023 HE090 = 2 kisi payi (FK050, %; Eurostat ilc_mdes03)",talimat,39.1,39.1,Tuttu
+"2024 HE090 = 2 kisi payi (FK050, %; Eurostat ilc_mdes03)",talimat,39.3,39.3,Tuttu
+"2025 HE090 = 2 kisi payi (FK050, %; Eurostat ilc_mdes03)",talimat,35.1,35.1,Tuttu
+2023 HB031 = TR63 hane,talimat,0,0,Tuttu
+"2025 18+ yetiskin, fert gorusmesi (H3 evreni)",talimat,57899,57899,Tuttu
+"2025 vejetaryen/vegan yetiskin (et_tavuk_balik_siklik = 0, 18+)",talimat,195,195,Tuttu
+2023 yoksul_40,dogrulama sayfasi,7,7,Tuttu
+2023 yoksul_50,dogrulama sayfasi,13.5,13.5,Tuttu
+2023 yoksul_60,dogrulama sayfasi,21.3,21.3,Tuttu
+2023 yoksul_70,dogrulama sayfasi,29,29,Tuttu
+2023 msy_7,dogrulama sayfasi,14.4,14.4,Tuttu
+2023 msy_7,dogrulama sayfasi,14.4,14.4,Tuttu
+2023 yoksulluk_sosyal_dislanma,dogrulama sayfasi,30.7,30.7,Tuttu
+2023 yoksulluk_sosyal_dislanma,dogrulama sayfasi,30.7,30.7,Tuttu
+2023 yoksulluk_sosyal_dislanma 0-17 yas,dogrulama sayfasi,40,40,Tuttu
+2023 yoksulluk_sosyal_dislanma 18-64 yas,dogrulama sayfasi,28,28,Tuttu
+2023 yoksulluk_sosyal_dislanma 65+ yas,dogrulama sayfasi,23.1,23.1,Tuttu
+2023 Gini (esdeger_gelir),dogrulama sayfasi,0.42,0.42,Tuttu
+2023 S80/S20,dogrulama sayfasi,7.9,7.9,Tuttu
+2023 S90/S10,dogrulama sayfasi,13.8,13.8,Tuttu
+2023 En yuksek %20 gelir payi,dogrulama sayfasi,48.7,48.7,Tuttu
+2023 En dusuk %20 gelir payi,dogrulama sayfasi,6.1,6.1,Tuttu
+2023 Ortalama hane kullanilabilir geliri (FK050),dogrulama sayfasi,181150,181150,Tuttu
+2023 Ortalama hane kullanilabilir geliri (HB040),dogrulama sayfasi,181200,181200,Tuttu
+2023 Ortalama esdeger gelir (FK050),dogrulama sayfasi,90116,90116,Tuttu
+2023 Medyan esdeger gelir (FK050),dogrulama sayfasi,64218,64218,Tuttu
+2023 msy_5,dogrulama sayfasi,27.9,27.9,Tuttu
+2023 kalabalik_konut,dogrulama sayfasi,38,38,Tuttu
+2023 ciddi_konut_yoksunlugu,dogrulama sayfasi,19.7,19.7,Tuttu
+2023 konut_maliyet_asiri_yuk,dogrulama sayfasi,11.7,11.7,Tuttu
+2023 karsilanamayan_tibbi_ihtiyac (16+),dogrulama sayfasi,1.2,1.2,Tuttu
+2023 karsilanamayan_dis_ihtiyaci (16+),dogrulama sayfasi,1.4,1.4,Tuttu
+2023 dusuk_is_yogunlugu (0-59 yas),dogrulama sayfasi,7.8,7.8,Tuttu
+2023 dusuk_is_yogunlugu_064 (0-64 yas),dogrulama sayfasi,8.7,8.7,Tuttu
+2023 calisan_yoksul,dogrulama sayfasi,11.4,11.4,Tuttu
+2023 my_4,dogrulama sayfasi,26.4,26.4,Tuttu
+2024 yoksul_40,dogrulama sayfasi,6.9,6.9,Tuttu
+2024 yoksul_50,dogrulama sayfasi,13.6,13.6,Tuttu
+2024 yoksul_60,dogrulama sayfasi,21.2,21.2,Tuttu
+2024 yoksul_70,dogrulama sayfasi,28.9,28.9,Tuttu
+2024 msy_7,dogrulama sayfasi,13.3,13.3,Tuttu
+2024 msy_7,dogrulama sayfasi,13.3,13.3,Tuttu
+2024 yoksulluk_sosyal_dislanma,dogrulama sayfasi,29.3,29.3,Tuttu
+2024 yoksulluk_sosyal_dislanma,dogrulama sayfasi,29.3,29.3,Tuttu
+2024 yoksulluk_sosyal_dislanma 0-17 yas,dogrulama sayfasi,38.9,38.9,Tuttu
+2024 yoksulluk_sosyal_dislanma 18-64 yas,dogrulama sayfasi,26.3,26.3,Tuttu
+2024 yoksulluk_sosyal_dislanma 65+ yas,dogrulama sayfasi,23.3,23.3,Tuttu
+2024 Gini (esdeger_gelir),dogrulama sayfasi,0.413,0.413,Tuttu
+2024 S80/S20,dogrulama sayfasi,7.7,7.7,Tuttu
+2024 S90/S10,dogrulama sayfasi,13.3,13.3,Tuttu
+2024 En yuksek %20 gelir payi,dogrulama sayfasi,48.1,48.1,Tuttu
+2024 En dusuk %20 gelir payi,dogrulama sayfasi,6.3,6.3,Tuttu
+2024 Ortalama hane kullanilabilir geliri (FK050),dogrulama sayfasi,374899,374899,Tuttu
+2024 Ortalama hane kullanilabilir geliri (HB040),dogrulama sayfasi,374899,374899,Tuttu
+2024 Ortalama esdeger gelir (FK050),dogrulama sayfasi,187728,187728,Tuttu
+2024 Medyan esdeger gelir (FK050),dogrulama sayfasi,136237,136237,Tuttu
+2024 msy_5,dogrulama sayfasi,25.3,25.3,Tuttu
+2024 kalabalik_konut,dogrulama sayfasi,38.2,38.2,Tuttu
+2024 ciddi_konut_yoksunlugu,dogrulama sayfasi,19.4,19.4,Tuttu
+2024 konut_maliyet_asiri_yuk,dogrulama sayfasi,11.2,11.2,Tuttu
+2024 karsilanamayan_tibbi_ihtiyac (16+),dogrulama sayfasi,1.2,1.2,Tuttu
+2024 karsilanamayan_dis_ihtiyaci (16+),dogrulama sayfasi,1.5,1.5,Tuttu
+2024 dusuk_is_yogunlugu (0-59 yas),dogrulama sayfasi,8.3,8.3,Tuttu
+2024 dusuk_is_yogunlugu_064 (0-64 yas),dogrulama sayfasi,9.4,9.4,Tuttu
+2024 calisan_yoksul,dogrulama sayfasi,10.8,10.8,Tuttu
+2024 my_4,dogrulama sayfasi,23.9,23.9,Tuttu
+2025 yoksul_40,dogrulama sayfasi,6.2,6.2,Tuttu
+2025 yoksul_50,dogrulama sayfasi,13,13,Tuttu
+2025 yoksul_60,dogrulama sayfasi,20.6,20.6,Tuttu
+2025 yoksul_70,dogrulama sayfasi,28.7,28.7,Tuttu
+2025 msy_7,dogrulama sayfasi,11.9,11.9,Tuttu
+2025 msy_7,dogrulama sayfasi,11.9,11.9,Tuttu
+2025 yoksulluk_sosyal_dislanma,dogrulama sayfasi,27.9,27.9,Tuttu
+2025 yoksulluk_sosyal_dislanma,dogrulama sayfasi,27.9,27.9,Tuttu
+2025 yoksulluk_sosyal_dislanma 0-17 yas,dogrulama sayfasi,36.9,36.9,Tuttu
+2025 yoksulluk_sosyal_dislanma 18-64 yas,dogrulama sayfasi,25.2,25.2,Tuttu
+2025 yoksulluk_sosyal_dislanma 65+ yas,dogrulama sayfasi,22.8,22.8,Tuttu
+2025 Gini (esdeger_gelir),dogrulama sayfasi,0.41,0.41,Tuttu
+2025 S80/S20,dogrulama sayfasi,7.5,7.5,Tuttu
+2025 S90/S10,dogrulama sayfasi,12.9,12.9,Tuttu
+2025 En yuksek %20 gelir payi,dogrulama sayfasi,48,48,Tuttu
+2025 En dusuk %20 gelir payi,dogrulama sayfasi,6.4,6.4,Tuttu
+2025 Ortalama hane kullanilabilir geliri (FK050),dogrulama sayfasi,662414,662414,Tuttu
+2025 Ortalama hane kullanilabilir geliri (HB040),dogrulama sayfasi,662414,662414,Tuttu
+2025 Ortalama esdeger gelir (FK050),dogrulama sayfasi,332882,332882,Tuttu
+2025 Medyan esdeger gelir (FK050),dogrulama sayfasi,241151,241151,Tuttu
+2025 msy_5,dogrulama sayfasi,23.2,23.2,Tuttu
+2025 kalabalik_konut,dogrulama sayfasi,37.8,37.8,Tuttu
+2025 ciddi_konut_yoksunlugu,dogrulama sayfasi,17.3,17.3,Tuttu
+2025 konut_maliyet_asiri_yuk,dogrulama sayfasi,9.9,9.9,Tuttu
+2025 karsilanamayan_tibbi_ihtiyac (16+),dogrulama sayfasi,0.7,0.7,Tuttu
+2025 karsilanamayan_dis_ihtiyaci (16+),dogrulama sayfasi,0.8,0.8,Tuttu
+2025 dusuk_is_yogunlugu (0-59 yas),dogrulama sayfasi,8.4,8.4,Tuttu
+2025 dusuk_is_yogunlugu_064 (0-64 yas),dogrulama sayfasi,9.4,9.4,Tuttu
+2025 calisan_yoksul,dogrulama sayfasi,10.2,10.2,Tuttu
+2025 my_4,dogrulama sayfasi,22.5,22.5,Tuttu
+Imza eslesmesi 2023-2024 (inceleme raporu Tablo 2),inceleme raporu,12924,12924,Tuttu
+Imza eslesmesi 2023-2025 (inceleme raporu Tablo 2),inceleme raporu,7432,7432,Tuttu
+Imza eslesmesi 2024-2025 (inceleme raporu Tablo 2),inceleme raporu,13396,13396,Tuttu

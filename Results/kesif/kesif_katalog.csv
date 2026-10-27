@@ -1,0 +1,113 @@
+katman,tur,degisken
+T1 gelir,sayisal,log_goreli_gelir
+T1 gelir,sayisal,yoksulluk_acigi_60
+T1 gelir,sayisal,pay_ucret
+T1 gelir,sayisal,pay_mutesebbis
+T1 gelir,sayisal,pay_emekli
+T1 gelir,sayisal,pay_sosyal
+T1 gelir,sayisal,pay_ozel_transfer
+T1 gelir,sayisal,kira_orani
+T1 gelir,sayisal,konut_orani_k
+T1 gelir,kategorik,gelir_dilim10
+T1 gelir,kategorik,hane_gelir_dilim5
+T1 gelir,kategorik,yoksul_50
+T1 gelir,kategorik,sosyal_yardim_var
+T1 gelir,kategorik,ozel_transfer_var
+T1 gelir,kategorik,kira_geliri_var
+T1 gelir,kategorik,konut_asiri_k
+T2 yapisal,sayisal,reis_yas
+T2 yapisal,sayisal,hane_buyuklugu
+T2 yapisal,sayisal,n_cocuk
+T2 yapisal,sayisal,n_0_5
+T2 yapisal,sayisal,n_65plus
+T2 yapisal,sayisal,n_75plus
+T2 yapisal,sayisal,n_yetiskin
+T2 yapisal,sayisal,n_kronik
+T2 yapisal,sayisal,n_gali
+T2 yapisal,sayisal,n_kotu_saglik
+T2 yapisal,sayisal,n_karsilanmayan
+T2 yapisal,sayisal,n_calisan
+T2 yapisal,sayisal,n_issiz
+T2 yapisal,sayisal,n_emekli
+T2 yapisal,sayisal,n_ev_isi
+T2 yapisal,sayisal,n_kayitsiz
+T2 yapisal,sayisal,n_yevmiyeli
+T2 yapisal,sayisal,n_gecici
+T2 yapisal,sayisal,calisan_oran
+T2 yapisal,sayisal,bagimli_oran
+T2 yapisal,sayisal,is_yogunlugu
+T2 yapisal,sayisal,HH060
+T2 yapisal,sayisal,HH070
+T2 yapisal,sayisal,m2_kisi
+T2 yapisal,sayisal,goreli_kira
+T2 yapisal,kategorik,HB030
+T2 yapisal,kategorik,HB031
+T2 yapisal,kategorik,HB050
+T2 yapisal,kategorik,reis_cinsiyet
+T2 yapisal,kategorik,reis_medeni
+T2 yapisal,kategorik,reis_calisma7
+T2 yapisal,kategorik,reis_fk210
+T2 yapisal,kategorik,reis_egitim
+T2 yapisal,kategorik,egitim_max
+T2 yapisal,kategorik,egitim_min
+T2 yapisal,kategorik,reis_saglik
+T2 yapisal,kategorik,reis_kronik
+T2 yapisal,kategorik,reis_gali
+T2 yapisal,kategorik,cocuk_var
+T2 yapisal,kategorik,yasli_var
+T2 yapisal,kategorik,tek_yetiskin_cocuklu
+T2 yapisal,kategorik,calisan_yok
+T2 yapisal,kategorik,dusuk_is_yogunlugu
+T2 yapisal,kategorik,HH010
+T2 yapisal,kategorik,HH020
+T2 yapisal,kategorik,kiraci
+T2 yapisal,kategorik,HH080
+T2 yapisal,kategorik,HH100
+T2 yapisal,kategorik,HH110
+T2 yapisal,kategorik,HH120
+T2 yapisal,kategorik,HH145
+T2 yapisal,kategorik,HH180_var
+T2 yapisal,kategorik,HH190_var
+T2 yapisal,kategorik,HH200_var
+T2 yapisal,kategorik,HH220_var
+T2 yapisal,kategorik,HH230_var
+T2 yapisal,kategorik,HH240_var
+T2 yapisal,kategorik,HS010
+T2 yapisal,kategorik,HS020
+T2 yapisal,kategorik,HS030
+T2 yapisal,kategorik,HS040
+T2 yapisal,kategorik,HS050
+T2 yapisal,kategorik,HS060
+T2 yapisal,kategorik,HS070
+T2 yapisal,kategorik,kalabalik_konut
+T2 yapisal,kategorik,ciddi_konut_yoksunlugu
+T3 mali baski,sayisal,he050_orani
+T3 mali baski,kategorik,HE040
+T3 mali baski,kategorik,HE010
+T3 mali baski,kategorik,HE020
+T3 mali baski,kategorik,HE030
+T3 mali baski,kategorik,msy_borc_odeme
+T3 mali baski,kategorik,HE060
+T3 mali baski,kategorik,HE070
+T4 ayni batarya,sayisal,msy_etsiz_sayi
+T4 ayni batarya,kategorik,HE080
+T4 ayni batarya,kategorik,HE100
+T4 ayni batarya,kategorik,HE110
+T4 ayni batarya,kategorik,HE120
+T4 ayni batarya,kategorik,msy_beklenmedik_harcama
+T4 ayni batarya,kategorik,msy_tatil
+T4 ayni batarya,kategorik,msy_isinma
+T4 ayni batarya,kategorik,msy_otomobil
+T4 ayni batarya,kategorik,msy_mobilya
+T4 ayni batarya,kategorik,HH180
+T4 ayni batarya,kategorik,HH190
+T4 ayni batarya,kategorik,HH200
+T4 ayni batarya,kategorik,HH220
+T4 ayni batarya,kategorik,HH230
+T4 ayni batarya,kategorik,HH240
+T4 ayni batarya,kategorik,msy_internet
+T4 ayni batarya,kategorik,msy_giysi
+T4 ayni batarya,kategorik,msy_ayakkabi
+T4 ayni batarya,kategorik,msy_harclik
+T4 ayni batarya,kategorik,msy_bos_zaman
+T4 ayni batarya,kategorik,msy_arkadas_aile

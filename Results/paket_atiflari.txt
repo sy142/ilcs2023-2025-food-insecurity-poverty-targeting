@@ -1,0 +1,71 @@
+==== base 4.6.1 ====
+R Core Team (2026). _R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing, Vienna, Austria.
+doi:10.32614/R.manuals <https://doi.org/10.32614/R.manuals>. <https://www.R-project.org/>.
+
+==== data.table 1.18.6.1 ====
+Barrett T, Dowle M, Srinivasan A, Gorecki J, Chirico M, Hocking T, Schwendinger B, Krylov I (2026). _data.table: Extension of `data.frame`_.
+doi:10.32614/CRAN.package.data.table <https://doi.org/10.32614/CRAN.package.data.table>. R package version 1.18.6.1,
+<https://CRAN.R-project.org/package=data.table>.
+
+==== arrow 26.0.0 ====
+Richardson N, Cook I, Crane N, Dunnington D, François R, Keane J, Mecum B, Moldovan-Grünfeld D, Ooms J, Wujciak-Jens J, Apache Arrow (2026).
+_arrow: Integration to 'Apache' 'Arrow'_. doi:10.32614/CRAN.package.arrow <https://doi.org/10.32614/CRAN.package.arrow>. R package version
+26.0.0, <https://CRAN.R-project.org/package=arrow>.
+
+==== readxl 1.5.0.1 ====
+Wickham H, Bryan J (2026). _readxl: Read Excel Files_. doi:10.32614/CRAN.package.readxl <https://doi.org/10.32614/CRAN.package.readxl>. R
+package version 1.5.0.1, <https://CRAN.R-project.org/package=readxl>.
+
+==== survey 4.5 ====
+Lumley T (2026). “survey: analysis of complex survey samples.” R package version 4.5.
+
+Lumley T (2004). “Analysis of Complex Survey Samples.” _Journal of Statistical Software_, *9*(1), 1-19. R package verson 2.2.
+
+Lumley T (2010). _Complex Surveys: A Guide to Analysis Using R: A Guide to Analysis Using R_. John Wiley and Sons.
+
+==== splines 4.6.1 ====
+R Core Team (2026). _R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing, Vienna, Austria.
+doi:10.32614/R.manuals <https://doi.org/10.32614/R.manuals>. <https://www.R-project.org/>.
+
+==== flextable 0.10.3 ====
+Gohel D, Skintzos P (2026). _flextable: Functions for Tabular Reporting_. doi:10.32614/CRAN.package.flextable
+<https://doi.org/10.32614/CRAN.package.flextable>. R package version 0.10.3, <https://CRAN.R-project.org/package=flextable>.
+
+==== officer 0.7.7 ====
+Gohel D, Moog S, Heckmann M (2026). _officer: Manipulation of Microsoft Word and PowerPoint Documents_. doi:10.32614/CRAN.package.officer
+<https://doi.org/10.32614/CRAN.package.officer>. R package version 0.7.7, <https://CRAN.R-project.org/package=officer>.
+
+==== future 1.80.0 ====
+Bengtsson H (2021). “A Unifying Framework for Parallel and Distributed Processing in R using Futures.” _The R Journal_, *13*(2), 208-227.
+doi:10.32614/RJ-2021-048 <https://doi.org/10.32614/RJ-2021-048>. <https://doi.org/10.32614/RJ-2021-048>.
+
+==== furrr 0.4.0 ====
+Vaughan D, Bengtsson H, Dancho M (2026). _furrr: Apply Mapping Functions in Parallel using Futures_. doi:10.32614/CRAN.package.furrr
+<https://doi.org/10.32614/CRAN.package.furrr>. R package version 0.4.0, <https://CRAN.R-project.org/package=furrr>.
+
+==== jsonlite 2.0.0 ====
+Ooms J (2014). “The jsonlite Package: A Practical and Consistent Mapping Between JSON Data and R Objects.” _arXiv:1403.2805 [stat.CO]_.
+<https://arxiv.org/abs/1403.2805>.
+
+==== openxlsx 4.2.9 ====
+Schauberger P, Walker A (2026). _openxlsx: Read, Write and Edit xlsx Files_. doi:10.32614/CRAN.package.openxlsx
+<https://doi.org/10.32614/CRAN.package.openxlsx>. R package version 4.2.9, <https://CRAN.R-project.org/package=openxlsx>.
+
+==== MASS 7.3.66 ====
+Ripley BD, Venables WN (2002). _Modern Applied Statistics with S_, Fourth edition. Springer, New York. ISBN 0-387-95457-0,
+<https://www.stats.ox.ac.uk/pub/MASS4/>.
+
+==== Python kutuphaneleri ====
+Surumler: numpy=2.5.4;pandas=3.0.6;scipy=1.18.1;matplotlib=3.11.2;pyarrow=26.0.0;scikit-learn=1.9.1;lightgbm=4.7.0;shap=0.54.1;joblib=1.6.0;openpyxl=3.1.5;torch=2.14.1
+Python: Python Software Foundation. Python Language Reference, version 3.13. https://www.python.org
+LightGBM (README onerisi): Ke G, Meng Q, Finley T, Wang T, Chen W, Ma W, Ye Q, Liu TY. LightGBM: A highly efficient gradient boosting decision tree. Advances in Neural Information Processing Systems 30 (NIPS 2017): 3146-3154.
+SHAP (README onerisi): Lundberg SM, Lee SI. A unified approach to interpreting model predictions. Advances in Neural Information Processing Systems 30 (NIPS 2017): 4765-4774.
+TreeSHAP (README onerisi): Lundberg SM, Erion G, Chen H, DeGrave A, Prutkin JM, Nair B, Katz R, Himmelfarb J, Bansal N, Lee SI. From local explanations to global understanding with explainable AI for trees. Nature Machine Intelligence 2020;2:56-67. doi:10.1038/s42256-019-0138-9
+scikit-learn: Pedregosa F, Varoquaux G, Gramfort A, et al. Scikit-learn: Machine learning in Python. Journal of Machine Learning Research 2011;12:2825-2830.
+NumPy: Harris CR, Millman KJ, van der Walt SJ, et al. Array programming with NumPy. Nature 2020;585:357-362. doi:10.1038/s41586-020-2649-2
+pandas: McKinney W. Data structures for statistical computing in Python. Proceedings of the 9th Python in Science Conference 2010:56-61; The pandas development team. pandas-dev/pandas: Pandas. Zenodo. doi:10.5281/zenodo.3509134
+SciPy: Virtanen P, Gommers R, Oliphant TE, et al. SciPy 1.0: fundamental algorithms for scientific computing in Python. Nature Methods 2020;17:261-272. doi:10.1038/s41592-019-0686-2
+Matplotlib: Hunter JD. Matplotlib: A 2D graphics environment. Computing in Science & Engineering 2007;9(3):90-95. doi:10.1109/MCSE.2007.55
+joblib: Joblib developers. joblib: running Python functions as pipeline jobs. https://joblib.readthedocs.io (yazilim; hakemli atif onerisi yok)
+Apache Arrow (pyarrow): Apache Software Foundation. Apache Arrow. https://arrow.apache.org (yazilim)
+Not: LightGBM ve SHAP atiflari paketlerin GitHub README dosyalarindaki onerilerdir; gonderimden once guncel README ile karsilastirin.

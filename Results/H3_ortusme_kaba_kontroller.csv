@@ -1,0 +1,9 @@
+model,tabakalama,tabaka,seyrek_tabaka,seyrek_nufus_payi
+yetiskin C1 et_az,gelir_bandi x f_bolge x egitim3,144,28,9.85339118213875
+yetiskin C1 meyve_az,gelir_bandi x f_bolge x egitim3,144,28,9.84454392176435
+yetiskin C1 sebze_az,gelir_bandi x f_bolge x egitim3,144,28,9.84454392176435
+yetiskin C2 et_az,f_bolge x egitim3 x f_cins,72,16,7.01739984629363
+yetiskin C2 meyve_az,f_bolge x egitim3 x f_cins,72,16,7.05231544803774
+yetiskin C2 sebze_az,f_bolge x egitim3 x f_cins,72,16,7.05231544803774
+hane C1 saglik_yuk,gelir_bandi x f_bolge x egitim3,144,60,20.9028564428266
+hane C2 saglik_yuk,f_bolge x egitim3 x f_cins,72,36,18.1248054055084

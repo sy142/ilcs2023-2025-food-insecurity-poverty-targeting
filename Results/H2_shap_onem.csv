@@ -1,0 +1,208 @@
+model,degisken,ortalama_mutlak_shap,grup,etiket,sira
+A1_ana,log_goreli_gelir,0.44157395025464696,Income,Equivalized income relative to median (log),1
+A1_ana,hane_gelir_dilim5,0.24064635989414518,Income,Household disposable income quintile,2
+A1_ana,HB031,0.18560848314618764,Region,Region (NUTS 2),3
+A1_ana,HH240_var,0.17721965337855589,Housing and assets,Owns a car,4
+A1_ana,HS010,0.14066845862857574,Housing and assets,"Leaking roof, damp or rot",5
+A1_ana,HS020,0.12108682491721137,Housing and assets,Insufficient insulation for heating,6
+A1_ana,HH180_var,0.09613057563114144,Housing and assets,Owns a computer,7
+A1_ana,reis_egitim,0.09248158645566495,Education,Education of reference person,8
+A1_ana,pay_sosyal,0.08506778150603589,Income,Share of income from social transfers,9
+A1_ana,HH145,0.06874699243557364,Housing and assets,Satisfaction with dwelling,10
+A1_ana,egitim_max,0.06526026808325167,Education,Highest education among adults,11
+A1_ana,HH070,0.05606399204305479,Housing and assets,Floor area (m²),12
+A1_ana,HH080,0.054679187659672814,Housing and assets,Heating system,13
+A1_ana,kira_orani,0.048409653299801236,Income,Rent-to-income ratio,14
+A1_ana,reis_saglik,0.047607795405986746,Health,Self-rated health of reference person,15
+A1_ana,egitim_min,0.045051352517429186,Education,Lowest education among adults,16
+A1_ana,pay_ucret,0.04447019009122307,Income,Share of income from wages,17
+A1_ana,reis_yas,0.0427954226318934,Household composition,Age of reference person,18
+A1_ana,n_kronik,0.039274097063314625,Health,Adults with chronic illness,19
+A1_ana,pay_mutesebbis,0.03817203184542455,Income,Share of income from self-employment,20
+A1_ana,HH220_var,0.03802829616914013,Housing and assets,Owns a dishwasher,21
+A1_ana,pay_ozel_transfer,0.0349747891972776,Income,Share of income from private transfers,22
+A1_ana,kira_geliri_var,0.034920105149973096,Income,Has rental income,23
+A1_ana,n_gali,0.03269201391217586,Health,Adults with activity limitation,24
+A1_ana,HH020,0.031861549249631284,Housing and assets,Tenure status,25
+A1_ana,sosyal_yardim_var,0.031084527806967244,Income,Receives social transfers,26
+A1_ana,is_yogunlugu,0.031049330485461733,Employment,Work intensity,27
+A1_ana,m2_kisi,0.030567306522425664,Housing and assets,Floor area per person (m²),28
+A1_ana,HH230_var,0.029658914342890648,Housing and assets,Owns an air conditioner,29
+A1_ana,HS030,0.0239891485009072,Housing and assets,Dwelling too dark,30
+A1_ana,pay_emekli,0.023481194331994918,Income,Share of income from pensions,31
+A1_ana,reis_calisma7,0.023207471938706724,Employment,Activity status of reference person,32
+A1_ana,calisan_oran,0.02279548841993313,Employment,Share of adults employed,33
+A1_ana,n_issiz,0.021691873209636062,Employment,Unemployed adults,34
+A1_ana,HS070,0.01910762657949653,Housing and assets,Crime or violence in the area,35
+A1_ana,n_karsilanmayan,0.018946840542296693,Health,Adults with unmet medical need,36
+A1_ana,HS040,0.01879093717921739,Housing and assets,Noise from neighbors or street,37
+A1_ana,HS060,0.018747679720281827,Housing and assets,Pollution or other environmental problems,38
+A1_ana,HH060,0.018521105837791506,Housing and assets,Number of rooms,39
+A1_ana,reis_kronik,0.017464542518557474,Health,Reference person has chronic illness,40
+A1_ana,n_kotu_saglik,0.01701564081593553,Health,Adults in bad or very bad health,41
+A1_ana,n_calisan,0.016788085859286397,Employment,Employed adults,42
+A1_ana,bagimli_oran,0.01578320826235123,Household composition,Dependency ratio,43
+A1_ana,HB050,0.015664501750163883,Household composition,Household type,44
+A1_ana,hane_buyuklugu,0.015598592796954995,Household composition,Household size,45
+A1_ana,reis_gali,0.013884131760980616,Health,Activity limitation of reference person,46
+A1_ana,n_yetiskin,0.012285325019277829,Household composition,Adults (≥18 years),47
+A1_ana,ozel_transfer_var,0.01205447355531627,Income,Receives private transfers,48
+A1_ana,goreli_kira,0.012040273578247747,Housing and assets,Rent relative to median rent,49
+A1_ana,HH010,0.011844051842352463,Housing and assets,Dwelling type,50
+A1_ana,n_yevmiyeli,0.01139270672447979,Employment,Casual (daily-wage) workers,51
+A1_ana,reis_medeni,0.010086239311418051,Household composition,Marital status of reference person,52
+A1_ana,n_ev_isi,0.009275498110288322,Employment,Adults in domestic or care work,53
+A1_ana,n_gecici,0.008751556922314037,Employment,Temporary employees,54
+A1_ana,HS050,0.00873208546418947,Housing and assets,Adequate living space,55
+A1_ana,n_65plus,0.00832973920595356,Household composition,Members aged ≥65,56
+A1_ana,HH190_var,0.007803708839282266,Housing and assets,Has internet access,57
+A1_ana,n_75plus,0.006658857170967076,Household composition,Members aged ≥75,58
+A1_ana,n_cocuk,0.005599264606075524,Household composition,Children (<18 years),59
+A1_ana,n_emekli,0.005438147388945173,Employment,Retired adults,60
+A1_ana,n_0_5,0.005294491072253976,Household composition,Children aged 0–5,61
+A1_ana,ciddi_konut_yoksunlugu,0.005038963526768092,Housing and assets,Severe housing deprivation,62
+A1_ana,n_kayitsiz,0.004115619998592427,Employment,Informally employed adults,63
+A1_ana,reis_cinsiyet,0.003909469118631328,Household composition,Sex of reference person,64
+A1_ana,HH110,0.0023507721718320357,Housing and assets,Indoor flushing toilet,65
+A1_ana,kalabalik_konut,0.002141784778097686,Housing and assets,Overcrowded dwelling,66
+A1_ana,HH200_var,0.001601742480120592,Housing and assets,Owns a washing machine,67
+A1_ana,tek_yetiskin_cocuklu,0.001428541884550783,Household composition,Single adult with children,68
+A1_ana,HH100,0.0010695622297846083,Housing and assets,Bath or shower in dwelling,69
+A1_ana,HH120,0.0006768059984324099,Housing and assets,Separate kitchen,70
+B1_ana,log_goreli_gelir,0.5458061251246594,Income,Equivalized income relative to median (log),1
+B1_ana,HH240_var,0.21479190218821856,Housing and assets,Owns a car,2
+B1_ana,HB031,0.18467958699436446,Region,Region (NUTS 2),3
+B1_ana,HS010,0.12732000460238146,Housing and assets,"Leaking roof, damp or rot",4
+B1_ana,reis_egitim,0.10727033634420324,Education,Education of reference person,5
+B1_ana,HH180_var,0.10381205910427992,Housing and assets,Owns a computer,6
+B1_ana,HS020,0.10030658177928248,Housing and assets,Insufficient insulation for heating,7
+B1_ana,egitim_max,0.0815378093870717,Education,Highest education among adults,8
+B1_ana,HH070,0.07430449391916734,Housing and assets,Floor area (m²),9
+B1_ana,HH145,0.06675881617000433,Housing and assets,Satisfaction with dwelling,10
+B1_ana,reis_yas,0.054938049036021015,Household composition,Age of reference person,11
+B1_ana,reis_saglik,0.053029219595956884,Health,Self-rated health of reference person,12
+B1_ana,HH020,0.04968772901549308,Housing and assets,Tenure status,13
+B1_ana,HH080,0.04498787622323878,Housing and assets,Heating system,14
+B1_ana,is_yogunlugu,0.04438529292448367,Employment,Work intensity,15
+B1_ana,n_kronik,0.04201327407821993,Health,Adults with chronic illness,16
+B1_ana,n_gali,0.0377570147213011,Health,Adults with activity limitation,17
+B1_ana,egitim_min,0.037752618550327965,Education,Lowest education among adults,18
+B1_ana,goreli_kira,0.035647011645077546,Housing and assets,Rent relative to median rent,19
+B1_ana,hane_buyuklugu,0.035424025251377604,Household composition,Household size,20
+B1_ana,HH220_var,0.034676930765255715,Housing and assets,Owns a dishwasher,21
+B1_ana,n_calisan,0.033429396472077565,Employment,Employed adults,22
+B1_ana,HH230_var,0.030812749107232643,Housing and assets,Owns an air conditioner,23
+B1_ana,bagimli_oran,0.03060626699370221,Household composition,Dependency ratio,24
+B1_ana,reis_calisma7,0.029011000047824965,Employment,Activity status of reference person,25
+B1_ana,HH060,0.027799406437813926,Housing and assets,Number of rooms,26
+B1_ana,HS030,0.027404435377571208,Housing and assets,Dwelling too dark,27
+B1_ana,m2_kisi,0.02485194346525443,Housing and assets,Floor area per person (m²),28
+B1_ana,calisan_oran,0.024825272990101677,Employment,Share of adults employed,29
+B1_ana,n_issiz,0.023283802456577598,Employment,Unemployed adults,30
+B1_ana,n_yetiskin,0.023081560929145577,Household composition,Adults (≥18 years),31
+B1_ana,HB050,0.020740331760387063,Household composition,Household type,32
+B1_ana,HS060,0.020473643690554565,Housing and assets,Pollution or other environmental problems,33
+B1_ana,HS040,0.02007368135259176,Housing and assets,Noise from neighbors or street,34
+B1_ana,HS070,0.019603781746132917,Housing and assets,Crime or violence in the area,35
+B1_ana,HH010,0.018956191875224113,Housing and assets,Dwelling type,36
+B1_ana,reis_kronik,0.018202181521014483,Health,Reference person has chronic illness,37
+B1_ana,n_kotu_saglik,0.016444324496902755,Health,Adults in bad or very bad health,38
+B1_ana,reis_gali,0.015357207465100161,Health,Activity limitation of reference person,39
+B1_ana,reis_medeni,0.014509802725857024,Household composition,Marital status of reference person,40
+B1_ana,HS050,0.013314003795712407,Housing and assets,Adequate living space,41
+B1_ana,n_gecici,0.013059222731264723,Employment,Temporary employees,42
+B1_ana,n_yevmiyeli,0.012581952636423798,Employment,Casual (daily-wage) workers,43
+B1_ana,n_65plus,0.011952547844934951,Household composition,Members aged ≥65,44
+B1_ana,n_karsilanmayan,0.011870182332184315,Health,Adults with unmet medical need,45
+B1_ana,n_emekli,0.011167491782336874,Employment,Retired adults,46
+B1_ana,n_ev_isi,0.010529010941412878,Employment,Adults in domestic or care work,47
+B1_ana,n_75plus,0.009948608618728486,Household composition,Members aged ≥75,48
+B1_ana,HH190_var,0.006620475402914711,Housing and assets,Has internet access,49
+B1_ana,n_0_5,0.005487701713433374,Household composition,Children aged 0–5,50
+B1_ana,reis_cinsiyet,0.005161710622794586,Household composition,Sex of reference person,51
+B1_ana,n_cocuk,0.0044798439583957055,Household composition,Children (<18 years),52
+B1_ana,n_kayitsiz,0.004301980680817622,Employment,Informally employed adults,53
+B1_ana,kalabalik_konut,0.0032059796747522713,Housing and assets,Overcrowded dwelling,54
+B1_ana,ciddi_konut_yoksunlugu,0.0027999971900611177,Housing and assets,Severe housing deprivation,55
+B1_ana,tek_yetiskin_cocuklu,0.0022636933470819016,Household composition,Single adult with children,56
+B1_ana,HH110,0.001755400981447726,Housing and assets,Indoor flushing toilet,57
+B1_ana,HH200_var,0.0008990506868118229,Housing and assets,Owns a washing machine,58
+B1_ana,HH100,0.0006944641733900177,Housing and assets,Bath or shower in dwelling,59
+B1_ana,HH120,0.000397794446791809,Housing and assets,Separate kitchen,60
+A3_ana,HE040,0.32010835039909774,Financial strain,Ability to make ends meet,1
+A3_ana,log_goreli_gelir,0.3131631975322238,Income,Equivalized income relative to median (log),2
+A3_ana,hane_gelir_dilim5,0.19685294699611566,Income,Household disposable income quintile,3
+A3_ana,HB031,0.17022579318255743,Region,Region (NUTS 2),4
+A3_ana,HH240_var,0.14914702837312024,Housing and assets,Owns a car,5
+A3_ana,HE060,0.11983765699526717,Financial strain,Burden of total housing costs,6
+A3_ana,HE020,0.10952566264025715,Financial strain,Arrears on utility bills,7
+A3_ana,HS010,0.10637966638634762,Housing and assets,"Leaking roof, damp or rot",8
+A3_ana,HS020,0.08787635484177371,Housing and assets,Insufficient insulation for heating,9
+A3_ana,reis_egitim,0.08566685385722639,Education,Education of reference person,10
+A3_ana,HH180_var,0.07749552759832633,Housing and assets,Owns a computer,11
+A3_ana,pay_sosyal,0.0698125926335018,Income,Share of income from social transfers,12
+A3_ana,egitim_max,0.06933693744053392,Education,Highest education among adults,13
+A3_ana,HE030,0.06694672006103727,Financial strain,Arrears on installments or loans,14
+A3_ana,HH080,0.06556828777352937,Housing and assets,Heating system,15
+A3_ana,HH070,0.056717366752747585,Housing and assets,Floor area (m²),16
+A3_ana,he050_orani,0.05273287274729762,Financial strain,Minimum income needed relative to income,17
+A3_ana,egitim_min,0.05029170396650159,Education,Lowest education among adults,18
+A3_ana,HH145,0.04121819550563526,Housing and assets,Satisfaction with dwelling,19
+A3_ana,pay_ucret,0.039545871739843114,Income,Share of income from wages,20
+A3_ana,HH220_var,0.038690699655390216,Housing and assets,Owns a dishwasher,21
+A3_ana,HE070,0.03664471164529252,Financial strain,Burden of non-housing debt repayment,22
+A3_ana,pay_mutesebbis,0.03495344148759029,Income,Share of income from self-employment,23
+A3_ana,reis_yas,0.03140087320916716,Household composition,Age of reference person,24
+A3_ana,reis_saglik,0.03092964374122196,Health,Self-rated health of reference person,25
+A3_ana,n_kronik,0.030851528710297928,Health,Adults with chronic illness,26
+A3_ana,sosyal_yardim_var,0.025411240720018435,Income,Receives social transfers,27
+A3_ana,m2_kisi,0.025299829897742224,Housing and assets,Floor area per person (m²),28
+A3_ana,is_yogunlugu,0.025235689857323895,Employment,Work intensity,29
+A3_ana,pay_ozel_transfer,0.0246137831323216,Income,Share of income from private transfers,30
+A3_ana,kira_orani,0.024521547226119357,Income,Rent-to-income ratio,31
+A3_ana,HH230_var,0.024237102519771337,Housing and assets,Owns an air conditioner,32
+A3_ana,kira_geliri_var,0.023156403510108618,Income,Has rental income,33
+A3_ana,HH060,0.022356167699016095,Housing and assets,Number of rooms,34
+A3_ana,calisan_oran,0.022183337841160937,Employment,Share of adults employed,35
+A3_ana,n_gali,0.021694323300926376,Health,Adults with activity limitation,36
+A3_ana,HS030,0.020285458116539007,Housing and assets,Dwelling too dark,37
+A3_ana,reis_calisma7,0.019052107873536568,Employment,Activity status of reference person,38
+A3_ana,pay_emekli,0.01830680608659633,Income,Share of income from pensions,39
+A3_ana,HH020,0.01795857767015919,Housing and assets,Tenure status,40
+A3_ana,reis_kronik,0.016948588083947305,Health,Reference person has chronic illness,41
+A3_ana,HH010,0.016176432433103002,Housing and assets,Dwelling type,42
+A3_ana,n_calisan,0.015419781992786583,Employment,Employed adults,43
+A3_ana,HE010,0.015405619897996521,Financial strain,Arrears on rent or mortgage,44
+A3_ana,n_issiz,0.015308332068550149,Employment,Unemployed adults,45
+A3_ana,hane_buyuklugu,0.015296481778113526,Household composition,Household size,46
+A3_ana,HB050,0.01341640954955591,Household composition,Household type,47
+A3_ana,n_kotu_saglik,0.01334290418279597,Health,Adults in bad or very bad health,48
+A3_ana,HH190_var,0.012515201822531864,Housing and assets,Has internet access,49
+A3_ana,goreli_kira,0.011911695949524171,Housing and assets,Rent relative to median rent,50
+A3_ana,n_yetiskin,0.011504820213555266,Household composition,Adults (≥18 years),51
+A3_ana,bagimli_oran,0.01143443968651903,Household composition,Dependency ratio,52
+A3_ana,ozel_transfer_var,0.011248995320393283,Income,Receives private transfers,53
+A3_ana,HS070,0.011140421267373527,Housing and assets,Crime or violence in the area,54
+A3_ana,HS040,0.010692616475479597,Housing and assets,Noise from neighbors or street,55
+A3_ana,HS060,0.010027549919994083,Housing and assets,Pollution or other environmental problems,56
+A3_ana,n_ev_isi,0.009739563222956188,Employment,Adults in domestic or care work,57
+A3_ana,n_karsilanmayan,0.009469687089680608,Health,Adults with unmet medical need,58
+A3_ana,reis_gali,0.009274889870293202,Health,Activity limitation of reference person,59
+A3_ana,n_yevmiyeli,0.00863344355062208,Employment,Casual (daily-wage) workers,60
+A3_ana,n_0_5,0.007650966491802424,Household composition,Children aged 0–5,61
+A3_ana,reis_medeni,0.0073174587182392534,Household composition,Marital status of reference person,62
+A3_ana,n_gecici,0.006934690069075391,Employment,Temporary employees,63
+A3_ana,ciddi_konut_yoksunlugu,0.005896666534112564,Housing and assets,Severe housing deprivation,64
+A3_ana,n_65plus,0.005682815567911544,Household composition,Members aged ≥65,65
+A3_ana,n_emekli,0.005587156877409967,Employment,Retired adults,66
+A3_ana,n_kayitsiz,0.005454841704520903,Employment,Informally employed adults,67
+A3_ana,HS050,0.005008664622282404,Housing and assets,Adequate living space,68
+A3_ana,reis_cinsiyet,0.004976621474765175,Household composition,Sex of reference person,69
+A3_ana,n_cocuk,0.004269197565872204,Household composition,Children (<18 years),70
+A3_ana,n_75plus,0.0042623433920505145,Household composition,Members aged ≥75,71
+A3_ana,kalabalik_konut,0.002138584085968086,Housing and assets,Overcrowded dwelling,72
+A3_ana,HH110,0.0021120657685616776,Housing and assets,Indoor flushing toilet,73
+A3_ana,HH200_var,0.001405401276494989,Housing and assets,Owns a washing machine,74
+A3_ana,HH100,0.0012337599749477962,Housing and assets,Bath or shower in dwelling,75
+A3_ana,tek_yetiskin_cocuklu,0.0009739985597716247,Household composition,Single adult with children,76
+A3_ana,HH120,0.0007599145954646181,Housing and assets,Separate kitchen,77

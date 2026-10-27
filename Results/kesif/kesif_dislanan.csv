@@ -1,0 +1,22 @@
+degisken,neden
+HE090,sonuc
+msy_et_tavuk_balik,sonucu (HE090) iceriyor
+msy_sayi,sonucu (HE090) iceriyor
+msy_5,sonucu (HE090) iceriyor
+msy_7,sonucu (HE090) iceriyor
+my_sayi,sonucu (HE090) iceriyor
+my_3,sonucu (HE090) iceriyor
+my_4,sonucu (HE090) iceriyor
+yoksulluk_sosyal_dislanma,sonucu (HE090) iceriyor
+yoksul_60,nufus tanimi (Model B) ve karsilastirma kolu
+yoksul_70,karsilastirma kolu (esik)
+gelir_dilim5,log_goreli_gelir ile ayni bilgi
+esdeger_gelir,"nominal TL, yillar arasi karsilastirilamaz"
+goreli_esdeger_gelir,log_goreli_gelir ile ayni bilgi
+konut_maliyet_orani,2024 kirilmasi
+konut_maliyet_asiri_yuk,2024 kirilmasi
+konut_orani_k,2024 tamamen bos: yil bloklu modellerde kullanilmadi
+konut_asiri_k,2024 tamamen bos: yil bloklu modellerde kullanilmadi
+HH040,nominal TL: goreli_kira ve kira_orani kullanildi
+HH050,nominal TL ve 2024 kirilmasi
+HG110,nominal TL: log_goreli_gelir kullanildi
