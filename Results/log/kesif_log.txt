@@ -1,0 +1,378 @@
+Hane satirlari: 76693  yil: 24932 / 25925 / 25836 
+     yil  duzey       FI   yoksul FI_icinde_yoksul_olmayan_pay yoksul_icinde_FI_pay cocuk_FI_yoksul_degil_milyon cocuk_FI_milyon n_hane  n_FI n_FI_yoksul_degil
+   <num> <char>    <num>    <num>                        <num>                <num>                        <num>           <num>  <int> <int>             <num>
+1:  2023   hane 37.37695 16.27774                     70.39440             67.98037                     4.901419        9.843702  24932  9525              6122
+2:  2024   hane 38.30005 16.50616                     70.33097             68.84250                     4.687757        9.623936  25925 10032              6528
+3:  2025   hane 36.96356 15.97984                     68.09065             73.81071                     3.618240        8.476052  25836 10064              6250
+4:  2023   kisi 39.14171 21.27767                     63.30950             67.49464                     4.901419        9.843702  24932  9525              6122
+5:  2024   kisi 39.33734 21.18322                     63.15831             68.41519                     4.687757        9.623936  25925 10032              6528
+6:  2025   kisi 35.07174 20.63359                     57.64053             72.00009                     3.618240        8.476052  25836 10064              6250
+tum 2023 bitti
+tum 2024 bitti
+tum 2025 bitti
+yoksul_degil 2023 bitti
+yoksul_degil 2024 bitti
+yoksul_degil 2025 bitti
+Tek degiskenli tarama suresi (dk): 0.2 
+
+====  tum : pseudo R2 ortalamasina gore ilk 30 ====
+                   degisken          katman r2_2023 r2_2024 r2_2025 auc_2025
+                     <char>          <char>   <num>   <num>   <num>    <num>
+ 1:          msy_etsiz_sayi T4 ayni batarya   0.394   0.389   0.516    0.928
+ 2:                   HE080 T4 ayni batarya   0.341   0.323   0.403    0.850
+ 3:               msy_tatil T4 ayni batarya   0.341   0.323   0.403    0.850
+ 4:                   HE100 T4 ayni batarya   0.222   0.210   0.343    0.802
+ 5: msy_beklenmedik_harcama T4 ayni batarya   0.222   0.210   0.343    0.802
+ 6:                   HE120 T4 ayni batarya   0.244   0.213   0.286    0.826
+ 7:             msy_mobilya T4 ayni batarya   0.182   0.171   0.205    0.736
+ 8:                   HE110 T4 ayni batarya   0.155   0.110   0.254    0.739
+ 9:              msy_isinma T4 ayni batarya   0.155   0.110   0.254    0.739
+10:        log_goreli_gelir        T1 gelir   0.147   0.143   0.224    0.803
+11:           gelir_dilim10        T1 gelir   0.143   0.142   0.222    0.799
+12:       hane_gelir_dilim5        T1 gelir   0.111   0.118   0.266    0.821
+13:                   HE040   T3 mali baski   0.112   0.121   0.102    0.698
+14:               msy_giysi T4 ayni batarya   0.086   0.100   0.120    0.628
+15:          msy_borc_odeme   T3 mali baski   0.059   0.056   0.157    0.696
+16:            msy_ayakkabi T4 ayni batarya   0.081   0.083   0.105    0.612
+17:                   HE020   T3 mali baski   0.052   0.044   0.162    0.686
+18:                   HH180 T4 ayni batarya   0.075   0.078   0.099    0.685
+19:           konut_orani_k        T1 gelir   0.059      NA   0.103    0.689
+20:                   HH240 T4 ayni batarya   0.067   0.068   0.105    0.702
+21:              egitim_max      T2 yapisal   0.062   0.063   0.104    0.709
+22:             reis_egitim      T2 yapisal   0.068   0.067   0.080    0.678
+23:             msy_harclik T4 ayni batarya   0.052   0.064   0.086    0.590
+24:      yoksulluk_acigi_60        T1 gelir   0.059   0.059   0.084    0.628
+25:           msy_bos_zaman T4 ayni batarya   0.044   0.068   0.088    0.603
+26:        msy_arkadas_aile T4 ayni batarya   0.048   0.064   0.087    0.593
+27:               HH240_var      T2 yapisal   0.050   0.050   0.095    0.681
+28:              egitim_min      T2 yapisal   0.062   0.060   0.064    0.660
+29:               HH180_var      T2 yapisal   0.047   0.048   0.078    0.661
+30:            msy_otomobil T4 ayni batarya   0.056   0.057   0.053    0.610
+                   degisken          katman r2_2023 r2_2024 r2_2025 auc_2025
+                     <char>          <char>   <num>   <num>   <num>    <num>
+
+====  tum : katman basina ilk 10 ====
+             katman katman_sira                degisken r2_ort auc_2025
+             <char>       <int>                  <char>  <num>    <num>
+ 1: T4 ayni batarya           1          msy_etsiz_sayi 0.4330    0.928
+ 2: T4 ayni batarya           2                   HE080 0.3555    0.850
+ 3: T4 ayni batarya           3               msy_tatil 0.3555    0.850
+ 4: T4 ayni batarya           4                   HE100 0.2584    0.802
+ 5: T4 ayni batarya           5 msy_beklenmedik_harcama 0.2584    0.802
+ 6: T4 ayni batarya           6                   HE120 0.2479    0.826
+ 7: T4 ayni batarya           7             msy_mobilya 0.1861    0.736
+ 8: T4 ayni batarya           8                   HE110 0.1730    0.739
+ 9: T4 ayni batarya           9              msy_isinma 0.1730    0.739
+10:        T1 gelir           1        log_goreli_gelir 0.1714    0.803
+11:        T1 gelir           2           gelir_dilim10 0.1693    0.799
+12:        T1 gelir           3       hane_gelir_dilim5 0.1651    0.821
+13:   T3 mali baski           1                   HE040 0.1115    0.698
+14: T4 ayni batarya          10               msy_giysi 0.1019    0.628
+15:   T3 mali baski           2          msy_borc_odeme 0.0907    0.696
+16:   T3 mali baski           3                   HE020 0.0858    0.686
+17:        T1 gelir           4           konut_orani_k 0.0810    0.689
+18:      T2 yapisal           1              egitim_max 0.0765    0.709
+19:      T2 yapisal           2             reis_egitim 0.0718    0.678
+20:        T1 gelir           5      yoksulluk_acigi_60 0.0671    0.628
+21:      T2 yapisal           3               HH240_var 0.0652    0.681
+22:      T2 yapisal           4              egitim_min 0.0619    0.660
+23:      T2 yapisal           5               HH180_var 0.0578    0.661
+24:   T3 mali baski           4                   HE030 0.0545    0.680
+25:   T3 mali baski           5             he050_orani 0.0539    0.677
+26:   T3 mali baski           6                   HE060 0.0511    0.603
+27:      T2 yapisal           6                   HH080 0.0499    0.634
+28:        T1 gelir           6               yoksul_50 0.0458    0.584
+29:      T2 yapisal           7            is_yogunlugu 0.0437    0.658
+30:      T2 yapisal           8                   HS010 0.0389    0.599
+31:        T1 gelir           7              pay_sosyal 0.0373    0.605
+32:      T2 yapisal           9                   HS020 0.0364    0.598
+33:      T2 yapisal          10               n_calisan 0.0337    0.667
+34:   T3 mali baski           7                   HE070 0.0298    0.592
+35:   T3 mali baski           8                   HE010 0.0233    0.562
+36:        T1 gelir           8       sosyal_yardim_var 0.0216    0.583
+37:        T1 gelir           9           konut_asiri_k 0.0197    0.558
+38:        T1 gelir          10              pay_emekli 0.0151    0.613
+             katman katman_sira                degisken r2_ort auc_2025
+             <char>       <int>                  <char>  <num>    <num>
+
+====  yoksul_degil : pseudo R2 ortalamasina gore ilk 30 ====
+                   degisken          katman r2_2023 r2_2024 r2_2025 auc_2025
+                     <char>          <char>   <num>   <num>   <num>    <num>
+ 1:          msy_etsiz_sayi T4 ayni batarya   0.388   0.376   0.495    0.923
+ 2:                   HE080 T4 ayni batarya   0.339   0.318   0.392    0.854
+ 3:               msy_tatil T4 ayni batarya   0.339   0.318   0.392    0.854
+ 4:                   HE100 T4 ayni batarya   0.204   0.182   0.311    0.775
+ 5: msy_beklenmedik_harcama T4 ayni batarya   0.204   0.182   0.311    0.775
+ 6:                   HE120 T4 ayni batarya   0.233   0.195   0.263    0.816
+ 7:             msy_mobilya T4 ayni batarya   0.174   0.157   0.185    0.715
+ 8:                   HE110 T4 ayni batarya   0.132   0.083   0.220    0.707
+ 9:              msy_isinma T4 ayni batarya   0.132   0.083   0.220    0.707
+10:       hane_gelir_dilim5        T1 gelir   0.082   0.089   0.241    0.812
+11:        log_goreli_gelir        T1 gelir   0.112   0.107   0.181    0.775
+12:           gelir_dilim10        T1 gelir   0.108   0.106   0.178    0.770
+13:                   HE040   T3 mali baski   0.098   0.101   0.080    0.679
+14:          msy_borc_odeme   T3 mali baski   0.050   0.052   0.147    0.682
+15:                   HE020   T3 mali baski   0.042   0.036   0.150    0.668
+16:               msy_giysi T4 ayni batarya   0.064   0.073   0.084    0.591
+17:                   HH240 T4 ayni batarya   0.058   0.059   0.092    0.690
+18:           konut_orani_k        T1 gelir   0.043      NA   0.089    0.690
+19:                   HH180 T4 ayni batarya   0.056   0.055   0.078    0.667
+20:              egitim_max      T2 yapisal   0.048   0.047   0.093    0.699
+21:            msy_ayakkabi T4 ayni batarya   0.059   0.055   0.069    0.575
+22:               HH240_var      T2 yapisal   0.042   0.042   0.086    0.674
+23:           msy_bos_zaman T4 ayni batarya   0.042   0.057   0.069    0.582
+24:             reis_egitim      T2 yapisal   0.054   0.051   0.062    0.659
+25:        msy_arkadas_aile T4 ayni batarya   0.041   0.047   0.062    0.567
+26:                   HE030   T3 mali baski   0.028   0.037   0.080    0.667
+27:             msy_harclik T4 ayni batarya   0.038   0.045   0.058    0.560
+28:                   HE060   T3 mali baski   0.056   0.052   0.032    0.598
+29:            msy_otomobil T4 ayni batarya   0.049   0.050   0.040    0.592
+30:               HH180_var      T2 yapisal   0.035   0.035   0.066    0.652
+                   degisken          katman r2_2023 r2_2024 r2_2025 auc_2025
+                     <char>          <char>   <num>   <num>   <num>    <num>
+
+====  yoksul_degil : katman basina ilk 10 ====
+             katman katman_sira                degisken r2_ort auc_2025
+             <char>       <int>                  <char>  <num>    <num>
+ 1: T4 ayni batarya           1          msy_etsiz_sayi 0.4195    0.923
+ 2: T4 ayni batarya           2                   HE080 0.3498    0.854
+ 3: T4 ayni batarya           3               msy_tatil 0.3498    0.854
+ 4: T4 ayni batarya           4                   HE100 0.2326    0.775
+ 5: T4 ayni batarya           5 msy_beklenmedik_harcama 0.2326    0.775
+ 6: T4 ayni batarya           6                   HE120 0.2305    0.816
+ 7: T4 ayni batarya           7             msy_mobilya 0.1721    0.715
+ 8: T4 ayni batarya           8                   HE110 0.1449    0.707
+ 9: T4 ayni batarya           9              msy_isinma 0.1449    0.707
+10:        T1 gelir           1       hane_gelir_dilim5 0.1376    0.812
+11:        T1 gelir           2        log_goreli_gelir 0.1332    0.775
+12:        T1 gelir           3           gelir_dilim10 0.1306    0.770
+13:   T3 mali baski           1                   HE040 0.0931    0.679
+14:   T3 mali baski           2          msy_borc_odeme 0.0827    0.682
+15:   T3 mali baski           3                   HE020 0.0762    0.668
+16: T4 ayni batarya          10               msy_giysi 0.0736    0.591
+17:        T1 gelir           4           konut_orani_k 0.0661    0.690
+18:      T2 yapisal           1              egitim_max 0.0625    0.699
+19:      T2 yapisal           2               HH240_var 0.0564    0.674
+20:      T2 yapisal           3             reis_egitim 0.0556    0.659
+21:   T3 mali baski           4                   HE030 0.0484    0.667
+22:   T3 mali baski           5                   HE060 0.0467    0.598
+23:      T2 yapisal           4               HH180_var 0.0454    0.652
+24:      T2 yapisal           5              egitim_min 0.0442    0.634
+25:   T3 mali baski           6             he050_orani 0.0350    0.648
+26:      T2 yapisal           6                   HH080 0.0315    0.606
+27:      T2 yapisal           7               n_calisan 0.0302    0.668
+28:      T2 yapisal           8                   HS010 0.0280    0.578
+29:      T2 yapisal           9            calisan_oran 0.0265    0.636
+30:   T3 mali baski           7                   HE070 0.0260    0.587
+31:      T2 yapisal          10                   HS020 0.0250    0.576
+32:        T1 gelir           5              pay_emekli 0.0184    0.632
+33:   T3 mali baski           8                   HE010 0.0167    0.553
+34:        T1 gelir           6         kira_geliri_var 0.0121    0.548
+35:        T1 gelir           7       pay_ozel_transfer 0.0118    0.564
+36:        T1 gelir           8           konut_asiri_k 0.0116    0.540
+37:        T1 gelir           9       ozel_transfer_var 0.0110    0.562
+38:        T1 gelir          10              kira_orani 0.0106    0.570
+             katman katman_sira                degisken r2_ort auc_2025
+             <char>       <int>                  <char>  <num>    <num>
+Key: <nufus>
+          nufus rho_23_24 rho_24_25 rho_23_25
+         <char>     <num>     <num>     <num>
+1:          tum 0.9842389 0.9295079 0.8975112
+2: yoksul_degil 0.9674941 0.8614783 0.7887039
+Key: <nufus, yil, katman>
+           nufus   yil          katman   r2_medyan     r2_max   auc_max
+          <char> <int>          <char>       <num>      <num>     <num>
+ 1:          tum  2023        T1 gelir 0.019290447 0.14651043 0.7501407
+ 2:          tum  2023      T2 yapisal 0.009798041 0.06777364 0.6621941
+ 3:          tum  2023   T3 mali baski 0.049814280 0.11155605 0.7064577
+ 4:          tum  2023 T4 ayni batarya 0.077704254 0.39416460 0.8854865
+ 5:          tum  2024        T1 gelir 0.017035395 0.14324121 0.7481302
+ 6:          tum  2024      T2 yapisal 0.011444845 0.06743492 0.6635109
+ 7:          tum  2024   T3 mali baski 0.041991963 0.12114958 0.7141865
+ 8:          tum  2024 T4 ayni batarya 0.080539537 0.38867824 0.8835755
+ 9:          tum  2025        T1 gelir 0.027955419 0.26592820 0.8205729
+10:          tum  2025      T2 yapisal 0.013626139 0.10435569 0.7085614
+11:          tum  2025   T3 mali baski 0.082146068 0.16164677 0.6983669
+12:          tum  2025 T4 ayni batarya 0.105252959 0.51630271 0.9284382
+13: yoksul_degil  2023        T1 gelir 0.009760508 0.11182544 0.7197488
+14: yoksul_degil  2023      T2 yapisal 0.006913811 0.05369045 0.6455476
+15: yoksul_degil  2023   T3 mali baski 0.035727653 0.09806582 0.6949282
+16: yoksul_degil  2023 T4 ayni batarya 0.058528812 0.38812536 0.8855315
+17: yoksul_degil  2024        T1 gelir 0.008212041 0.10704818 0.7165204
+18: yoksul_degil  2024      T2 yapisal 0.006850905 0.05091503 0.6435387
+19: yoksul_degil  2024   T3 mali baski 0.036749120 0.10087570 0.6984296
+20: yoksul_degil  2024 T4 ayni batarya 0.058053772 0.37558963 0.8801836
+21: yoksul_degil  2025        T1 gelir 0.019693503 0.24112160 0.8116594
+22: yoksul_degil  2025      T2 yapisal 0.012973129 0.09266722 0.6985475
+23: yoksul_degil  2025   T3 mali baski 0.066037787 0.15043292 0.6817413
+24: yoksul_degil  2025 T4 ayni batarya 0.081280300 0.49469449 0.9231899
+           nufus   yil          katman   r2_medyan     r2_max   auc_max
+          <char> <int>          <char>       <num>      <num>     <num>
+Iliski matrisi suresi (dk): 0.5 
+
+==== Birbirine yakin ozellik ciftleri (iliski >= 0,7) ====
+                 degisken_2              degisken_1    iliski        katman_1        katman_2
+                     <char>                  <char>     <num>          <char>          <char>
+ 1:                   HB031                   HB030 1.0000000      T2 yapisal      T2 yapisal
+ 2:               HH180_var                   HH180 1.0000000 T4 ayni batarya      T2 yapisal
+ 3:               HH190_var                   HH190 1.0000000 T4 ayni batarya      T2 yapisal
+ 4:               HH200_var                   HH200 1.0000000 T4 ayni batarya      T2 yapisal
+ 5:               HH220_var                   HH220 1.0000000 T4 ayni batarya      T2 yapisal
+ 6:               HH230_var                   HH230 1.0000000 T4 ayni batarya      T2 yapisal
+ 7:                  kiraci                   HH020 1.0000000      T2 yapisal      T2 yapisal
+ 8: msy_beklenmedik_harcama                   HE100 1.0000000 T4 ayni batarya T4 ayni batarya
+ 9:              msy_isinma                   HE110 1.0000000 T4 ayni batarya T4 ayni batarya
+10:             msy_mobilya                   HE120 1.0000000 T4 ayni batarya T4 ayni batarya
+11:               msy_tatil                   HE080 1.0000000 T4 ayni batarya T4 ayni batarya
+12:               HH240_var                   HH240 1.0000000 T4 ayni batarya      T2 yapisal
+13:            msy_otomobil                   HH240 1.0000000 T4 ayni batarya T4 ayni batarya
+14:              reis_fk210           reis_calisma7 0.9996205      T2 yapisal      T2 yapisal
+15:              kira_orani             goreli_kira 0.9822842      T2 yapisal        T1 gelir
+16:        log_goreli_gelir           gelir_dilim10 0.9632320        T1 gelir        T1 gelir
+17:      yoksulluk_acigi_60           gelir_dilim10 0.9326568        T1 gelir        T1 gelir
+18:               yasli_var                n_65plus 0.9226845      T2 yapisal      T2 yapisal
+19:               yoksul_50           gelir_dilim10 0.8980723        T1 gelir        T1 gelir
+20:      yoksulluk_acigi_60               yoksul_50 0.8923351        T1 gelir        T1 gelir
+21:                  kiraci                   HE010 0.8894792   T3 mali baski      T2 yapisal
+22:          msy_borc_odeme                   HE020 0.8785476   T3 mali baski   T3 mali baski
+23:               n_calisan            calisan_oran 0.8707508      T2 yapisal      T2 yapisal
+24:           reis_calisma7                n_emekli 0.8667061      T2 yapisal      T2 yapisal
+25:                 m2_kisi          hane_buyuklugu 0.8427450      T2 yapisal      T2 yapisal
+26:                   HH020             goreli_kira 0.8223192      T2 yapisal      T2 yapisal
+27:        log_goreli_gelir       hane_gelir_dilim5 0.8109410        T1 gelir        T1 gelir
+28:                 n_cocuk               cocuk_var 0.8080733      T2 yapisal      T2 yapisal
+29:                  kiraci             goreli_kira 0.8063851      T2 yapisal      T2 yapisal
+30:             n_yevmiyeli                n_gecici 0.8046546      T2 yapisal      T2 yapisal
+31:              reis_fk210                n_emekli 0.8035749      T2 yapisal      T2 yapisal
+32:                   HB050          hane_buyuklugu 0.8024604      T2 yapisal      T2 yapisal
+33:             calisan_yok            calisan_oran 0.8013037      T2 yapisal      T2 yapisal
+34:             reis_saglik             reis_kronik 0.7923269      T2 yapisal      T2 yapisal
+35:               msy_giysi            msy_ayakkabi 0.7898695 T4 ayni batarya T4 ayni batarya
+36:                 m2_kisi                   HB050 0.7863051      T2 yapisal      T2 yapisal
+37:                 n_cocuk          hane_buyuklugu 0.7844630      T2 yapisal      T2 yapisal
+38:           konut_orani_k           konut_asiri_k 0.7751474        T1 gelir        T1 gelir
+39:               n_calisan             calisan_yok 0.7667980      T2 yapisal      T2 yapisal
+40:           konut_asiri_k              kira_orani 0.7603219        T1 gelir        T1 gelir
+41:          msy_etsiz_sayi                   HE100 0.7581053 T4 ayni batarya T4 ayni batarya
+42:          msy_etsiz_sayi msy_beklenmedik_harcama 0.7581053 T4 ayni batarya T4 ayni batarya
+43:           reis_calisma7            calisan_oran 0.7568639      T2 yapisal      T2 yapisal
+44:              reis_fk210            calisan_oran 0.7563649      T2 yapisal      T2 yapisal
+45:              kira_orani                   HH020 0.7526698      T2 yapisal        T1 gelir
+46:               reis_gali                  n_gali 0.7501747      T2 yapisal      T2 yapisal
+47:             reis_saglik           n_kotu_saglik 0.7483412      T2 yapisal      T2 yapisal
+48:           reis_calisma7             calisan_yok 0.7390826      T2 yapisal      T2 yapisal
+49:               msy_giysi          msy_etsiz_sayi 0.7383786 T4 ayni batarya T4 ayni batarya
+50:              reis_fk210             calisan_yok 0.7379756      T2 yapisal      T2 yapisal
+51:                  kiraci              kira_orani 0.7356866        T1 gelir      T2 yapisal
+52:          msy_etsiz_sayi                   HE120 0.7302694 T4 ayni batarya T4 ayni batarya
+53:          msy_etsiz_sayi                   HE110 0.7274983 T4 ayni batarya T4 ayni batarya
+54:              msy_isinma          msy_etsiz_sayi 0.7274983 T4 ayni batarya T4 ayni batarya
+55:                reis_yas              pay_emekli 0.7255471        T1 gelir      T2 yapisal
+56:                   HE010             goreli_kira 0.7225796      T2 yapisal   T3 mali baski
+57:          msy_etsiz_sayi            msy_ayakkabi 0.7179712 T4 ayni batarya T4 ayni batarya
+58:                n_kronik                  n_gali 0.7130518      T2 yapisal      T2 yapisal
+59:             reis_kronik                n_kronik 0.7118580      T2 yapisal      T2 yapisal
+60:                   HB050               cocuk_var 0.7085273      T2 yapisal      T2 yapisal
+61:             msy_mobilya          msy_etsiz_sayi 0.7051858 T4 ayni batarya T4 ayni batarya
+62:             reis_kronik               reis_gali 0.7047505      T2 yapisal      T2 yapisal
+63:            is_yogunlugu            calisan_oran 0.7006004      T2 yapisal      T2 yapisal
+                 degisken_2              degisken_1    iliski        katman_1        katman_2
+                     <char>                  <char>     <num>          <char>          <char>
+
+==== Kume sayisi: 42 ; ikiden fazla uyeli kumeler ====
+                   degisken  kume          katman       r2_ort
+                     <char> <int>          <char>        <num>
+ 1:        log_goreli_gelir     1        T1 gelir 0.1713525361
+ 2:           gelir_dilim10     1        T1 gelir 0.1692812633
+ 3:       hane_gelir_dilim5     1        T1 gelir 0.1650585438
+ 4:      yoksulluk_acigi_60     1        T1 gelir 0.0670947629
+ 5:             he050_orani     1   T3 mali baski 0.0539433224
+ 6:               yoksul_50     1        T1 gelir 0.0458115476
+ 7:               n_calisan     2      T2 yapisal 0.0336717522
+ 8:            calisan_oran     2      T2 yapisal 0.0332539871
+ 9:           reis_calisma7     2      T2 yapisal 0.0328145212
+10:              reis_fk210     2      T2 yapisal 0.0247523155
+11:             calisan_yok     2      T2 yapisal 0.0240819982
+12:              pay_emekli     2        T1 gelir 0.0150602836
+13:               pay_ucret     2        T1 gelir 0.0091976994
+14:                reis_yas     2      T2 yapisal 0.0055061023
+15:                n_emekli     2      T2 yapisal 0.0038666908
+16:                n_65plus     2      T2 yapisal 0.0037931279
+17:               yasli_var     2      T2 yapisal 0.0034692009
+18:           konut_orani_k     6        T1 gelir 0.0809549148
+19:                   HE010     6   T3 mali baski 0.0233254883
+20:           konut_asiri_k     6        T1 gelir 0.0197167140
+21:              kira_orani     6        T1 gelir 0.0114476950
+22:             goreli_kira     6      T2 yapisal 0.0090545266
+23:                   HH020     6      T2 yapisal 0.0078854849
+24:                  kiraci     6      T2 yapisal 0.0009361744
+25:                 m2_kisi     8      T2 yapisal 0.0149529273
+26:                 n_cocuk     8      T2 yapisal 0.0106367931
+27:          hane_buyuklugu     8      T2 yapisal 0.0096646444
+28:                   HB050     8      T2 yapisal 0.0084199806
+29:              n_yetiskin     8      T2 yapisal 0.0059045660
+30:                   n_0_5     8      T2 yapisal 0.0018339383
+31:               cocuk_var     8      T2 yapisal 0.0008416075
+32:             reis_saglik    10      T2 yapisal 0.0252994561
+33:               reis_gali    10      T2 yapisal 0.0176762678
+34:                  n_gali    10      T2 yapisal 0.0163223388
+35:           n_kotu_saglik    10      T2 yapisal 0.0147898036
+36:             reis_kronik    10      T2 yapisal 0.0138552774
+37:                n_kronik    10      T2 yapisal 0.0127034916
+38:            is_yogunlugu    13      T2 yapisal 0.0436733960
+39:      dusuk_is_yogunlugu    13      T2 yapisal 0.0176374638
+40:                n_ev_isi    13      T2 yapisal 0.0132890156
+41:                   HH230    17 T4 ayni batarya 0.0439303707
+42:                   HB031    17      T2 yapisal 0.0255820073
+43:                   HB030    17      T2 yapisal 0.0160352864
+44:               HH230_var    17      T2 yapisal 0.0072923394
+45:                   HH180    19 T4 ayni batarya 0.0838524656
+46:              egitim_max    19      T2 yapisal 0.0765411249
+47:             reis_egitim    19      T2 yapisal 0.0717500719
+48:              egitim_min    19      T2 yapisal 0.0618683944
+49:               HH180_var    19      T2 yapisal 0.0577829950
+50:                   HH240    29 T4 ayni batarya 0.0798824796
+51:               HH240_var    29      T2 yapisal 0.0651614826
+52:            msy_otomobil    29 T4 ayni batarya 0.0552345334
+53:          msy_etsiz_sayi    38 T4 ayni batarya 0.4330485129
+54:                   HE080    38 T4 ayni batarya 0.3555430091
+55:               msy_tatil    38 T4 ayni batarya 0.3555430091
+56:                   HE100    38 T4 ayni batarya 0.2583991143
+57: msy_beklenmedik_harcama    38 T4 ayni batarya 0.2583991143
+58:                   HE120    38 T4 ayni batarya 0.2479239947
+59:             msy_mobilya    38 T4 ayni batarya 0.1860642799
+60:                   HE110    38 T4 ayni batarya 0.1729806817
+61:              msy_isinma    38 T4 ayni batarya 0.1729806817
+62:          msy_borc_odeme    38   T3 mali baski 0.0906836819
+63:                   HE020    38   T3 mali baski 0.0858265962
+64:               msy_giysi    42 T4 ayni batarya 0.1019333937
+65:            msy_ayakkabi    42 T4 ayni batarya 0.0898272915
+66:             msy_harclik    42 T4 ayni batarya 0.0676450917
+67:           msy_bos_zaman    42 T4 ayni batarya 0.0665433567
+68:        msy_arkadas_aile    42 T4 ayni batarya 0.0661249998
+                   degisken  kume          katman       r2_ort
+                     <char> <int>          <char>        <num>
+null device 
+          1 
+Key: <degisken>
+             degisken        2023      2024        2025     katman
+               <char>       <num>     <num>       <num>     <char>
+1: dusuk_is_yogunlugu 21.01315578  21.94021 22.05062703 T2 yapisal
+2:       is_yogunlugu 21.01315578  21.94021 22.05062703 T2 yapisal
+3:      konut_asiri_k  0.02005455 100.00000  0.05418795   T1 gelir
+4:      konut_orani_k  0.02005455 100.00000  0.05418795   T1 gelir
+           nufus         set n_ozellik n_parametre r2_egitim_2023 auc_egitim_2023 auc_test_2025
+          <char>      <char>     <int>       <int>          <num>           <num>         <num>
+ 1:          tum          T1        14          26      0.1655638       0.7652926     0.8215634
+ 2:          tum          T2        65         124      0.2040853       0.7921681     0.8015414
+ 3:          tum       T1_T2        79         149      0.2381036       0.8134605     0.8370344
+ 4:          tum    T1_T2_T3        87         170      0.2800391       0.8368513     0.8547881
+ 5:          tum T1_T2_T3_T4       109         199      0.5036545       0.9278255     0.9438993
+ 6:          tum       T2_T3        73         145      0.2621651       0.8272822     0.8379424
+ 7: yoksul_degil          T1        12          22      0.1337242       0.7420376     0.8010539
+ 8: yoksul_degil          T2        65         124      0.1709700       0.7719419     0.7743708
+ 9: yoksul_degil       T1_T2        77         145      0.2087204       0.7984850     0.8196824
+10: yoksul_degil    T1_T2_T3        85         166      0.2563699       0.8267947     0.8388060
+11: yoksul_degil T1_T2_T3_T4       107         195      0.4983599       0.9290315     0.9410388
+12: yoksul_degil       T2_T3        73         145      0.2359455       0.8150655     0.8188478
+kesif.R bitti. Sure (dk): 0.92 

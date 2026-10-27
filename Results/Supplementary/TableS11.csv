@@ -1,0 +1,85 @@
+Rule (leaf) or term,"Share of households, %","Food insecure, %","Share of households, % ","Food insecure, % ",Odds ratio (lasso)
+"Rule set (depth-3 tree), structural (all households)","","","","",""
+"1. Highest education among adults ≤ Upper secondary and Leaking roof, damp or rot: Yes and Owns a car: No",15.7,68.7,12.7,78.7,""
+2. Highest education among adults ≥ Tertiary and Owns a car: No and Heating system: Stove,2.1,53.4,2.0,52.6,""
+"3. Highest education among adults ≤ Upper secondary and Leaking roof, damp or rot: Yes and Owns a car: Yes",6.5,47.1,6.3,33.4,""
+"4. Highest education among adults ≤ Upper secondary and Leaking roof, damp or rot: No and Owns a car: No",26.3,45.7,26.8,63.6,""
+"5. Highest education among adults ≤ Upper secondary and Leaking roof, damp or rot: No and Owns a car: Yes",16.4,28.3,17.4,18.9,""
+6. Highest education among adults ≥ Tertiary and Owns a car: No and Heating system: not Stove,10.9,28.0,11.3,34.6,""
+7. Highest education among adults ≥ Tertiary and Owns a car: Yes and Lowest education among adults ≤ Lower secondary,7.5,22.7,7.7,14.4,""
+8. Highest education among adults ≥ Tertiary and Owns a car: Yes and Lowest education among adults ≥ Upper secondary,14.7,10.4,15.8,4.9,""
+"Rule set (depth-3 tree), income + structural (all households)","","","","",""
+"1. Equivalized income relative to median ≤ 0.64 and Leaking roof, damp or rot: Yes",8.8,76.6,7.3,82.0,""
+"2. Equivalized income relative to median ≤ 0.60 and Leaking roof, damp or rot: No",8.4,60.5,8.6,70.0,""
+"3. Equivalized income relative to median 0.64–1.12 and Leaking roof, damp or rot: Yes",10.5,59.6,9.7,60.4,""
+"4. Equivalized income relative to median 0.60–1.12 and Leaking roof, damp or rot: No",23.2,42.6,24.7,52.1,""
+5. Equivalized income relative to median 1.12–1.86 and Owns a car: No,13.7,36.1,12.9,43.6,""
+6. Equivalized income relative to median 1.12–1.86 and Owns a car: Yes,13.6,19.8,13.2,12.8,""
+7. Equivalized income relative to median > 1.86 and Owns a car: No,6.7,17.5,7.3,11.5,""
+8. Equivalized income relative to median > 1.86 and Owns a car: Yes,15.1,6.8,16.3,2.6,""
+"Rule set (depth-3 tree), register-like (all households)","","","","",""
+1. Highest education among adults ≤ Upper secondary and Owns a car: No and Work intensity ≤ 0.44,8.0,67.8,7.9,78.4,""
+2. Highest education among adults ≤ Upper secondary and Owns a car: No and Work intensity > 0.44 (or missing),34.0,51.1,31.7,66.0,""
+3. Highest education among adults ≤ Upper secondary and Owns a car: Yes and Work intensity ≤ 0.48,4.0,47.8,4.3,29.6,""
+4. Highest education among adults ≥ Tertiary and Owns a car: No and Education of reference person ≤ Lower secondary,3.8,44.3,2.9,35.1,""
+5. Highest education among adults ≤ Upper secondary and Owns a car: Yes and Work intensity > 0.48 (or missing),18.9,30.6,19.5,21.3,""
+6. Highest education among adults ≥ Tertiary and Owns a car: No and Education of reference person ≥ Upper secondary (or missing),9.1,26.9,10.3,37.9,""
+7. Highest education among adults ≥ Tertiary and Owns a car: Yes and Lowest education among adults ≤ Lower secondary,7.5,22.7,7.7,14.4,""
+8. Highest education among adults ≥ Tertiary and Owns a car: Yes and Lowest education among adults ≥ Upper secondary,14.7,10.4,15.8,4.9,""
+"Rule set (depth-3 tree), structural (non-poor households)","","","","",""
+"1. Owns a car: No and Leaking roof, damp or rot: Yes and Education of reference person ≤ Primary (or missing)",9.5,62.3,7.6,71.3,""
+"2. Owns a car: No and Leaking roof, damp or rot: Yes and Education of reference person ≥ Lower secondary",5.9,47.6,5.2,52.7,""
+"3. Owns a car: No and Leaking roof, damp or rot: No and Education of reference person ≤ Upper secondary",28.7,39.5,28.7,53.3,""
+"4. Owns a car: Yes and Education of reference person ≤ Upper secondary and Leaking roof, damp or rot: Yes",7.9,39.4,8.0,26.5,""
+"5. Owns a car: Yes and Education of reference person ≤ Upper secondary and Leaking roof, damp or rot: No",24.0,23.1,24.3,14.7,""
+"6. Owns a car: No and Leaking roof, damp or rot: No and Education of reference person ≥ Tertiary (or missing)",6.6,20.9,7.9,33.6,""
+7. Owns a car: Yes and Education of reference person ≥ Tertiary (or missing) and Work intensity ≤ 0.55,5.1,15.6,4.4,9.3,""
+8. Owns a car: Yes and Education of reference person ≥ Tertiary (or missing) and Work intensity > 0.55 (or missing),12.2,7.7,13.9,3.6,""
+"Rule set (depth-3 tree), structural + relative income (non-poor households)","","","","",""
+"1. Equivalized income relative to median ≤ 1.31 and Leaking roof, damp or rot: Yes and Owns a car: No",11.3,63.2,9.5,73.3,""
+"2. Equivalized income relative to median ≤ 1.31 and Leaking roof, damp or rot: Yes and Owns a car: Yes",5.4,47.7,5.6,31.9,""
+"3. Equivalized income relative to median ≤ 1.31 and Leaking roof, damp or rot: No and Owns a car: No",21.4,45.3,22.0,66.0,""
+4. Equivalized income relative to median 1.31–1.95 and Owns a car: No,11.2,31.5,10.4,37.9,""
+"5. Equivalized income relative to median ≤ 1.31 and Leaking roof, damp or rot: No and Owns a car: Yes",14.5,31.1,15.1,21.5,""
+6. Equivalized income relative to median 1.31–1.95 and Owns a car: Yes,12.5,17.6,11.9,9.9,""
+7. Equivalized income relative to median > 1.95 and Owns a car: No,6.9,16.2,7.5,9.2,""
+8. Equivalized income relative to median > 1.95 and Owns a car: Yes,16.8,6.5,18.1,2.2,""
+"Lasso logistic, structural (all households)","","","","",""
+Heating system: Stove,"","","","",1.39
+Heating system: Central heating (building),"","","","",0.67
+Heating system: Individual central heating,"","","","",0.88
+Heating system: Air conditioner,"","","","",0.93
+Owns a computer: yes vs no,"","","","",0.68
+Owns a car: yes vs no,"","","","",0.48
+"Leaking roof, damp or rot: No vs Yes","","","","",0.48
+Highest education among adults: No diploma,"","","","",1.38
+Highest education among adults: Primary,"","","","",1.25
+Highest education among adults: Lower secondary,"","","","",1.32
+Highest education among adults: Upper secondary,"","","","",1.10
+Highest education among adults: Tertiary,"","","","",0.63
+"Lasso logistic, income + structural (all households)","","","","",""
+Owns a computer: yes vs no,"","","","",0.79
+Owns a car: yes vs no,"","","","",0.58
+"Leaking roof, damp or rot: No vs Yes","","","","",0.61
+Insufficient insulation for heating: No vs Yes,"","","","",0.67
+Highest education among adults: No diploma,"","","","",1.13
+Highest education among adults: Primary,"","","","",1.14
+Highest education among adults: Lower secondary,"","","","",1.17
+Highest education among adults: Upper secondary,"","","","",1.04
+Highest education among adults: Tertiary,"","","","",0.79
+"Relative income, per unit of log","","","","",0.30
+"Lasso logistic, structural (non-poor households)","","","","",""
+Owns a computer: yes vs no,"","","","",0.70
+Owns a car: yes vs no,"","","","",0.50
+"Leaking roof, damp or rot: No vs Yes","","","","",0.57
+Insufficient insulation for heating: No vs Yes,"","","","",0.65
+Highest education among adults: No diploma,"","","","",0.78
+Highest education among adults: Primary,"","","","",1.14
+Highest education among adults: Lower secondary,"","","","",1.29
+Highest education among adults: Upper secondary,"","","","",1.06
+Highest education among adults: Tertiary,"","","","",0.84
+Education of reference person: No diploma,"","","","",1.77
+Education of reference person: Primary,"","","","",1.22
+Education of reference person: Lower secondary,"","","","",0.98
+Education of reference person: Upper secondary,"","","","",1.06
+Education of reference person: Tertiary,"","","","",0.60

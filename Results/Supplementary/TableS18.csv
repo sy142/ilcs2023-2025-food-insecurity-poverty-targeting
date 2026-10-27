@@ -1,0 +1,21 @@
+"Overlap with the training year, test set",AUC optimism (MCSE),"Sensitivity optimism, pp (MCSE)","Calibration slope, shared effects","Calibration slope, independent effects"
+Latent ICC 0.3,"","","",""
+"Overlap 30.0%, full 2025 sample",0.0040 (0.0002),0.28 (0.02),0.92,0.90
+"Overlap 30.0%, unmatched households",0.0001 (0.0003),−0.03 (0.03),0.91,0.91
+"Observed overlap (67.8%), full 2025 sample",0.0092 (0.0002),0.71 (0.03),0.95,0.90
+"Observed overlap (67.8%), unmatched households",0.0003 (0.0004),0.01 (0.04),0.93,0.93
+"Observed overlap (67.8%), unmatched, 10% undetected re-interviews",0.0015 (0.0004),0.09 (0.04),0.93,0.92
+"Observed overlap (67.8%), unmatched, 20% undetected re-interviews",0.0033 (0.0003),0.25 (0.04),0.93,0.92
+"Observed overlap (67.8%), unmatched, 35.8% undetected re-interviews",0.0051 (0.0003),0.40 (0.03),0.94,0.91
+"Overlap 60.0%, full 2025 sample",0.0079 (0.0002),0.64 (0.02),0.94,0.91
+"Overlap 60.0%, unmatched households",0.0000 (0.0004),0.04 (0.04),0.92,0.92
+Latent ICC 0.6,"","","",""
+"Overlap 30.0%, full 2025 sample",0.0120 (0.0003),0.90 (0.03),0.91,0.85
+"Overlap 30.0%, unmatched households",0.0003 (0.0004),0.03 (0.03),0.86,0.86
+"Observed overlap (67.8%), full 2025 sample",0.0264 (0.0003),2.03 (0.03),0.99,0.85
+"Observed overlap (67.8%), unmatched households",0.0008 (0.0005),0.04 (0.05),0.88,0.88
+"Observed overlap (67.8%), unmatched, 10% undetected re-interviews",0.0045 (0.0005),0.31 (0.05),0.90,0.88
+"Observed overlap (67.8%), unmatched, 20% undetected re-interviews",0.0086 (0.0005),0.68 (0.05),0.91,0.87
+"Observed overlap (67.8%), unmatched, 35.8% undetected re-interviews",0.0143 (0.0004),1.14 (0.05),0.94,0.87
+"Overlap 60.0%, full 2025 sample",0.0235 (0.0003),1.73 (0.03),0.97,0.85
+"Overlap 60.0%, unmatched households",−0.0001 (0.0005),−0.04 (0.05),0.87,0.88

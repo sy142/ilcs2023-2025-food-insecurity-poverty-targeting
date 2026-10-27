@@ -1,0 +1,25 @@
+Method,AUC (95% CI),PR-AUC (95% CI),Brier score,Calibration intercept,Calibration slope,"AUC, unweighted"
+All households (main test set),"","","","","",""
+"LightGBM, income + structural","0.855 (0.846, 0.865)","0.785 (0.769, 0.801)",0.155,0.17,1.37,0.860
+"LightGBM, structural only","0.817 (0.806, 0.828)","0.739 (0.722, 0.756)",0.172,0.21,1.22,0.825
+"LightGBM, + financial strain","0.880 (0.871, 0.889)","0.817 (0.801, 0.832)",0.142,0.15,1.41,0.884
+"LightGBM, + deprivation items (upper bound)","0.971 (0.967, 0.975)","0.958 (0.951, 0.964)",0.066,0.13,1.40,0.971
+"LightGBM, register-like subset","0.807 (0.796, 0.819)","0.717 (0.698, 0.736)",0.177,0.13,1.38,0.818
+"Ridge logistic (splines), income + structural","0.856 (0.846, 0.865)","0.782 (0.765, 0.798)",0.156,0.15,1.49,0.863
+"Ridge logistic, structural only","0.817 (0.806, 0.828)","0.737 (0.719, 0.754)",0.173,0.17,1.33,0.829
+"Rule set (depth-3 tree), structural","0.768 (0.755, 0.780)","0.641 (0.622, 0.659)",0.186,0.14,1.52,0.781
+"Rule set (depth-3 tree), income + structural","0.802 (0.791, 0.813)","0.662 (0.645, 0.681)",0.177,0.13,1.34,0.811
+"Rule set (depth-3 tree), register-like","0.782 (0.770, 0.794)","0.647 (0.629, 0.666)",0.187,0.11,1.54,0.798
+"Lasso logistic (≤6 variables), structural","0.812 (0.800, 0.823)","0.721 (0.703, 0.739)",0.178,0.12,1.57,0.820
+"Lasso logistic (≤6 variables), income + structural","0.856 (0.846, 0.865)","0.781 (0.766, 0.797)",0.158,0.15,1.59,0.865
+Ranking by relative income,"0.805 (0.793, 0.816)",0.692,"","","",0.817
+"Multilayer perceptron, income + structurala",0.846,0.774,0.159,"",1.27,""
+"Multilayer perceptron, structural onlya",0.816,0.739,0.172,"",1.15,""
+Non-poor households (main test set),"","","","","",""
+"LightGBM, structural + relative income","0.836 (0.824, 0.848)","0.694 (0.670, 0.718)",0.156,0.12,1.40,0.835
+"LightGBM, structural only","0.793 (0.779, 0.805)","0.636 (0.611, 0.661)",0.172,0.15,1.20,0.795
+"LightGBM, + financial strain","0.870 (0.860, 0.880)","0.744 (0.720, 0.767)",0.141,0.11,1.48,0.870
+"Ridge logistic, structural + relative income","0.838 (0.827, 0.850)","0.696 (0.671, 0.720)",0.156,0.08,1.53,0.843
+"Rule set (depth-3 tree), structural","0.758 (0.743, 0.773)","0.554 (0.530, 0.578)",0.183,0.10,1.43,0.772
+"Rule set (depth-3 tree), structural + relative income","0.812 (0.799, 0.824)","0.611 (0.588, 0.635)",0.166,0.09,1.63,0.814
+"Lasso logistic (≤6 variables), structural","0.781 (0.767, 0.795)","0.607 (0.582, 0.634)",0.177,0.10,1.44,0.793

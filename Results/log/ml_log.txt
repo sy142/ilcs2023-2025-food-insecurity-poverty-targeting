@@ -1,0 +1,165 @@
+[   0.0 dk] Hane verisi: (76693, 214) {2023.0: 24932, 2024.0: 25925, 2025.0: 25836}
+[   0.0 dk] Seyrek kategori / ust kodlama satiri: 23
+[   0.0 dk] A1 secilen konfig 1019 (4 genisletme 1) n_tur 902 logloss 0.5137 +- 0.0065 auc 0.8038 | asama 1/2/4 en iyi 0.5164 0.5151 0.5131 | sinir: yok | {'num_leaves': 313, 'min_data_in_leaf': 4, 'learning_rate': 0.0050902760518792495, 'feature_fraction': 0.44117767134066166, 'bagging_fraction': 0.7988995591742558, 'lambda_l2': 0.013918027031873274, 'max_depth': 12, 'lambda_l1': 0.0, 'min_gain_to_split': 0.0, 'cat_smooth': 3.086293509351724}
+[   0.0 dk] A2 secilen konfig 1019 (4 genisletme 1) n_tur 1046 logloss 0.5279 +- 0.0007 auc 0.7901 | asama 1/2/4 en iyi 0.5306 0.5292 0.5278 | sinir: yok | {'num_leaves': 313, 'min_data_in_leaf': 4, 'learning_rate': 0.0050902760518792495, 'feature_fraction': 0.44117767134066166, 'bagging_fraction': 0.7988995591742558, 'lambda_l2': 0.013918027031873274, 'max_depth': 12, 'lambda_l1': 0.0, 'min_gain_to_split': 0.0, 'cat_smooth': 3.086293509351724}
+[   0.0 dk] A3 secilen konfig 1001 (4 genisletme 1) n_tur 1910 logloss 0.4907 +- 0.0051 auc 0.8245 | asama 1/2/4 en iyi 0.4923 0.492 0.4907 | sinir: yok | {'num_leaves': 294, 'min_data_in_leaf': 19, 'learning_rate': 0.002754731678316638, 'feature_fraction': 0.3176407147790825, 'bagging_fraction': 0.8502455671316165, 'lambda_l2': 0.1194396643555627, 'max_depth': 12, 'lambda_l1': 0.0, 'min_gain_to_split': 0.0, 'cat_smooth': 1.0635060929712532}
+[   0.0 dk] A4 secilen konfig 1017 (4 genisletme 1) n_tur 2062 logloss 0.3526 +- 0.002 auc 0.9188 | asama 1/2/4 en iyi 0.3534 0.3531 0.3522 | sinir: yok | {'num_leaves': 191, 'min_data_in_leaf': 7, 'learning_rate': 0.0025636491297989453, 'feature_fraction': 0.5786996834387483, 'bagging_fraction': 0.6168482868804763, 'lambda_l2': 0.053514922036190404, 'max_depth': 12, 'lambda_l1': 0.0, 'min_gain_to_split': 0.0, 'cat_smooth': 1.0024323252287588}
+[   0.0 dk] B1 secilen konfig 1005 (4 genisletme 1) n_tur 1156 logloss 0.5073 +- 0.0037 auc 0.7792 | asama 1/2/4 en iyi 0.5104 0.5084 0.5066 | sinir: yok | {'num_leaves': 215, 'min_data_in_leaf': 4, 'learning_rate': 0.0040181484137373465, 'feature_fraction': 0.4833522020309789, 'bagging_fraction': 0.631031489603365, 'lambda_l2': 0.03140378463596413, 'max_depth': 12, 'lambda_l1': 0.0, 'min_gain_to_split': 0.0, 'cat_smooth': 1.7810742810029796}
+[   0.0 dk] B2 secilen konfig 1019 (4 genisletme 1) n_tur 937 logloss 0.5196 +- 0.0008 auc 0.7642 | asama 1/2/4 en iyi 0.5236 0.5211 0.5193 | sinir: yok | {'num_leaves': 313, 'min_data_in_leaf': 4, 'learning_rate': 0.0050902760518792495, 'feature_fraction': 0.44117767134066166, 'bagging_fraction': 0.7988995591742558, 'lambda_l2': 0.013918027031873274, 'max_depth': 12, 'lambda_l1': 0.0, 'min_gain_to_split': 0.0, 'cat_smooth': 3.086293509351724}
+[   0.0 dk] B3 secilen konfig 1001 (4 genisletme 1) n_tur 1750 logloss 0.484 +- 0.0077 auc 0.8042 | asama 1/2/4 en iyi 0.486 0.4844 0.4841 | sinir: yok | {'num_leaves': 294, 'min_data_in_leaf': 19, 'learning_rate': 0.002754731678316638, 'feature_fraction': 0.3176407147790825, 'bagging_fraction': 0.8502455671316165, 'lambda_l2': 0.1194396643555627, 'max_depth': 12, 'lambda_l1': 0.0, 'min_gain_to_split': 0.0, 'cat_smooth': 1.0635060929712532}
+[   0.0 dk] A2i secilen konfig 101 (2 ince) n_tur 544 logloss 0.5615 +- 0.0029 auc 0.7534 | asama 1/2/4 en iyi 0.5615 0.5614 nan | sinir: yok | {'num_leaves': 46, 'min_data_in_leaf': 73, 'learning_rate': 0.009981196384930287, 'feature_fraction': 0.5210387674571952, 'bagging_fraction': 0.662871990579507, 'lambda_l2': 0.08494041009800439, 'max_depth': 14, 'lambda_l1': 0.0, 'min_gain_to_split': 0.0, 'cat_smooth': 28.478249511827887}
+[   0.0 dk] Nihai LightGBM modelleri hazir
+[   0.0 dk] Bicim ek A1: konfig 46, 738 tur, CV log-loss 0.5197, sinir: yok, {'num_leaves': 2, 'min_data_in_leaf': 7, 'learning_rate': 0.059619590918367625, 'feature_fraction': 0.3667518671890539, 'bagging_fraction': 0.6681369590081996, 'lambda_l2': 0.009138627065141498, 'max_depth': -1, 'lambda_l1': 0.017169113655979534, 'min_gain_to_split': 0.0, 'cat_smooth': 5.8009401314569375}
+[   0.0 dk] Bicim d2 A1: konfig 25, 4160 tur, CV log-loss 0.5180, sinir: yok, {'num_leaves': 4, 'min_data_in_leaf': 214, 'learning_rate': 0.006139159806549568, 'feature_fraction': 0.5756763281001023, 'bagging_fraction': 0.908121634435489, 'lambda_l2': 0.003652953337141013, 'max_depth': 2, 'lambda_l1': 0.0, 'min_gain_to_split': 0.0, 'cat_smooth': 91.04216221980846}
+[   0.0 dk] Bicim ek A2: konfig 1016, 29985 tur, CV log-loss 0.5381, sinir: learning_rate alt sinirda, {'num_leaves': 2, 'min_data_in_leaf': 76, 'learning_rate': 0.0030116883430924353, 'feature_fraction': 0.8484498791026045, 'bagging_fraction': 1.0, 'lambda_l2': 0.055022432606534756, 'max_depth': -1, 'lambda_l1': 0.8627427839284323, 'min_gain_to_split': 0.0, 'cat_smooth': 3.574938009501396}
+[   0.0 dk] Bicim d2 A2: konfig 17, 1064 tur, CV log-loss 0.5355, sinir: yok, {'num_leaves': 4, 'min_data_in_leaf': 88, 'learning_rate': 0.03191618013057345, 'feature_fraction': 0.6931253614501379, 'bagging_fraction': 0.8092097444999622, 'lambda_l2': 0.09597179572995206, 'max_depth': 2, 'lambda_l1': 0.0, 'min_gain_to_split': 0.0, 'cat_smooth': 23.477636054616305}
+[   0.0 dk] Lojistik modeller hazir; C: {'logit_A1': 0.001, 'logit_A2': 0.001, 'logit_B1': 0.001, 'logit_A1_2023': 0.001, 'logit_lin_A1': 0.0032, 'logit_lin_A2': 0.0032}
+[   0.0 dk] Kural setleri hazir: {'cart_T2': (8, 'gini', 0.02, 0.0, 0.5872), 'cart_T1T2': (8, 'gini', 0.02, 0.0, 0.5599), 'cart_T2idari': (8, 'entropy', 0.001, 0.0, 0.5967), 'cart_B_T2': (8, 'gini', 0.05, 0.0, 0.565), 'cart_B_T2gelir': (8, 'gini', 0.05, 0.0, 0.5472), 'cart_T2_2023': (8, 'gini', 0.02, 0.0, 0.5872)} {'l1_T2': [np.str_('HH080'), np.str_('HH180_var'), np.str_('HH240_var'), np.str_('HS010'), np.str_('egitim_max')], 'l1_T1T2': [np.str_('HH180_var'), np.str_('HH240_var'), np.str_('HS010'), np.str_('HS020'), np.str_('egitim_max'), np.str_('log_goreli_gelir')], 'l1_B_T2': [np.str_('HH180_var'), np.str_('HH240_var'), np.str_('HS010'), np.str_('HS020'), np.str_('egitim_max'), np.str_('reis_egitim')]}
+[   0.0 dk] Kurallar yazildi
+[   0.5 dk] 2025 skorlari yazildi: (25836, 30)
+[   6.8 dk] Bootstrap yakinsama (B/2 ile B arasinda sinir farki, puan):
+    tablo      metrik  en_buyuk  medyan  ana_test_en_buyuk  pay_0_1_ustu
+0  metrik     kapsama     0.047   0.000              0.010         0.000
+1  metrik  duyarlilik     0.105   0.021              0.062         0.003
+2  metrik         ppv     0.148   0.027              0.148         0.008
+3  metrik       cocuk     0.281   0.046              0.139         0.145
+4    fark  duyarlilik     0.098   0.018              0.098         0.000
+5    fark         ppv     0.146   0.026              0.104         0.010
+6    fark       cocuk     0.259   0.048              0.218         0.161
+[   6.8 dk] Model-model eslesik farklar (temiz, yoksulluk orani):
+            kol karsilastirma      metrik  fark   alt   ust
+0        lgb_A1        lgb_A2  duyarlilik  1.91  1.02  2.70
+1        lgb_A1        lgb_A2         ppv  4.89  2.63  6.84
+2        lgb_A1        lgb_A2       cocuk  4.98  2.51  7.81
+3  logit_lin_A1        lgb_A2  duyarlilik  2.14  1.23  2.99
+[   6.9 dk] Aralik yontemleri (duyarlilik farki, yoksulluk cizgisine gore):
+            kol    yontem   fark    alt    ust     z0   ivme
+0       cart_T2  yuzdelik -0.920 -2.536  0.655    NaN    NaN
+1       cart_T2     basic -0.920 -2.496  0.696    NaN    NaN
+2       cart_T2       BCa -0.920 -2.524  0.661  0.004  0.001
+3        lgb_A1  yuzdelik  3.623  2.584  4.746    NaN    NaN
+4        lgb_A1     basic  3.623  2.499  4.661    NaN    NaN
+5        lgb_A1       BCa  3.623  2.542  4.701 -0.043  0.001
+6  logit_lin_A1  yuzdelik  3.852  2.880  4.951    NaN    NaN
+7  logit_lin_A1     basic  3.852  2.752  4.823    NaN    NaN
+8  logit_lin_A1       BCa  3.852  2.799  4.856 -0.084 -0.004
+[   8.7 dk] Esiksiz metrikler yazildi
+[   8.8 dk] Bicim merdiveni:
+  set    basamak  cv_logloss  logloss     auc  duyarlilik  d_logloss  d_logloss_alt  d_logloss_ust   d_auc  d_duyarlilik
+0  A1  logit_lin      0.5205   0.4707  0.8566     33.4557        NaN            NaN            NaN     NaN           NaN
+1  A1      logit      0.5190   0.4721  0.8559     33.1680     0.0015        -0.0002         0.0031 -0.0006       -0.2877
+2  A1     lgb_ek      0.5197   0.4650  0.8595     33.1126    -0.0071        -0.0090        -0.0052  0.0036       -0.0554
+3  A1     lgb_d2      0.5180   0.4700  0.8537     32.8244     0.0050         0.0037         0.0062 -0.0058       -0.2882
+4  A1        lgb      0.5137   0.4685  0.8552     33.2267    -0.0014        -0.0042         0.0014  0.0015        0.4023
+5  A2  logit_lin      0.5373   0.5150  0.8172     31.8274        NaN            NaN            NaN     NaN           NaN
+6  A2      logit      0.5370   0.5164  0.8172     31.8412     0.0014        -0.0003         0.0031 -0.0000        0.0138
+7  A2     lgb_ek      0.5381   0.5132  0.8181     31.8687    -0.0031        -0.0047        -0.0015  0.0009        0.0276
+8  A2     lgb_d2      0.5355   0.5144  0.8154     31.1842     0.0012        -0.0005         0.0029 -0.0028       -0.6845
+9  A2        lgb      0.5279   0.5125  0.8171     31.3151    -0.0019        -0.0054         0.0016  0.0018        0.1309
+[   8.8 dk] Tohum degiskenligi:
+         auc         duyarlilik        
+       mean     std       mean     std
+set                                   
+A1   0.8548  0.0006    33.2952  0.1494
+A2   0.8167  0.0004    31.4910  0.1682
+A3   0.8801  0.0005    34.4342  0.1219
+B1   0.8358  0.0007    43.7382  0.2270
+[   9.5 dk] Yil modelleri hazir
+[   9.9 dk] 3x3 matris:
+     egitim_yili  test_yili  ... kalibrasyon_kesim  kalibrasyon_egim
+0          2023       2023  ...             0.066             0.942
+1          2023       2024  ...             0.090             1.019
+2          2023       2024  ...            -0.001             0.887
+3          2023       2025  ...             0.065             1.232
+4          2023       2025  ...             0.104             1.203
+5          2024       2023  ...             0.005             1.118
+6          2024       2023  ...            -0.031             1.020
+7          2024       2024  ...             0.062             0.945
+8          2024       2025  ...             0.023             1.503
+9          2024       2025  ...             0.180             1.357
+10         2025       2023  ...             0.072             0.618
+11         2025       2023  ...             0.076             0.598
+12         2025       2024  ...             0.096             0.651
+13         2025       2024  ...             0.231             0.642
+14         2025       2025  ...             0.067             0.958
+
+[15 rows x 6 columns]
+[   9.9 dk] PSI:
+   set    referans   yil     PSI  ortalama_tahmin  gozlenen_FI
+0  A1  2023 (OOF)  2024  0.0013           0.3681       0.3830
+1  A1  2023 (OOF)  2025  0.0021           0.3589       0.3696
+2  A3  2023 (OOF)  2024  0.0015           0.3648       0.3830
+3  A3  2023 (OOF)  2025  0.0040           0.3558       0.3696
+4  B1  2023 (OOF)  2024  0.0005           0.3023       0.3226
+5  B1  2023 (OOF)  2025  0.0038           0.2949       0.2996
+[   9.9 dk] SHAP A1 ilk 12:
+              degisken  ortalama_mutlak_shap                grup
+0    log_goreli_gelir              0.441574              Income
+1   hane_gelir_dilim5              0.240646              Income
+36              HB031              0.185608              Region
+60          HH240_var              0.177220  Housing and assets
+61              HS010              0.140668  Housing and assets
+62              HS020              0.121087  Housing and assets
+55          HH180_var              0.096131  Housing and assets
+41        reis_egitim              0.092482           Education
+5          pay_sosyal              0.085068              Income
+54              HH145              0.068747  Housing and assets
+42         egitim_max              0.065260           Education
+33              HH070              0.056064  Housing and assets
+[   9.9 dk] SHAP grup paylari:
+     model                   grup  toplam    pay
+0  A1_ana              Education    0.20   6.98
+1  A1_ana             Employment    0.15   5.32
+2  A1_ana                 Health    0.19   6.43
+3  A1_ana  Household composition    0.14   4.94
+4  A1_ana     Housing and assets    1.00  34.32
+5  A1_ana                 Income    1.03  35.62
+6  A1_ana                 Region    0.19   6.39
+0  B1_ana              Education    0.23   8.55
+1  B1_ana             Employment    0.21   7.80
+2  B1_ana                 Health    0.19   7.35
+3  B1_ana  Household composition    0.22   8.25
+4  B1_ana     Housing and assets    1.07  40.47
+5  B1_ana                 Income    0.55  20.61
+6  B1_ana                 Region    0.18   6.97
+0  A3_ana              Education    0.21   6.65
+1  A3_ana             Employment    0.13   4.33
+2  A3_ana       Financial strain    0.72  23.36
+3  A3_ana                 Health    0.13   4.29
+4  A3_ana  Household composition    0.12   3.83
+5  A3_ana     Housing and assets    0.82  26.70
+6  A3_ana                 Income    0.78  25.32
+7  A3_ana                 Region    0.17   5.51
+[   9.9 dk] Friedman H ciftler ilk 8:
+           degisken_1 degisken_2      H2  H_mutlak
+1    log_goreli_gelir      HB031  0.0084    0.0490
+21              HB031  HH240_var  0.0086    0.0242
+2    log_goreli_gelir  HH240_var  0.0018    0.0234
+8    log_goreli_gelir      HH145  0.0019    0.0221
+3    log_goreli_gelir      HS010  0.0014    0.0204
+11  hane_gelir_dilim5      HB031  0.0036    0.0193
+22              HB031      HS010  0.0043    0.0169
+4    log_goreli_gelir      HS020  0.0010    0.0169
+[   9.9 dk] Friedman H ozellikler:
+             degisken      H2  H_mutlak  ana_etki_sd
+2               HB031  0.0095    0.1362       0.2058
+0    log_goreli_gelir  0.0093    0.1347       0.4853
+3           HH240_var  0.0033    0.0804       0.1539
+5               HS020  0.0028    0.0746       0.1174
+4               HS010  0.0023    0.0674       0.1303
+1   hane_gelir_dilim5  0.0021    0.0644       0.2375
+6           HH180_var  0.0017    0.0573       0.0818
+11              HH070  0.0014    0.0530       0.0632
+9               HH145  0.0013    0.0496       0.0911
+8          pay_sosyal  0.0012    0.0479       0.0892
+7         reis_egitim  0.0010    0.0452       0.1000
+10         egitim_max  0.0007    0.0380       0.0683
+[   9.9 dk] Yil SHAP Spearman:
+   set  yil_1  yil_2  spearman  spearman_ilk20
+0  A1   2023   2024     0.934           0.818
+1  A1   2024   2025     0.884           0.886
+2  A1   2023   2025     0.863           0.859
+3  A3   2023   2024     0.929           0.979
+4  A3   2024   2025     0.896           0.776
+5  A3   2023   2025     0.877           0.797
+[   9.9 dk] ml.py bitti. Toplam sure (dk): 9.89

@@ -1,0 +1,26 @@
+Variable,Definition,Source,Universe
+Food insecurity (FI),"Household cannot afford a meal with meat, chicken or fish (or vegetarian equivalent) every second day (HE090 = 2)",HE090,Households; assigned to members
+Income poor,Equivalized disposable income below 60% of the national median of the survey year (modified OECD scale; TurkStat income concept),yoksul_60,Persons; household property
+50% and 70% poverty lines,As above with 50% and 70% of the median,"yoksul_50, yoksul_70",Persons; household property
+Missed household,Food insecure and not income poor,derived,Households
+Exclusion error,Weighted share of food-insecure households (persons) that are not identified by a threshold,derived,Food-insecure households (persons)
+MSD ≥5 (meat item excluded),Deprivation in at least 5 of the 12 Eurostat material and social deprivation items other than the meat item; value of the reference person,msy_* items,Households
+Very low work intensity,Any member aged 0–59 lives in a household with work intensity below 0.20 (TurkStat-calibrated definition); households without working-age members counted as 0 when used as a threshold,dusuk_is_yogunlugu,Households
+Relative income (log),Natural logarithm of equivalized income divided by the survey-year median (floored at 0.01),goreli_esdeger_gelir,Households
+Relative income band,"<0.6, 0.6–0.8, 0.8–1.0, 1.0–1.5, >1.5 times the median",goreli_esdeger_gelir,Households
+Income shares,"Wages, self-employment, pensions (incl. survivors), social transfers (household and personal) and private transfers divided by disposable income; capped at 1.5; missing if disposable income ≤ 0","FG, HG components (missing = 0)",Households
+Rent-to-income ratio,12 × monthly rent / annual disposable income for tenants (0 otherwise; capped at 3); numerator at survey-year and denominator at income-year prices,"HH040, HG110",Households
+Relative rent,Monthly rent divided by the weighted median rent of tenants in the same survey year (0 for non-tenants; capped at 5),HH040,Households
+Housing cost-to-income ratio,Eurostat housing cost burden ratio; set to missing in 2024 because of the break in HH050,konut_maliyet_orani,Households
+Member counts,"Adults (≥18), children (<18), aged 0–5, ≥65, ≥75; adults with chronic illness (FS020), activity limitation (FS030 1–2), bad or very bad health (FS010 4–5), unmet medical need, employed (FI010 1–4), unemployed, retired, domestic or care work, informally employed (not registered with social security), casual and temporary employees","FK070, FS, FI",Households
+Education (5 groups),"No diploma (incl. illiterate), primary, lower secondary, upper secondary (general or vocational), tertiary; of the reference person, and highest and lowest among adults with an individual record",FE030,Adults with individual record
+Activity status of reference person,"Employed (FI010 1–4), retired (7), other; reference persons without individual record classified by FK210","FI010, FK210",Households
+Durable goods,"Ownership of computer, internet, washing machine, dishwasher, air conditioner and car (yes/no); the 'cannot afford' distinction is used only in the deprivation layer",HH180–HH240,Households
+Matched to an earlier survey,"Household matched to a household of an earlier survey year by member signature (sorted birth year, birth month and sex of all members of multi-person households) or by reference-person key (birth year, birth month and sex of the reference person, NUTS 2 region, dwelling type, tenure); each signature or key occurring exactly once in both years","FK080, FK075, FK090, HB031, HH010, HH020","Households, 2023–2025"
+Main test set,2025 households matched neither to a 2024 nor to a 2023 household,derived,2025 households
+Low meat intake,"Eats meat, chicken or fish less than once a week (vegetarian or vegan adults excluded; included as low intake in a sensitivity analysis)",MODUL2_F_5,"Adults ≥18, 2025"
+Low fruit intake,Eats fruit less than once a day,MODUL1_F_8,"Adults ≥18, 2025"
+Low vegetable intake,Eats vegetables or salad less than once a day,MODUL1_F_9,"Adults ≥18, 2025"
+Heavy health-cost burden,"Medical examination or treatment costs, or medicine costs, were a heavy burden in the past 12 months","MODUL1_H_1, MODUL1_H_3","Households, 2025"
+Unmet medical need due to cost,"Could not consult a doctor at least once because of cost, among adults who needed care","FS050, FS060","Adults with a care need, 2025"
+Groups G1–G3,"G1 food secure; G2 food insecure, not poor; G3 food insecure and poor","HE090, yoksul_60","Households and adults, 2025"

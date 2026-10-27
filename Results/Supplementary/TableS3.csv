@@ -1,0 +1,19 @@
+Measure,2023–2024,2024–2025,2023–2025
+Member signature (multi-person households),"","",""
+"Multi-person households, first year","21,340","22,109","21,340"
+Matched pairs,"12,924","13,396","7,432"
+"Matched, % of multi-person households",60.6,60.6,34.8
+"Same NUTS 2 region, %",98.9,98.8,97.0
+"Same dwelling type, %",97.1,96.6,93.6
+Reference-person key,"","",""
+"Key matches, one-person households","2,030","2,076","1,152"
+"Key matches, household size changed","1,744","1,747","2,083"
+"Precision: key matches confirmed by signature, %",95.7,95.5,90.1
+"Recall: signature pairs also matched by the key, %",65.0,65.1,57.8
+"Missed: key shared by several households, %",19.5,18.7,20.4
+"Missed: reference person changed, %",11.1,11.0,12.3
+"Missed: region, dwelling type or tenure changed, %",4.4,5.2,9.5
+Both methods combined,"","",""
+Matched pairs,"16,946","17,517","10,980"
+% of first-year households,68.0,67.6,44.0
+% of second-year households,65.4,67.8,42.5

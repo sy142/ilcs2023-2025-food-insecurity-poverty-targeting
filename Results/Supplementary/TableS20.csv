@@ -1,0 +1,4 @@
+Measure,"True value, %","Bias, pp",Empirical SE,Mean bootstrap SE,"Coverage, % (MCSE)"
+Exclusion error,70.9,−0.006,0.50,0.52,95.8 (0.9)
+Rule-set sensitivity,35.1,0.046,0.59,0.56,91.0 (1.3)
+Rule-set PPV,60.5,0.024,0.74,0.76,94.0 (1.1)

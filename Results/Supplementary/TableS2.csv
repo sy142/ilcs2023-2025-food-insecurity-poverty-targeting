@@ -1,0 +1,133 @@
+Feature,Variable,Type / reason,Register-like subset
+T1 Income,"","",""
+Equivalized income relative to median (log),log_goreli_gelir,numeric,""
+Household disposable income quintile,hane_gelir_dilim5,ordinal,""
+Share of income from wages,pay_ucret,numeric,""
+Share of income from self-employment,pay_mutesebbis,numeric,""
+Share of income from pensions,pay_emekli,numeric,""
+Share of income from social transfers,pay_sosyal,numeric,""
+Share of income from private transfers,pay_ozel_transfer,numeric,""
+Receives social transfers,sosyal_yardim_var,numeric,""
+Receives private transfers,ozel_transfer_var,numeric,""
+Has rental income,kira_geliri_var,numeric,""
+Rent-to-income ratio,kira_orani,numeric,""
+T2 Structural (no income information),"","",""
+Age of reference person,reis_yas,numeric,yes
+Household size,hane_buyuklugu,numeric,yes
+Children (<18 years),n_cocuk,numeric,yes
+Children aged 0–5,n_0_5,numeric,yes
+Members aged ≥65,n_65plus,numeric,yes
+Members aged ≥75,n_75plus,numeric,yes
+Adults (≥18 years),n_yetiskin,numeric,yes
+Adults with chronic illness,n_kronik,numeric,""
+Adults with activity limitation,n_gali,numeric,""
+Adults in bad or very bad health,n_kotu_saglik,numeric,""
+Adults with unmet medical need,n_karsilanmayan,numeric,""
+Employed adults,n_calisan,numeric,yes
+Unemployed adults,n_issiz,numeric,yes
+Retired adults,n_emekli,numeric,yes
+Adults in domestic or care work,n_ev_isi,numeric,""
+Informally employed adults,n_kayitsiz,numeric,yes
+Casual (daily-wage) workers,n_yevmiyeli,numeric,""
+Temporary employees,n_gecici,numeric,""
+Share of adults employed,calisan_oran,numeric,yes
+Dependency ratio,bagimli_oran,numeric,""
+Work intensity,is_yogunlugu,numeric,yes
+Number of rooms,HH060,numeric,""
+Floor area (m²),HH070,numeric,""
+Floor area per person (m²),m2_kisi,numeric,""
+Rent relative to median rent,goreli_kira,numeric,""
+Region (NUTS 2),HB031,nominal,yes
+Household type,HB050,nominal,yes
+Sex of reference person,reis_cinsiyet,numeric,yes
+Marital status of reference person,reis_medeni,nominal,yes
+Activity status of reference person,reis_calisma7,nominal,yes
+Education of reference person,reis_egitim,ordinal,yes
+Highest education among adults,egitim_max,ordinal,yes
+Lowest education among adults,egitim_min,ordinal,yes
+Self-rated health of reference person,reis_saglik,ordinal,""
+Reference person has chronic illness,reis_kronik,numeric,""
+Activity limitation of reference person,reis_gali,ordinal,""
+Single adult with children,tek_yetiskin_cocuklu,numeric,yes
+Dwelling type,HH010,nominal,yes
+Tenure status,HH020,nominal,yes
+Heating system,HH080,nominal,""
+Bath or shower in dwelling,HH100,nominal,""
+Indoor flushing toilet,HH110,nominal,""
+Separate kitchen,HH120,numeric,""
+Satisfaction with dwelling,HH145,ordinal,""
+Owns a computer,HH180_var,numeric,""
+Has internet access,HH190_var,numeric,""
+Owns a washing machine,HH200_var,numeric,""
+Owns a dishwasher,HH220_var,numeric,""
+Owns an air conditioner,HH230_var,numeric,""
+Owns a car,HH240_var,numeric,yes
+"Leaking roof, damp or rot",HS010,numeric,""
+Insufficient insulation for heating,HS020,numeric,""
+Dwelling too dark,HS030,numeric,""
+Noise from neighbors or street,HS040,numeric,""
+Adequate living space,HS050,numeric,""
+Pollution or other environmental problems,HS060,numeric,""
+Crime or violence in the area,HS070,numeric,""
+Overcrowded dwelling,kalabalik_konut,numeric,""
+Severe housing deprivation,ciddi_konut_yoksunlugu,numeric,""
+T3 Financial strain (self-reported),"","",""
+Ability to make ends meet,HE040,ordinal,""
+Arrears on rent or mortgage,HE010,nominal,""
+Arrears on utility bills,HE020,nominal,""
+Arrears on installments or loans,HE030,nominal,""
+Burden of total housing costs,HE060,ordinal,""
+Burden of non-housing debt repayment,HE070,nominal,""
+Minimum income needed relative to income,he050_orani,numeric,""
+T4 Deprivation items (upper bound only),"","",""
+Can afford one-week holiday,HE080,numeric,""
+Can face unexpected expenses,HE100,numeric,""
+Can keep home adequately warm,HE110,numeric,""
+Replaces worn-out furniture,HE120,nominal,""
+Computer,HH180,nominal,""
+Internet access,HH190,nominal,""
+Washing machine,HH200,nominal,""
+Dishwasher,HH220,nominal,""
+Air conditioner,HH230,nominal,""
+Car,HH240,nominal,""
+Personal: no internet (cannot afford),msy_internet,numeric,""
+Personal: cannot replace worn-out clothes,msy_giysi,numeric,""
+Personal: no two pairs of shoes,msy_ayakkabi,numeric,""
+Personal: cannot spend small sum on oneself,msy_harclik,numeric,""
+Personal: no regular leisure activity,msy_bos_zaman,numeric,""
+Personal: cannot meet friends or family for a meal,msy_arkadas_aile,numeric,""
+Not used as features,"",Reason,""
+HE090,HE090,Outcome,""
+"MSD item: cannot afford meat, chicken or fish every second day",msy_et_tavuk_balik,Contains the outcome (HE090),""
+Number of MSD items lacking (0–13),msy_sayi,Contains the outcome (HE090),""
+Deprivation in ≥5 of 13 MSD items,msy_5,Contains the outcome (HE090),""
+Deprivation in ≥7 of 13 MSD items,msy_7,Contains the outcome (HE090),""
+Number of material deprivation items lacking (0–9),my_sayi,Contains the outcome (HE090),""
+Material deprivation (≥3 of 9 items),my_3,Contains the outcome (HE090),""
+Severe material deprivation (≥4 of 9 items),my_4,Contains the outcome (HE090),""
+At risk of poverty or social exclusion (AROPE),yoksulluk_sosyal_dislanma,Contains the outcome (HE090),""
+At risk of poverty (60% threshold),yoksul_60,Defines the Model B population; comparison arm,""
+At risk of poverty (70% threshold),yoksul_70,Comparison arm (threshold),""
+Equivalized income quintile,gelir_dilim5,Same information as relative income,""
+Equivalized disposable income (TRY),esdeger_gelir,Nominal TRY; not comparable across years,""
+Equivalized income relative to median,goreli_esdeger_gelir,Same information as relative income,""
+"Housing cost-to-income ratio, 2024 included",konut_maliyet_orani,Break in HH050 in 2024,""
+"Housing cost overburden (≥40% of income), 2024 included",konut_maliyet_asiri_yuk,Break in HH050 in 2024,""
+Housing cost-to-income ratio,konut_orani_k,Missing for all of 2024; not usable with year-blocked training,""
+Housing cost overburden (≥40% of income),konut_asiri_k,Missing for all of 2024; not usable with year-blocked training,""
+HH040,HH040,Nominal TRY; relative rent and rent-to-income ratio used,""
+HH050,HH050,Nominal TRY; break in 2024,""
+HG110,HG110,Nominal TRY; relative income used,""
+MSD item: cannot afford one-week holiday,msy_tatil,Duplicate of HE080,""
+MSD item: cannot face unexpected expenses,msy_beklenmedik_harcama,Duplicate of HE100,""
+MSD item: cannot keep home adequately warm,msy_isinma,Duplicate of HE110,""
+MSD item: cannot replace worn-out furniture,msy_mobilya,Coded from HE120,""
+MSD item: cannot afford a car,msy_otomobil,Coded from HH240,""
+kiraci,kiraci,Collapsed HH020,""
+Self-defined main activity of reference person (FK210),reis_fk210,Near-duplicate of activity status (V = 1.00),""
+Equivalized income decile,gelir_dilim10,Monotone function of relative income,""
+Relative poverty gap (60% threshold),yoksulluk_acigi_60,Monotone function of relative income,""
+"MSD item: arrears on rent, mortgage, bills or installments",msy_borc_odeme,Union of HE010–HE030,""
+Member aged ≥65 in household,yasli_var,Threshold of members aged ≥65,""
+Children in household,cocuk_var,Threshold of number of children,""
+No employed adult in household,calisan_yok,Threshold of employed adults,""

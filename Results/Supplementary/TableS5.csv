@@ -1,0 +1,9 @@
+Comparison,Outcome,Age,Added covariates,Interaction p: region / sex / income,Main model,Archer–Lemeshow p,"Max. calibration gap, pp",Events per parameter,DEFF,"Bootstrap shift, pp"
+C1: G2 vs G1 (non-poor),Meat <1/week,4 df natural spline,none,<0.001 / 0.349 / 0.006,fully interacted,0.963,0.9,199.8,1.92,0.11
+C1: G2 vs G1 (non-poor),Fruit <1/day,4 df natural spline,none,<0.001 / 0.019 / 0.855,fully interacted,0.901,1.1,268.0,1.62,0.07
+C1: G2 vs G1 (non-poor),Vegetables <1/day,4 df natural spline,none,<0.001 / 0.474 / 0.249,fully interacted,0.584,1.5,322.1,2.05,0.17
+C2: G2 vs G3 (food insecure),Meat <1/week,4 df natural spline,activity status,0.187 / 0.008 / –,fully interacted,0.096,3.5,131.9,2.36,0.09
+C2: G2 vs G3 (food insecure),Fruit <1/day,4 df natural spline,activity status,0.001 / 0.005 / –,fully interacted,0.993,1.4,75.4,2.07,0.08
+C2: G2 vs G3 (food insecure),Vegetables <1/day,4 df natural spline,activity status,0.009 / <0.001 / –,fully interacted,0.681,2.3,97.5,2.25,0.17
+C1: G2 vs G1 (non-poor),Health costs heavy burden,linear,chronic illness,0.166 / 0.809 / 0.300,main effects,0.921,0.8,42.3,1.00,0.03
+C2: G2 vs G3 (food insecure),Health costs heavy burden,4 df natural spline,"activity status, activity limitation, tenure",0.419 / 0.163 / –,main effects,0.942,0.9,26.3,1.00,0.09

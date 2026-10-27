@@ -1,0 +1,9 @@
+adim,dakika,yer
+LightGBM nihai modeller (5 tohum),0.01,CPU
+Bicim merdiveni: kisitli LightGBM ayari ve nihai modeller,0.0,CPU
+Cezali lojistik (L2) ayar ve nihai,0.0,CPU
+"Sade kural setleri (CART, L1)",0.0,CPU
+Hedefleme metrikleri ve eslesik bootstrap (B = 8000),6.29,CPU
+"Model-model farklari ve aralik yontemleri (yuzdelik, basic, BCa; hane jackknife ivmesi)",0.05,CPU
+"Yil modelleri (3 yil x 3 set, 5 katli OOF)",0.0,CPU
+"SHAP (TreeSHAP, LightGBM pred_contrib) ve etkilesim taramasi",0.04,CPU

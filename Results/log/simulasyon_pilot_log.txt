@@ -1,0 +1,61 @@
+[   1.1 dk] S1 senaryo 1 (ICC 0.3, ortusme 0.3) bitti, 1.1 dk
+[   2.2 dk] S1 senaryo 2 (ICC 0.3, ortusme gercek) bitti, 1.0 dk
+[   3.2 dk] S1 senaryo 3 (ICC 0.3, ortusme 0.6) bitti, 1.1 dk
+[   4.3 dk] S1 senaryo 4 (ICC 0.6, ortusme 0.3) bitti, 1.1 dk
+/Users/salim/veri-ortami/lib/python3.13/site-packages/joblib/externals/loky/process_executor.py:787: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+[   5.3 dk] S1 senaryo 5 (ICC 0.6, ortusme gercek) bitti, 1.1 dk
+/Users/salim/veri-ortami/lib/python3.13/site-packages/joblib/externals/loky/process_executor.py:787: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+[   6.4 dk] S1 senaryo 6 (ICC 0.6, ortusme 0.6) bitti, 1.1 dk
+[   6.4 dk] S1 ozet:
+    icc  ortusme_payi         test_seti  iyimserlik_auc  iyimserlik_duyarlilik  iyimserlik_egim
+0   0.3         0.300           eslesen          0.0129                 0.8029           0.0626
+1   0.3         0.300               tam          0.0036                 0.2025           0.0172
+2   0.3         0.300             temiz         -0.0004                -0.0987          -0.0021
+3   0.3         0.300  temiz_gizli_10.0          0.0008                -0.0246           0.0036
+4   0.3         0.300  temiz_gizli_20.0          0.0021                 0.0998           0.0098
+5   0.3         0.300  temiz_gizli_35.8          0.0036                 0.2025           0.0172
+6   0.3         0.678           eslesen          0.0129                 1.0152           0.0622
+7   0.3         0.678               tam          0.0091                 0.6721           0.0440
+8   0.3         0.678             temiz          0.0006                -0.0678           0.0034
+9   0.3         0.678  temiz_gizli_10.0          0.0016                 0.0288           0.0083
+10  0.3         0.678  temiz_gizli_20.0          0.0036                 0.1991           0.0182
+11  0.3         0.678  temiz_gizli_35.8          0.0048                 0.3668           0.0237
+12  0.3         0.600           eslesen          0.0132                 0.9736           0.0634
+13  0.3         0.600               tam          0.0085                 0.6813           0.0409
+14  0.3         0.600             temiz          0.0012                 0.1540           0.0056
+15  0.3         0.600  temiz_gizli_10.0          0.0025                 0.2564           0.0118
+16  0.3         0.600  temiz_gizli_20.0          0.0035                 0.3371           0.0169
+17  0.3         0.600  temiz_gizli_35.8          0.0053                 0.4476           0.0252
+18  0.6         0.300           eslesen          0.0391                 2.9540           0.2019
+19  0.6         0.300               tam          0.0121                 0.9137           0.0603
+20  0.6         0.300             temiz          0.0001                -0.0105           0.0010
+21  0.6         0.300  temiz_gizli_10.0          0.0042                 0.3316           0.0213
+22  0.6         0.300  temiz_gizli_20.0          0.0081                 0.5536           0.0405
+23  0.6         0.300  temiz_gizli_35.8          0.0121                 0.9137           0.0603
+24  0.6         0.678           eslesen          0.0384                 2.8910           0.1998
+25  0.6         0.678               tam          0.0266                 1.9761           0.1368
+26  0.6         0.678             temiz          0.0004                -0.1099           0.0026
+27  0.6         0.678  temiz_gizli_10.0          0.0042                 0.1616           0.0220
+28  0.6         0.678  temiz_gizli_20.0          0.0084                 0.5799           0.0418
+29  0.6         0.678  temiz_gizli_35.8          0.0143                 1.0183           0.0738
+30  0.6         0.600           eslesen          0.0385                 2.7554           0.1991
+31  0.6         0.600               tam          0.0228                 1.6990           0.1158
+32  0.6         0.600             temiz         -0.0014                -0.0446          -0.0066
+33  0.6         0.600  temiz_gizli_10.0          0.0029                 0.2432           0.0140
+34  0.6         0.600  temiz_gizli_20.0          0.0070                 0.5798           0.0348
+35  0.6         0.600  temiz_gizli_35.8          0.0144                 1.0977           0.0722
+[   6.5 dk] S2 bitti. Gozlenen: {'dislama_hatasi': np.float64(68.09), 'FI_yoksul_icinde': np.float64(73.81), 'FI_yayginligi': np.float64(36.96), 'kural_seti_duyarlilik': 28.68, 'lgb_A1_duyarlilik': 33.23, 'yoksulluk_esigi_duyarlilik': np.float64(29.6), 'kural_eksi_esik': np.float64(-0.92)}
+[   6.5 dk] S2 aralik:
+              dislama_hatasi        kural_seti_duyarlilik        yoksulluk_esigi_duyarlilik        kural_eksi_esik      
+                         min    max                   min    max                        min    max             min   max
+tur                                                                                                                     
+ayrimci_degil          65.91  69.70                 27.01  30.60                      28.39  31.99           -1.74 -1.08
+gelire_gore            65.85  69.73                 27.27  31.11                      28.34  32.08           -1.40 -0.67
+[   6.5 dk] S3 ozet:
+               olcu  gercek  ortalama_tahmin  ampirik_se  ortalama_boot_se  kapsama   S  yanlilik  kapsama_mcse
+0    dislama_hatasi  70.859           70.851       0.503             0.515     96.0  50    -0.007         2.771
+1  kural_duyarlilik  35.124           35.096       0.545             0.563     94.0  50    -0.028         3.359
+2         kural_ppv  60.523           60.505       0.724             0.764    100.0  50    -0.019         0.000
+[   6.5 dk] simulasyon.py bitti. Toplam (dk): 6.48

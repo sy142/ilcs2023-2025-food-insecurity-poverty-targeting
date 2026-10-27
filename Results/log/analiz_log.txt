@@ -1,0 +1,277 @@
+analiz.R basladi: 2026-10-27 10:18:05 
+Veri: 239985 satir, 266 sutun
+msy_etsiz_sayi + msy_et_tavuk_balik - msy_sayi en buyuk mutlak fark: 0 
+Key: <yil_1, yil_2>
+   yil_1 yil_2 eslesen_hane bolge_ayni konut_tipi_ayni beklenen cok_kisili_hane_yil_1 eslesme_payi
+   <num> <num>        <int>      <num>           <num>    <num>                 <int>        <num>
+1:  2023  2024        12924       98.9            97.1    12924                 21340         60.6
+2:  2023  2025         7432       97.0            93.6     7432                 21340         34.8
+3:  2024  2025        13396       98.8            96.6    13396                 22109         60.6
+Key: <yil_1, yil_2>
+   yil_1 yil_2 imza_cifti reis_duyarlilik kayip_tekil_degil kayip_reis_degisti kayip_bolge_konut
+   <num> <num>      <int>           <num>             <num>              <num>             <num>
+1:  2023  2024      12924            65.0              19.5               11.1               4.4
+2:  2023  2025       7432            57.8              20.4               12.3               9.5
+3:  2024  2025      13396            65.1              18.7               11.0               5.2
+Key: <yil_1, yil_2>
+   yil_1 yil_2 eslesen_hane bolge_ayni konut_tipi_ayni beklenen cok_kisili_hane_yil_1 eslesme_payi reis_anahtari_eslesen reis_tek_kisili
+   <num> <num>        <int>      <num>           <num>    <num>                 <int>        <num>                 <int>           <int>
+1:  2023  2024        12924       98.9            97.1    12924                 21340         60.6                 12555            2030
+2:  2023  2025         7432       97.0            93.6     7432                 21340         34.8                  8008            1152
+3:  2024  2025        13396       98.8            96.6    13396                 22109         60.6                 12957            2076
+   reis_cok_kisili_ayni_buyukluk reis_imzayla_dogrulanan_pay reis_buyukluk_degisen imza_cifti reis_duyarlilik kayip_tekil_degil kayip_reis_degisti
+                           <int>                       <num>                 <int>      <int>           <num>             <num>              <num>
+1:                          8781                        95.7                  1744      12924            65.0              19.5               11.1
+2:                          4773                        90.1                  2083       7432            57.8              20.4               12.3
+3:                          9134                        95.5                  1747      13396            65.1              18.7               11.0
+   kayip_bolge_konut birlesik_eslesen eklenen_reis_anahtari birlesik_eslesme_payi
+               <num>            <int>                 <int>                 <num>
+1:               4.4            16946                  4022                  68.0
+2:               9.5            10980                  3548                  44.0
+3:               5.2            17517                  4121                  67.6
+Siki temiz test seti: 6043 / 7861 
+   test_temiz                tanim     n agirlikli_pay tek_kisili_yuzde tek_kisili_agirlikli FI_yuzde yoksul_yuzde reis_yas_ort
+        <int>               <char> <int>         <num>            <num>                <num>    <num>        <num>        <num>
+1:          0 imza + reis anahtari 17975         69.85             12.7                 16.9     35.9         16.2         51.9
+2:          1 imza + reis anahtari  7861         30.15             19.0                 26.7     39.3         15.4         49.5
+3:          0          yalniz imza 13595         50.87              0.0                  0.0     34.0         17.2         50.7
+4:          1          yalniz imza 12241         49.13             30.8                 40.5     40.1         14.7         51.7
+5:         NA             tum 2025 25836        100.00             14.6                 19.9     37.0         16.0         51.2
+Hane satirlari: 76693  yil: 24932 / 25925 / 25836 
+Empty data.table (0 rows and 5 cols): kontrol,kaynak,beklenen,bulunan,durum
+Dogrulama: 115 / 115 tuttu
+
+H1 dislama hatasi farki 2025 - 2023 (hane), bootstrap duyarliligi:
+               yontem   fark se_fark    alt    ust
+               <char>  <num>   <num>  <num>  <num>
+1:    taylor_bagimsiz -2.304   0.754 -3.781 -0.827
+2:  eslesik_bootstrap -2.304   0.700 -3.694 -0.913
+3: bagimsiz_bootstrap -2.304   0.751 -3.684 -0.798
+
+H1 dislama hatasi (yoksul_60):
+     yil  duzey tahmin   alt   ust     n  olay
+   <int> <char>  <num> <num> <num> <int> <num>
+1:  2023   hane  70.39 69.35 71.44  9525  6122
+2:  2023   kisi  63.31 61.93 64.69 31734 18019
+3:  2024   hane  70.33 69.30 71.37 10032  6528
+4:  2024   kisi  63.16 61.79 64.53 32177 18487
+5:  2025   hane  68.09 67.05 69.13 10064  6250
+6:  2025   kisi  57.64 56.26 59.02 30452 15829
+   yil_1 yil_2  duzey  fark   alt   ust        p
+   <num> <num> <char> <num> <num> <num>    <num>
+1:  2023  2025   hane -2.30 -3.78 -0.83 2.24e-03
+2:  2023  2025   kisi -5.67 -7.62 -3.72 1.17e-08
+3:  2023  2024   hane -0.06 -1.54  1.41 9.33e-01
+4:  2023  2024   kisi -0.15 -2.09  1.79 8.79e-01
+5:  2024  2025   hane -2.24 -3.71 -0.77 2.77e-03
+6:  2024  2025   kisi -5.52 -7.46 -3.57 2.70e-08
+IBBS2 sozde tabaka SE orani: medyan 0.989  aralik 0.951 - 0.999 
+     yil          E          se     n        alt        ust
+   <int>      <num>       <num> <int>      <num>      <num>
+1:  2023 -0.4847606 0.007958447 79052 -0.5003591 -0.4691620
+2:  2024 -0.4834549 0.008140862 80727 -0.4994110 -0.4674988
+3:  2025 -0.5767587 0.007126332 80206 -0.5907263 -0.5627911
+   yil_1 yil_2         fark    se_fark         alt         ust
+   <num> <num>        <num>      <num>       <num>       <num>
+1:  2023  2025 -0.091998161 0.01068277 -0.11293638 -0.07105994
+2:  2023  2024  0.001305644 0.01138466 -0.02100829  0.02361958
+yoksul ile goreli gelir < 0,6 uyumsuzlugu 2023 : 0 
+yoksul ile goreli gelir < 0,6 uyumsuzlugu 2024 : 0 
+yoksul ile goreli gelir < 0,6 uyumsuzlugu 2025 : 0 
+
+Gelir egrisi testleri (RCS 5 dugum, log goreli gelir; adim = egriye ek yoksul gostergesi):
+          yil                    test     n        F   df1   df2            p     tahmin        alt       ust
+       <char>                  <char> <int>    <num> <int> <num>        <num>      <num>      <num>     <num>
+ 1:      2023         dogrusal_olmama 24932 23.62044     3 24927 2.931140e-15         NA         NA        NA
+ 2:      2023           esik_adimi_OR 24932       NA    NA    NA 2.739536e-03  1.2742855  1.0874143 1.4932704
+ 3:      2023         esik_adimi_puan 24932       NA    NA    NA 2.739536e-03  5.8020373  2.0186918 9.5853828
+ 4:      2023  esik_adimi_puan_7dugum 24932       NA    NA    NA 7.660324e-01  0.8686242 -4.8532234 6.5904718
+ 5:      2023 esik_adimi_puan_parcali 24932       NA    NA    NA 6.585801e-01  0.6946222 -2.3808244 3.7700688
+ 6:      2024         dogrusal_olmama 25925 17.20349     3 25920 3.716569e-11         NA         NA        NA
+ 7:      2024           esik_adimi_OR 25925       NA    NA    NA 2.213498e-02  1.1982430  1.0262741 1.3990281
+ 8:      2024         esik_adimi_puan 25925       NA    NA    NA 2.213498e-02  4.3015548  0.6257436 7.9773660
+ 9:      2024  esik_adimi_puan_7dugum 25925       NA    NA    NA 7.142474e-01  1.0399909 -4.5278690 6.6078508
+10:      2024 esik_adimi_puan_parcali 25925       NA    NA    NA 5.993087e-01  0.8082373 -2.2003301 3.8168048
+11:      2025         dogrusal_olmama 25836 48.42882     3 25831 3.346902e-31         NA         NA        NA
+12:      2025           esik_adimi_OR 25836       NA    NA    NA 9.542202e-03  1.2357660  1.0529786 1.4502835
+13:      2025         esik_adimi_puan 25836       NA    NA    NA 9.542202e-03  4.7902745  1.1808770 8.3996719
+14:      2025  esik_adimi_puan_7dugum 25836       NA    NA    NA 2.949776e-01  2.8479166 -2.4845821 8.1804153
+15:      2025 esik_adimi_puan_parcali 25836       NA    NA    NA 1.548744e-01 -2.0895476 -4.9936924 0.8145972
+16: 2023-2025          yil_farki_egri 50768 30.40884     5 50758 5.467202e-31         NA         NA        NA
+17: 2023-2025         yil_farki_bicim 50768 37.99443     4 50758 8.568576e-32         NA         NA        NA
+ml.py calistiriliyor
+H3 yetiskin orneklemi: 57899 
+   FK070 f_cins f_egit f_bolge  f_hb f_cocuk log_goreli_gelir f_medeni f_calisma f_kronik f_gali f_htip f_mulk et_az meyve_az sebze_az
+   <int>  <int>  <int>   <int> <int>   <int>            <int>    <int>     <int>    <int>  <int>  <int>  <int> <int>    <int>    <int>
+1:     0      0      0       0     0       0                0        0         0        0      0      0      0   195        0        0
+Key: <grup>
+    grup     n agirlikli_pay et_olay meyve_olay sebze_olay vejetaryen
+   <int> <int>         <num>   <int>      <int>      <int>      <int>
+1:     1 36765      66.40432    8301      21169      18405         85
+2:     2 12356      21.39662    6228       8612       7517         72
+3:     3  8778      12.19906    5035       6944       6404         38
+H3 hane orneklemi: 25836  saglik_yuk olay: 2030 
+       duzey karsilastirma      sonuc   aday PD_degisim PR_goreli_degisim  karar
+      <char>        <char>     <char> <char>      <num>             <num> <char>
+ 1: yetiskin            C1      et_az  FB100      -0.18              -0.5 Girmez
+ 2: yetiskin            C1      et_az  FI010      -0.19              -0.5 Girmez
+ 3: yetiskin            C1      et_az  FS020      -0.06              -0.2 Girmez
+ 4: yetiskin            C1      et_az  FS030      -0.30              -0.8 Girmez
+ 5: yetiskin            C1      et_az  HB050      -0.18              -0.4 Girmez
+ 6: yetiskin            C1      et_az  HH020      -0.04              -0.1 Girmez
+ 7: yetiskin            C1   meyve_az  FB100      -0.08              -0.1 Girmez
+ 8: yetiskin            C1   meyve_az  FI010      -0.11              -0.2 Girmez
+ 9: yetiskin            C1   meyve_az  FS020      -0.07              -0.1 Girmez
+10: yetiskin            C1   meyve_az  FS030      -0.28              -0.4 Girmez
+11: yetiskin            C1   meyve_az  HB050      -0.16              -0.2 Girmez
+12: yetiskin            C1   meyve_az  HH020      -0.12              -0.2 Girmez
+13: yetiskin            C1   sebze_az  FB100      -0.05              -0.1 Girmez
+14: yetiskin            C1   sebze_az  FI010      -0.01               0.0 Girmez
+15: yetiskin            C1   sebze_az  FS020       0.08               0.1 Girmez
+16: yetiskin            C1   sebze_az  FS030      -0.12              -0.2 Girmez
+17: yetiskin            C1   sebze_az  HB050      -0.12              -0.2 Girmez
+18: yetiskin            C1   sebze_az  HH020      -0.06              -0.1 Girmez
+19: yetiskin            C2      et_az  FB100       0.13               0.2 Girmez
+20: yetiskin            C2      et_az  FI010       0.96               1.7  Girer
+21: yetiskin            C2      et_az  FS020       0.07               0.1 Girmez
+22: yetiskin            C2      et_az  FS030       0.36               0.6 Girmez
+23: yetiskin            C2      et_az  HB050       0.05               0.1 Girmez
+24: yetiskin            C2      et_az  HH020       0.19               0.3 Girmez
+25: yetiskin            C2   meyve_az  FB100       0.11               0.1 Girmez
+26: yetiskin            C2   meyve_az  FI010       0.14               0.2 Girmez
+27: yetiskin            C2   meyve_az  FS020       0.05               0.1 Girmez
+28: yetiskin            C2   meyve_az  FS030       0.32               0.4 Girmez
+29: yetiskin            C2   meyve_az  HB050       0.09               0.1 Girmez
+30: yetiskin            C2   meyve_az  HH020       0.22               0.3 Girmez
+31: yetiskin            C2   sebze_az  FB100       0.04               0.1 Girmez
+32: yetiskin            C2   sebze_az  FI010       0.14               0.2 Girmez
+33: yetiskin            C2   sebze_az  FS020       0.03               0.0 Girmez
+34: yetiskin            C2   sebze_az  FS030       0.25               0.4 Girmez
+35: yetiskin            C2   sebze_az  HB050       0.03               0.0 Girmez
+36: yetiskin            C2   sebze_az  HH020       0.03               0.1 Girmez
+37:     hane            C1 saglik_yuk  FB100      -0.03              -0.3 Girmez
+38:     hane            C1 saglik_yuk  FI010      -0.11              -1.1 Girmez
+39:     hane            C1 saglik_yuk  FS020      -0.61              -5.8  Girer
+40:     hane            C1 saglik_yuk  FS030      -0.48              -4.6 Girmez
+41:     hane            C1 saglik_yuk  HB050      -0.01              -0.1 Girmez
+42:     hane            C1 saglik_yuk  HH020      -0.02              -0.2 Girmez
+43:     hane            C2 saglik_yuk  FB100       0.16               1.2 Girmez
+44:     hane            C2 saglik_yuk  FI010       0.80               6.3  Girer
+45:     hane            C2 saglik_yuk  FS020       0.35               2.7 Girmez
+46:     hane            C2 saglik_yuk  FS030       0.60               4.7  Girer
+47:     hane            C2 saglik_yuk  HB050       0.07               0.5 Girmez
+48:     hane            C2 saglik_yuk  HH020       0.69               5.4  Girer
+       duzey karsilastirma      sonuc   aday PD_degisim PR_goreli_degisim  karar
+      <char>        <char>     <char> <char>      <num>             <num> <char>
+pr_C1 yas: FK070 + yas4_1 + yas4_2 + yas4_3  secilen:  
+pr_C2 yas: FK070 + yas4_1 + yas4_2 + yas4_3  secilen: FI010 
+pr_C1h yas: FK070  secilen: FS020 
+pr_C2h yas: FK070 + yas4_1 + yas4_2 + yas4_3  secilen: FI010, FS030, HH020 
+       duzey karsilastirma      sonuc   olcu tahmin   alt   ust se_if se_boot     B
+      <char>        <char>     <char> <char>  <num> <num> <num> <num>   <num> <int>
+ 1: yetiskin            C1      et_az     p0  24.44 23.53 25.39 0.475   0.477  4000
+ 2: yetiskin            C1      et_az     p1  49.91 47.04 53.86 1.467   1.724  4000
+ 3: yetiskin            C1      et_az     PD  25.47 22.49 29.61 1.538   1.784  4000
+ 4: yetiskin            C1      et_az     PR   2.04  1.91  2.22 0.072   0.081  4000
+ 5: yetiskin            C1   meyve_az     p0  57.86 56.91 58.79 0.483   0.478  4000
+ 6: yetiskin            C1   meyve_az     p1  72.03 69.05 74.79 1.268   1.446  4000
+ 7: yetiskin            C1   meyve_az     PD  14.16 11.07 16.96 1.352   1.515  4000
+ 8: yetiskin            C1   meyve_az     PR   1.24  1.19  1.29 0.024   0.027  4000
+ 9: yetiskin            C1   sebze_az     p0  49.38 48.38 50.38 0.509   0.511  4000
+10: yetiskin            C1   sebze_az     p1  62.41 59.20 65.88 1.548   1.711  4000
+11: yetiskin            C1   sebze_az     PD  13.03  9.67 16.67 1.628   1.791  4000
+12: yetiskin            C1   sebze_az     PR   1.26  1.19  1.34 0.034   0.037  4000
+13: yetiskin            C2      et_az     p0  59.27 56.80 61.69 1.229   1.252  4000
+14: yetiskin            C2      et_az     p1  53.10 51.24 54.97 0.959   0.967  4000
+15: yetiskin            C2      et_az     PD  -6.17 -9.31 -3.11 1.565   1.594  4000
+16: yetiskin            C2      et_az     PR   0.90  0.85  0.95 0.025   0.025  4000
+17: yetiskin            C2   meyve_az     p0  74.65 72.50 76.92 1.086   1.108  4000
+18: yetiskin            C2   meyve_az     p1  72.71 71.27 74.12 0.736   0.748  4000
+19: yetiskin            C2   meyve_az     PD  -1.94 -4.60  0.66 1.311   1.341  4000
+20: yetiskin            C2   meyve_az     PR   0.97  0.94  1.01 0.017   0.018  4000
+21: yetiskin            C2   sebze_az     p0  66.06 63.70 68.58 1.237   1.253  4000
+22: yetiskin            C2   sebze_az     p1  63.40 61.67 65.10 0.866   0.882  4000
+23: yetiskin            C2   sebze_az     PD  -2.66 -5.76  0.28 1.511   1.551  4000
+24: yetiskin            C2   sebze_az     PR   0.96  0.92  1.00 0.022   0.023  4000
+25:     hane            C1 saglik_yuk     p0   5.79  5.35  6.26 0.238   0.236  4000
+26:     hane            C1 saglik_yuk     p1  11.60 10.46 12.77 0.591   0.592  4000
+27:     hane            C1 saglik_yuk     PD   5.80  4.50  7.14 0.665   0.667  4000
+28:     hane            C1 saglik_yuk     PR   2.00  1.74  2.29 0.139   0.140  4000
+29:     hane            C2 saglik_yuk     p0  13.08 11.62 14.59 0.780   0.778  4000
+30:     hane            C2 saglik_yuk     p1  10.62  9.70 11.52 0.456   0.457  4000
+31:     hane            C2 saglik_yuk     PD  -2.46 -4.36 -0.68 0.944   0.948  4000
+32:     hane            C2 saglik_yuk     PR   0.81  0.70  0.94 0.063   0.063  4000
+       duzey karsilastirma      sonuc   olcu tahmin   alt   ust se_if se_boot     B
+      <char>        <char>     <char> <char>  <num> <num> <num> <num>   <num> <int>
+                 analiz      sonuc     olcu tahmin   alt   ust
+                 <char>     <char>   <char>  <num> <num> <num>
+ 1:          C0_uc_grup      et_az     p_G1  24.38 23.50 25.28
+ 2:          C0_uc_grup      et_az     p_G2  50.86 49.17 52.59
+ 3:          C0_uc_grup      et_az     p_G3  55.16 52.73 57.66
+ 4:          C0_uc_grup      et_az PD_G2_G3  -4.30 -7.37 -1.42
+ 5:          C0_uc_grup      et_az    konum   0.86  0.78  0.95
+ 6:      C3_gelir_bandi      et_az     p_B1  58.76 56.47 61.14
+ 7:      C3_gelir_bandi      et_az     p_B2  54.78 51.95 57.43
+ 8:      C3_gelir_bandi      et_az     p_B3  51.08 48.18 54.19
+ 9:      C3_gelir_bandi      et_az     p_B4  50.24 47.27 53.17
+10:      C3_gelir_bandi      et_az     p_B5  54.18 48.12 59.57
+11:          C0_uc_grup   meyve_az     p_G1  58.15 57.28 59.03
+12:          C0_uc_grup   meyve_az     p_G2  72.08 70.81 73.39
+13:          C0_uc_grup   meyve_az     p_G3  75.06 73.13 77.09
+14:          C0_uc_grup   meyve_az PD_G2_G3  -2.98 -5.32 -0.71
+15:          C0_uc_grup   meyve_az    konum   0.82  0.71  0.95
+16:      C3_gelir_bandi   meyve_az     p_B1  74.74 72.81 76.75
+17:      C3_gelir_bandi   meyve_az     p_B2  73.25 71.10 75.33
+18:      C3_gelir_bandi   meyve_az     p_B3  72.92 70.39 75.53
+19:      C3_gelir_bandi   meyve_az     p_B4  70.10 67.73 72.32
+20:      C3_gelir_bandi   meyve_az     p_B5  72.30 67.52 76.61
+21:          C0_uc_grup   sebze_az     p_G1  49.99 49.06 50.92
+22:          C0_uc_grup   sebze_az     p_G2  62.32 60.75 63.86
+23:          C0_uc_grup   sebze_az     p_G3  66.49 64.21 68.85
+24:          C0_uc_grup   sebze_az PD_G2_G3  -4.17 -6.91 -1.38
+25:          C0_uc_grup   sebze_az    konum   0.75  0.62  0.90
+26:      C3_gelir_bandi   sebze_az     p_B1  66.75 64.54 69.00
+27:      C3_gelir_bandi   sebze_az     p_B2  64.12 61.74 66.43
+28:      C3_gelir_bandi   sebze_az     p_B3  64.04 61.24 66.82
+29:      C3_gelir_bandi   sebze_az     p_B4  60.88 57.96 63.62
+30:      C3_gelir_bandi   sebze_az     p_B5  65.30 60.32 69.99
+31:     C0_uc_grup_hane saglik_yuk     p_G1   5.89  5.47  6.34
+32:     C0_uc_grup_hane saglik_yuk     p_G2  10.68  9.77 11.64
+33:     C0_uc_grup_hane saglik_yuk     p_G3  13.57 12.00 15.15
+34:     C0_uc_grup_hane saglik_yuk PD_G2_G3  -2.89 -4.73 -1.10
+35:     C0_uc_grup_hane saglik_yuk    konum   0.62  0.47  0.83
+36: C3_gelir_bandi_hane saglik_yuk     p_B1  12.97 11.45 14.53
+37: C3_gelir_bandi_hane saglik_yuk     p_B2  10.64  9.14 12.18
+38: C3_gelir_bandi_hane saglik_yuk     p_B3   8.96  7.43 10.54
+39: C3_gelir_bandi_hane saglik_yuk     p_B4  11.93 10.28 13.59
+40: C3_gelir_bandi_hane saglik_yuk     p_B5  10.76  7.82 14.16
+                 analiz      sonuc     olcu tahmin   alt   ust
+                 <char>     <char>   <char>  <num> <num> <num>
+Table 1 en buyuk p: 4.681225e-29 
+tablolar_tumu.xlsx 26 hucrede alt/ust simge
+                                              adim dakika
+                                            <char>  <num>
+ 1:                                          okuma   0.02
+ 2:                                      dogrulama   0.07
+ 3:                                 hane veri seti   0.02
+ 4:                                 ortusme imzasi   0.02
+ 5:                                             H1   0.45
+ 6:                                          ml.py   9.91
+ 7:                                    H3 hazirlik   0.04
+ 8: H3 ana karsilastirmalar (protokol + bootstrap)   0.21
+ 9:                                H3 ek analizler   0.02
+10:    S3 aralik yontemleri (yuzdelik, basic, BCa)   0.06
+11:                                        Table 1   0.03
+12:                                        Table 2   0.01
+13:                                        Table 3   0.01
+14:                             Figur verileri (R)   0.00
+15:                                  Ek tablolar 1   0.03
+16:                                  Ek tablolar 2   0.02
+17:                                  Ek tablolar 3   0.03
+18:                                  Ek tablolar 4   0.02
+19:                                  Ek tablolar 5   0.03
+20:                             tablolar_tumu.xlsx   0.01
+21:                       sayilar.json ve belgeler   0.00
+                                              adim dakika
+                                            <char>  <num>
+analiz.R bitti. Toplam sure (dk): 11 
