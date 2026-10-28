@@ -17,7 +17,7 @@
 [   0.0 dk] Kural setleri hazir: {'cart_T2': (8, 'gini', 0.02, 0.0, 0.5872), 'cart_T1T2': (8, 'gini', 0.02, 0.0, 0.5599), 'cart_T2idari': (8, 'entropy', 0.001, 0.0, 0.5967), 'cart_B_T2': (8, 'gini', 0.05, 0.0, 0.565), 'cart_B_T2gelir': (8, 'gini', 0.05, 0.0, 0.5472), 'cart_T2_2023': (8, 'gini', 0.02, 0.0, 0.5872)} {'l1_T2': [np.str_('HH080'), np.str_('HH180_var'), np.str_('HH240_var'), np.str_('HS010'), np.str_('egitim_max')], 'l1_T1T2': [np.str_('HH180_var'), np.str_('HH240_var'), np.str_('HS010'), np.str_('HS020'), np.str_('egitim_max'), np.str_('log_goreli_gelir')], 'l1_B_T2': [np.str_('HH180_var'), np.str_('HH240_var'), np.str_('HS010'), np.str_('HS020'), np.str_('egitim_max'), np.str_('reis_egitim')]}
 [   0.0 dk] Kurallar yazildi
 [   0.5 dk] 2025 skorlari yazildi: (25836, 30)
-[   0.8 dk] Model dosyalari yazildi: 8 lojistik model; LightGBM dokumleri yerelde /Users/salim/Documents/makaleler/foods makaleleri 26-27/Foods Makalesi 2/R_Data ve Python Data/ml/lightgbm
+[   0.8 dk] Model dosyalari yazildi: 8 lojistik model; LightGBM dokumleri yerelde R_Data ve Python Data/ml/lightgbm
 [   0.8 dk] Arama uzayi tanimi yazildi: 55 satir
 [   7.2 dk] Bootstrap yakinsama (B/2 ile B arasinda sinir farki, puan):
     tablo      metrik  en_buyuk  medyan  ana_test_en_buyuk  pay_0_1_ustu
