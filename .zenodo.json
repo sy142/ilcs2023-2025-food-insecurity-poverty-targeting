@@ -1,0 +1,35 @@
+{
+  "title": "Analysis code and aggregated outputs: Food insecurity, income poverty and targeting rules in Türkiye (ILCS 2023–2025)",
+  "upload_type": "software",
+  "description": "<p>Analysis code and aggregated outputs for a study of household food insecurity and relative income poverty in Türkiye, based on the 2023–2025 cross-sections of the Income and Living Conditions Survey (ILCS/EU-SILC, Turkish Statistical Institute). The pipeline (R 4.6.1 and Python 3.13) estimates the exclusion error of the 60% relative poverty line, compares targeting rules trained on 2023–2024 and evaluated on 2025, and standardizes dietary frequencies by g-computation. The repository contains the full analysis code, the written analysis protocol, the trained ridge and lasso logistic models with their preprocessing parameters and aggregated outputs; trained gradient-boosting models are not distributed, and the TurkStat microdata cannot be redistributed and are available through TurkStat's official microdata procedures. A manuscript describing the analysis is under review.</p>",
+  "creators": [
+    {
+      "name": "Yılmaz, Salim",
+      "affiliation": "Acıbadem Mehmet Ali Aydınlar University",
+      "orcid": "0000-0003-2405-5084"
+    },
+    {
+      "name": "Günal, Ahmet Murat",
+      "affiliation": "Haliç University",
+      "orcid": "0000-0001-9109-1080"
+    }
+  ],
+  "keywords": [
+    "food insecurity",
+    "income poverty",
+    "material deprivation",
+    "targeting",
+    "EU-SILC",
+    "Türkiye",
+    "machine learning"
+  ],
+  "language": "eng",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/sy142/ilcs2023-2025-food-insecurity-poverty-targeting",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ]
+}
