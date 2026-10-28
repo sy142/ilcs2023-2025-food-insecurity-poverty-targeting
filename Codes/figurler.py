@@ -311,7 +311,10 @@ def figure3():
         b = bn[bn["kol"] == kol]
         if len(b):
             ax.fill_between(b["kapsama"], b["alt"], b["ust"], color=RENK_YONTEM[kol], alpha=0.16, lw=0, zorder=2)
-    ax.axvline(pov, color=MUREKKEP, lw=0.5, ls=(0, (1, 2)), zorder=1)
+    tv = pd.read_csv(SONUC / "H2_tavan.csv")
+    p_fi = tv.loc[tv["kapsama_noktasi"] == "FI_yayginligi", "FI_yayginligi"].iloc[0]
+    ax.plot([0, p_fi, 80], [0, 100, 100], color=IKINCIL, lw=0.8, ls=(0, (4, 2)), zorder=6, label="Perfect ranking (ceiling)")
+    ax.plot([pov, pov], [0, 61], color=MUREKKEP, lw=0.5, ls=(0, (1, 2)), zorder=1)
     isaret = {"yoksul_60": ("D", 30), "yoksul_50": ("v", 22), "yoksul_70": ("^", 22), "msy_etsiz_5": ("s", 18), "dusuk_is_yogunlugu": ("o", 18)}
     tut = []
     for kol in ("yoksul_60", "yoksul_50", "yoksul_70", "msy_etsiz_5", "dusuk_is_yogunlugu"):
@@ -320,15 +323,17 @@ def figure3():
         mk_, s_ = isaret[kol]
         tut.append(ax.scatter(r["kapsama"], r["duyarlilik"], s=s_, marker=mk_, color=MUREKKEP if isi else "white", edgecolor=MUREKKEP, linewidth=0.8, zorder=6, label=ETIKET_YONTEM[kol]))
     ax.set_xlim(0, 80)
-    ax.set_ylim(0, 100)
+    ax.set_ylim(0, 101.5)
+    ax.set_yticks([0, 20, 40, 60, 80, 100])
     ax.set_xlabel("Targeting rate, % of households")
     ax.set_ylabel("Food-insecure households selected, %")
     h_, l_ = ax.get_legend_handles_labels()
     n_c = len(h_) - len(tut)
     lg = ax.legend(h_[:n_c], l_[:n_c], loc="lower right", fontsize=6.0, handlelength=2.4, labelspacing=0.3, borderaxespad=0.2)
     ax.add_artist(lg)
-    ax.legend(tut, [ETIKET_YONTEM[k] for k in ("yoksul_60", "yoksul_50", "yoksul_70", "msy_etsiz_5", "dusuk_is_yogunlugu")], loc="upper left", fontsize=6.0, handletextpad=0.3,
-              labelspacing=0.3, borderaxespad=0.3, title="Fixed rules", title_fontsize=6.2, alignment="left", frameon=True, facecolor="white", edgecolor="none", framealpha=0.95)
+    ax.legend(tut, [ETIKET_YONTEM[k].replace("Very low work intensity", "Very low work\nintensity") for k in ("yoksul_60", "yoksul_50", "yoksul_70", "msy_etsiz_5", "dusuk_is_yogunlugu")],
+              loc="upper left", fontsize=6.0, handletextpad=0.3, labelspacing=0.3, borderaxespad=0.3, title="Fixed rules", title_fontsize=6.2, alignment="left",
+              frameon=True, facecolor="white", edgecolor="none", framealpha=0.95)
 
     gruplar = [("Sparse rules, structural", ["cart_T2idari", "cart_T2", "l1_T2"]), ("Sparse rules, income + structural", ["cart_T1T2", "l1_T1T2"]),
                ("Prediction models", ["logit_lin_A1", "logit_A1", "lgb_A2i", "lgb_A2", "lgb_A1", "lgb_A3"])]
@@ -672,20 +677,37 @@ def figure6():
 
     ax = fig.add_axes([0.43, 0.20, 0.27, 0.71])
     panel_etiketi_fig(fig, "b", 0.355, 0.99)
+    kf = pd.read_csv(VERI / "fig6b_kapali_form_egrisi.csv")
+    sp_sinir = 100 * kf["uyumlu_en_kucuk_Sp"].max()
+    ax.axvspan(90, sp_sinir, color="#ECEEF1", lw=0, zorder=0)
+    tur_ls = {"ayrimci_degil": "-", "gelire_gore": (0, (3, 1.6))}
+    for tur, ls in tur_ls.items():
+        e = kf[(kf["tur"] == tur) & (kf["Se"] == 0.90)].sort_values("Sp")
+        ax.plot(100 * e["Sp"], e["kapali_form_dislama_hane"], color=MUREKKEP, lw=1.0 if tur == "ayrimci_degil" else 0.8, ls=ls, zorder=2)
     sea = sorted(s2["Se"].unique())
     tonlar = AURORA_CMAP(np.linspace(0.2, 0.75, len(sea)))
-    for se, rk in zip(sea, tonlar):
-        r = s2[(s2["tur"] == "ayrimci_degil") & (s2["Se"] == se)].sort_values("Sp")
-        ax.plot(100 * r["Sp"], r["dislama_hatasi"], color=rk, lw=1.3, label=f"Se {se:.2f}")
-        rd = s2[(s2["tur"] == "gelire_gore") & (s2["Se"] == se)].sort_values("Sp")
-        ax.plot(100 * rd["Sp"], rd["dislama_hatasi"], color=rk, lw=0.9, ls=(0, (2, 2)))
+    kay = np.linspace(-0.09, 0.09, len(sea))
+    se_h = []
+    for se, rk, dx in zip(sea, tonlar, kay):
+        for tur, ofs, dolu in (("ayrimci_degil", -0.22, True), ("gelire_gore", 0.22, False)):
+            r = s2[(s2["tur"] == tur) & (s2["Se"] == se) & s2["uyumlu"].astype(bool)]
+            ax.scatter(100 * r["Sp"] + ofs + dx, r["dislama_hatasi"], s=11, marker="o", color=rk if dolu else "white", edgecolor=rk, linewidth=0.7, zorder=4)
+        se_h.append(Line2D([], [], ls="none", marker="o", ms=3.4, color=rk, label=f"Se {se:.2f}"))
     gzv = s2["gozlenen_dislama_hatasi"].iloc[0]
-    ax.axhline(gzv, color=MUREKKEP, lw=0.6)
-    ax.text(90.15, gzv + 0.06, "observed", fontsize=6.0, color=MUREKKEP, va="bottom", ha="left", path_effects=HALE)
+    ax.axhline(gzv, color=MUREKKEP, lw=0.5, ls=(0, (1, 1.5)), zorder=1)
+    ax.text(90.2, gzv + 0.05, "observed", fontsize=6.0, color=MUREKKEP, va="bottom", ha="left")
+    ax.text(sp_sinir - 0.15, 62.0, "incompatible\nwith observed\ndata", fontsize=6.0, color=IKINCIL, ha="right", va="bottom", linespacing=1.1, zorder=5)
+    ax.set_xlim(90, 100)
+    ax.set_ylim(61.8, 68.7)
+    ax.set_xticks([90, 92, 94, 96, 98, 100])
     ax.set_xlabel("Specificity of HE090, %")
     ax.set_ylabel("Exclusion error, % of households")
-    ax.legend(fontsize=6.0, loc="lower right", ncol=2, handlelength=1.4, columnspacing=0.8, borderaxespad=0.3)
-    not_(ax, 0.03, 0.97, "dashed: specificity 5 pp lower\nin income quintiles 1–2", ha="left", va="top", fontsize=6.0, linespacing=1.2)
+    tur_h = [Line2D([], [], color=MUREKKEP, lw=1.0, ls=tur_ls["ayrimci_degil"], marker="o", ms=3.2, markerfacecolor=SOLUK, markeredgecolor=SOLUK, label="non-differential"),
+             Line2D([], [], color=MUREKKEP, lw=0.8, ls=tur_ls["gelire_gore"], marker="o", ms=3.2, markerfacecolor="white", markeredgecolor=SOLUK, label="income-differential")]
+    lg = ax.legend(handles=tur_h, loc="upper left", bbox_to_anchor=(0.0, 0.94), fontsize=5.8, handlelength=2.2, labelspacing=0.3, handletextpad=0.4, borderaxespad=0.3, frameon=False,
+                   title="line: closed form\nmarker: simulated mean", title_fontsize=5.8, alignment="left")
+    ax.add_artist(lg)
+    ax.legend(handles=se_h, loc="lower right", bbox_to_anchor=(1.0, 0.24), ncol=2, fontsize=5.8, handletextpad=0.1, columnspacing=0.6, labelspacing=0.3, borderaxespad=0.3, frameon=False)
 
     ax = fig.add_axes([0.85, 0.20, 0.135, 0.71])
     panel_etiketi_fig(fig, "c", 0.725, 0.99)
@@ -730,7 +752,8 @@ def figureS_karar():
 def figureS_kalibrasyon():
     kk = pd.read_csv(VERI / "figS_kalibrasyon_kaymasi.csv")
     mt = pd.read_csv(SONUC / "H2_yil_matrisi.csv")
-    fig, ax = plt.subplots(figsize=(TEK, 8.0 * CM))
+    kb = pd.read_csv(VERI / "figS2b_kalibrasyon_2025.csv")
+    fig, (ax, bx) = plt.subplots(1, 2, figsize=(TAM, 8.4 * CM))
     ax.plot([0, 1], [0, 1], color="#D0D2D6", lw=0.8, ls=(0, (2, 2)), zorder=0)
     for ty, mk_ in ((2023, "o"), (2024, "s"), (2025, "^")):
         k_ = kk[kk["test_yili"] == ty]
@@ -744,7 +767,27 @@ def figureS_kalibrasyon():
     ax.set_xlabel("Predicted probability, model trained on 2023")
     ax.set_ylabel("Observed food insecurity")
     not_(ax, 0.97, 0.03, "deciles of predicted risk;\nhouseholds not matched\nto the training year", ha="right", va="bottom", fontsize=6.0, color=SOLUK, linespacing=1.1)
-    fig.tight_layout()
+    panel_etiketi(ax, "a")
+    bx.plot([0, 1], [0, 1], color="#D0D2D6", lw=0.8, ls=(0, (2, 2)), zorder=0)
+    s2b = (("lgb_A1", "LightGBM, income + structural", RENK_YONTEM["lgb_A1"], "o", "-", "white"),
+           ("logit_lin_A1", "Ridge (linear), income + structural", RENK_YONTEM["logit_lin_A1"], "s", (0, (4, 1.5)), "white"),
+           ("l1_T1T2", "Lasso ≤6, income + structural", RENK_YONTEM["l1_T1T2"], "D", (0, (1.2, 1.2)), "white"),
+           ("lgb_A2", "LightGBM, structural", RENK_YONTEM["lgb_A2"], "^", (0, (5, 1.5, 1, 1.5)), "white"))
+    tut = []
+    for kol, ad_, rk, mk_, ls_, ke in s2b:
+        k_ = kb[kb["kol"] == kol].sort_values("dilim")
+        bx.plot(k_["tahmin"], k_["gozlenen"], color=rk, lw=1.1, ls=ls_, marker=mk_, ms=3.2, markeredgecolor=ke, markeredgewidth=0.5, zorder=3)
+        r = k_.iloc[0]
+        kes = f"{r['kalibrasyon_kesim']:+.2f}".replace("-", "−")
+        tut.append((Line2D([0], [0], color=rk, lw=1.1, ls=ls_, marker=mk_, ms=3.2, markeredgecolor=ke, markeredgewidth=0.5), f"{ad_}\nintercept {kes}, slope {r['kalibrasyon_egim']:.2f}"))
+    bx.legend([t[0] for t in tut], [t[1] for t in tut], loc="lower right", fontsize=5.8, frameon=False, handlelength=2.4, labelspacing=0.45, borderaxespad=0.2)
+    bx.set_xlim(0, 1)
+    bx.set_ylim(0, 1)
+    bx.set_xlabel("Predicted probability, models trained on 2023–2024")
+    bx.set_ylabel("Observed food insecurity")
+    not_(bx, 0.03, 0.97, "deciles of predicted risk;\n2025 main test set", ha="left", va="top", fontsize=6.0, color=SOLUK, linespacing=1.1)
+    panel_etiketi(bx, "b")
+    fig.tight_layout(w_pad=2.2)
     return kaydet(fig, "FigureS2", ek=True)
 
 

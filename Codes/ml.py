@@ -1,3 +1,4 @@
+import gzip
 import hashlib
 import json
 import pickle
@@ -918,6 +919,8 @@ kural_tab.to_csv(SON / "H2_kurallar.csv", index=False)
 l1_tab = []
 for ad, p in l1ler.items():
     m = p["m"]
+    b0_ham = float(m.intercept_[0] - np.sum(m.coef_[0] * p["kd"].ort / p["kd"].ss))
+    l1_tab.append({"model": ad, "degisken": "(sabit)", "terim": "(sabit)", "katsayi_ham": b0_ham, "OR_birim": np.exp(b0_ham)})
     for (v, kol), b in zip(p["kd"].ad, m.coef_[0] / p["kd"].ss):
         l1_tab.append({"model": ad, "degisken": v, "terim": kol, "katsayi_ham": b, "OR_birim": np.exp(b)})
 pd.DataFrame(l1_tab).to_csv(SON / "H2_l1_katsayilar.csv", index=False)
@@ -942,6 +945,149 @@ for k, p in bicim.items():
 tek_tohum = {s: paket_tahmin(paketler[s], te, tek=True) for s in ("A1", "A2", "A3", "B1")}
 skorlar.to_parquet(MLD / "skorlar_2025.parquet", index=False)
 yaz("2025 skorlari yazildi:", skorlar.shape)
+
+t0 = time.time()
+MODK = SON / "modeller"
+MODK_LGB = MLD / "lightgbm"
+for k in (MODK / "lojistik", MODK_LGB):
+    k.mkdir(parents=True, exist_ok=True)
+
+
+def yerel(x):
+    if isinstance(x, np.integer):
+        return int(x)
+    if isinstance(x, np.floating):
+        return float(x)
+    return x
+
+
+LOJ_ACIKLAMA = {"logit_lin_A1": "Ridge logistic, linear terms; income + structural (T1 + T2); all households",
+                "logit_lin_A2": "Ridge logistic, linear terms; structural only (T2); all households",
+                "logit_A1": "Ridge logistic, cubic B-splines for continuous features; income + structural; all households",
+                "logit_A2": "Ridge logistic, cubic B-splines for continuous features; structural only; all households",
+                "logit_B1": "Ridge logistic, cubic B-splines; structural + relative income; non-poor households",
+                "l1_T2": "Lasso logistic (at most six variables, refitted with a weak ridge penalty); structural; all households",
+                "l1_T1T2": "Lasso logistic (at most six variables, refitted with a weak ridge penalty); income + structural; all households",
+                "l1_B_T2": "Lasso logistic (at most six variables, refitted with a weak ridge penalty); structural; non-poor households"}
+LGB_DISA = {"lgb_A1": "A1", "lgb_A2": "A2", "lgb_A2i": "A2i", "lgb_A3": "A3", "lgb_B1": "B1"}
+loj_disa = {**{k: loj[k] for k in ("logit_lin_A1", "logit_lin_A2", "logit_A1", "logit_A2", "logit_B1")}, **l1ler}
+model_liste = []
+for ad, p in loj_disa.items():
+    kd, m = p["kd"], p["m"]
+    b, b0 = m.coef_[0], float(m.intercept_[0])
+    b_ham = b / kd.ss
+    b0_ham = b0 - float(np.sum(b * kd.ort / kd.ss))
+    spl = {v: {"dugumler": [float(z) for z in st.bsplines_[0].t[st.degree:-st.degree]], "dugum_vektoru": [float(z) for z in st.bsplines_[0].t], "derece": int(st.degree),
+               "dis_deger": str(st.extrapolation), "dahil_sabit": bool(st.include_bias)} for v, st in kd.spl.items()}
+    js = {"model": ad, "aciklama": LOJ_ACIKLAMA[ad], "nufus": "non-poor households" if "_B" in ad else "all households", "egitim": "2023-2024",
+          "ozellikler": list(kd.feats), "sirali_sayisal": bool(kd.sirali_sayisal), "spline": bool(kd.spline),
+          "kategoriler": {v: [yerel(z) for z in ks] for v, ks in kd.kat.items()}, "sayisal": {v: {"medyan": float(s["med"]), "eksik_gostergesi": bool(s["bos"])} for v, s in kd.say.items()},
+          "spline_dugumleri": spl, "terimler": [t for _, t in kd.ad], "terim_degiskeni": [v for v, _ in kd.ad], "ortalama": kd.ort.tolist(), "standart_sapma": kd.ss.tolist(),
+          "sabit": b0, "katsayilar": b.tolist(), "sabit_ham": b0_ham, "katsayilar_ham": b_ham.tolist(), "C_ayar": float(p["C"]) if "C" in p else None,
+          "C_nihai": float(p["C_nihai"]) if "C_nihai" in p else 10.0, "C_l1_yol": float(p["C_l1"]) if "C_l1" in p else None}
+    (MODK / "lojistik" / f"{ad}.json").write_text(json.dumps(js, indent=1, ensure_ascii=False), encoding="utf-8")
+    pd.DataFrame([{"terim": "(sabit)", "degisken": "", "katsayi_olcekli": b0, "ortalama": np.nan, "standart_sapma": np.nan, "katsayi_ham": b0_ham}] +
+                 [{"terim": t, "degisken": v, "katsayi_olcekli": bb, "ortalama": o, "standart_sapma": s, "katsayi_ham": bh} for (v, t), bb, o, s, bh in zip(kd.ad, b, kd.ort, kd.ss, b_ham)]
+                 ).to_csv(MODK / "lojistik" / f"{ad}_katsayilar.csv", index=False)
+    model_liste.append({"model": ad, "tur": "lojistik", "aciklama": LOJ_ACIKLAMA[ad], "n_ozellik": len(kd.feats), "n_terim_veya_agac": len(kd.ad), "dosyalar": f"lojistik/{ad}.json; lojistik/{ad}_katsayilar.csv"})
+lgb_liste = []
+for ad, s in LGB_DISA.items():
+    pk = paketler[s]
+    for i, ms in enumerate(pk["modeller"]):
+        with gzip.GzipFile(MODK_LGB / f"{ad}_tohum{i + 1}.txt.gz", "wb", compresslevel=6, mtime=0) as fz:
+            fz.write(ms.encode("utf-8"))
+    js = {"model": ad, "aciklama": SET_ACIKLAMA[s], "ozellikler": list(pk["feats"]), "nominal": [v for v in pk["feats"] if v in NOMINAL],
+          "kategori_sirasi": {v: [yerel(z) for z in KAT_SIRA[v]] for v in pk["feats"] if v in NOMINAL}, "n_tur": int(pk["n_tur"]), "tohumlar": TOHUMLAR,
+          "dosyalar": [f"{ad}_tohum{i + 1}.txt.gz" for i in range(len(pk["modeller"]))], "birlestirme": "mean of the predicted probabilities of the five boosters"}
+    (MODK_LGB / f"{ad}.json").write_text(json.dumps(js, indent=1, ensure_ascii=False), encoding="utf-8")
+    lgb_liste.append({"model": ad, "tur": "lightgbm", "aciklama": SET_ACIKLAMA[s], "n_ozellik": len(pk["feats"]), "n_terim_veya_agac": int(pk["n_tur"]), "dosyalar": f"{ad}.json; {ad}_tohum1-5.txt.gz"})
+pd.DataFrame(lgb_liste).to_csv(MODK_LGB / "model_listesi.csv", index=False)
+on_isleme = {"metin_sutunlar": ["HB030", "HB031"],
+             "kategori_birlestirme": [{"degisken": r["degisken"], "kod": yerel(r["kod"]), "hedef": yerel(r["birlestirildigi_kod"])} for r in kodlama if not str(r["kod"]).startswith(">")],
+             "ust_sinir": [{"degisken": r["degisken"], "ust": float(r["birlestirildigi_kod"])} for r in kodlama if str(r["kod"]).startswith(">")]}
+(MODK / "on_isleme.json").write_text(json.dumps(on_isleme, indent=1, ensure_ascii=False), encoding="utf-8")
+girdi = sorted({v for p in loj_disa.values() for v in p["kd"].feats})
+pd.DataFrame([{"degisken": v, "etiket": degisken_etiket(v), "tur": "nominal" if v in NOMINAL else ("sirali" if v in SIRALI else "sayisal"),
+               "eksik_olabilir": bool(h.loc[egitim_yillari, v].isna().any()), "modeller": ";".join([a for a, p in loj_disa.items() if v in p["kd"].feats])}
+              for v in girdi]).to_csv(MODK / "girdi_sutunlari.csv", index=False)
+pd.DataFrame(model_liste).to_csv(MODK / "model_listesi.csv", index=False)
+sure_kaydet("Model dosyalari (Results/modeller; LightGBM yalniz yerel)", t0)
+yaz("Model dosyalari yazildi:", len(model_liste), "lojistik model; LightGBM dokumleri yerelde", MODK_LGB)
+
+ARAMA = [
+    ("tum LightGBM asamalari", "LightGBM", "objective", None, None, "sabit", "binary", "HB040 weights scaled to mean 1 within year; bagging_freq 1; deterministic"),
+    ("tum LightGBM asamalari", "LightGBM", "num_boost_round (ayar)", None, 10000, "sabit ust sinir", "", "early stopping on the validation fold; patience max(100, round(2 / learning_rate))"),
+    ("tum LightGBM asamalari", "LightGBM", "katlar", None, None, "sabit", "train 2023 -> validate 2024 unmatched; train 2024 -> validate 2023 unmatched", "criterion: weighted log-loss averaged over folds (and seeds)"),
+    ("1 genis", "LightGBM", "num_leaves", 8, 128, "tamsayi tekduze", "", f"{N_KONFIG} configurations, seed {TOHUM}"),
+    ("1 genis", "LightGBM", "min_data_in_leaf", 20, 400, "tamsayi tekduze", "", ""),
+    ("1 genis", "LightGBM", "learning_rate", 0.01, 0.1, "log-tekduze", "", ""),
+    ("1 genis", "LightGBM", "feature_fraction", 0.4, 1.0, "tekduze", "", ""),
+    ("1 genis", "LightGBM", "bagging_fraction", 0.5, 1.0, "tekduze", "", ""),
+    ("1 genis", "LightGBM", "lambda_l2", 1e-3, 20.0, "log-tekduze", "", ""),
+    ("1 genis", "LightGBM", "max_depth", None, None, "secenek kumesi", "-1; 4; 6; 8; 10", "equal probabilities; -1 = no limit"),
+    ("1 genis", "LightGBM", "lambda_l1", 0.0, 0.0, "sabit", "", "LightGBM default"),
+    ("1 genis", "LightGBM", "min_gain_to_split", 0.0, 0.0, "sabit", "", "LightGBM default"),
+    ("1 genis", "LightGBM", "cat_smooth", 10.0, 10.0, "sabit", "", "LightGBM default"),
+    ("2 odakli", "LightGBM", "num_leaves", INCE_SINIR["num_leaves"][0], INCE_SINIR["num_leaves"][1], "log-tekduze (tamsayiya yuvarlanir)", "", f"{N_KONFIG} configurations, seed {TOHUM + 1}"),
+    ("2 odakli", "LightGBM", "min_data_in_leaf", INCE_SINIR["min_data_in_leaf"][0], INCE_SINIR["min_data_in_leaf"][1], "log-tekduze (tamsayiya yuvarlanir)", "", ""),
+    ("2 odakli", "LightGBM", "learning_rate", INCE_SINIR["learning_rate"][0], INCE_SINIR["learning_rate"][1], "log-tekduze", "", ""),
+    ("2 odakli", "LightGBM", "feature_fraction", 0.5, 1.0, "tekduze", "", ""),
+    ("2 odakli", "LightGBM", "bagging_fraction", 0.6, 1.0, "tekduze", "", ""),
+    ("2 odakli", "LightGBM", "lambda_l2", INCE_SINIR["lambda_l2"][0], INCE_SINIR["lambda_l2"][1], "log-tekduze", "", ""),
+    ("2 odakli", "LightGBM", "lambda_l1", INCE_SINIR["lambda_l1"][0], INCE_SINIR["lambda_l1"][1], "karisim: 0 (olasilik 0.5) veya log-tekduze", "", ""),
+    ("2 odakli", "LightGBM", "min_gain_to_split", None, None, "secenek kumesi", "0 (p = 0.5); 0.01 (p = 0.25); 0.05 (p = 0.25)", ""),
+    ("2 odakli", "LightGBM", "cat_smooth", INCE_SINIR["cat_smooth"][0], INCE_SINIR["cat_smooth"][1], "log-tekduze", "", ""),
+    ("2 odakli", "LightGBM", "max_depth", None, None, "secenek kumesi", "8; 10; 12; 14; -1", "equal probabilities"),
+    ("3 tohum yeniden degerlendirme", "LightGBM", "tohum", None, None, "secenek kumesi", "; ".join(str(t) for t in EK_TOHUM), f"the {EN_IYI_K} configurations with the lowest mean log-loss re-run with two further seeds; selection among configurations with >= 6 evaluations (3 seeds x 2 folds)"),
+    ("4 sinir genisletme", "LightGBM", "tetikleyici", None, None, "kural", "", "selected configuration within 15% of the lower learning_rate or min_data_in_leaf bound, within 10% of the upper num_leaves bound or within 15% of the upper lambda_l2 bound; at most 2 rounds of 30 configurations (seeds 20261427, 20261428); best 3 of each round re-run with two seeds"),
+    ("4 sinir genisletme", "LightGBM", "num_leaves", GENIS_SINIR["num_leaves"][0], GENIS_SINIR["num_leaves"][1], "carpimsal log-normal sapma (sd 0.4; ortalama 0.3 sinirdaysa), yuvarlanir ve kirpilir", "", "perturbation of the current best configuration"),
+    ("4 sinir genisletme", "LightGBM", "min_data_in_leaf", GENIS_SINIR["min_data_in_leaf"][0], GENIS_SINIR["min_data_in_leaf"][1], "carpimsal log-normal sapma (sd 0.5; ortalama -0.5 sinirdaysa), yuvarlanir ve kirpilir", "", ""),
+    ("4 sinir genisletme", "LightGBM", "learning_rate", GENIS_SINIR["learning_rate"][0], GENIS_SINIR["learning_rate"][1], "carpimsal log-normal sapma (sd 0.35; ortalama -0.4 sinirdaysa), kirpilir", "", ""),
+    ("4 sinir genisletme", "LightGBM", "lambda_l2", GENIS_SINIR["lambda_l2"][0], GENIS_SINIR["lambda_l2"][1], "carpimsal log-normal sapma (sd 0.8; ortalama 0.4 sinirdaysa), kirpilir", "", ""),
+    ("4 sinir genisletme", "LightGBM", "feature_fraction", 0.3, 1.0, "toplamsal normal sapma (sd 0.08), kirpilir", "", ""),
+    ("4 sinir genisletme", "LightGBM", "bagging_fraction", 0.4, 1.0, "toplamsal normal sapma (sd 0.08), kirpilir", "", ""),
+    ("4 sinir genisletme", "LightGBM", "lambda_l1", 0.0, 10.0, "carpimsal log-normal sapma (sd 0.8), kirpilir", "", ""),
+    ("4 sinir genisletme", "LightGBM", "cat_smooth", 1.0, 100.0, "carpimsal log-normal sapma (sd 0.5), kirpilir", "", ""),
+    ("4 sinir genisletme", "LightGBM", "min_gain_to_split; max_depth", None, None, "sabit", "", "kept from the current best configuration"),
+    ("bicim merdiveni kisitli modeller", "LightGBM (additive, depth 2)", "num_boost_round (ayar)", None, BICIM_TUR_TAVAN, "sabit ust sinir", "", f"{N_BICIM} configurations per set and form; additive: interaction constraints, one feature per tree; depth 2: num_leaves 4, max_depth 2"),
+    ("bicim merdiveni kisitli modeller", "LightGBM (additive, depth 2)", "learning_rate", BICIM_SINIR["learning_rate"][0], BICIM_SINIR["learning_rate"][1], "log-tekduze", "", ""),
+    ("bicim merdiveni kisitli modeller", "LightGBM (additive, depth 2)", "min_data_in_leaf", BICIM_SINIR["min_data_in_leaf"][0], BICIM_SINIR["min_data_in_leaf"][1], "log-tekduze (tamsayiya yuvarlanir)", "", ""),
+    ("bicim merdiveni kisitli modeller", "LightGBM (additive)", "num_leaves", BICIM_SINIR["num_leaves"][0], BICIM_SINIR["num_leaves"][1], "log-tekduze (tamsayiya yuvarlanir)", "", "depth 2: fixed at 4"),
+    ("bicim merdiveni kisitli modeller", "LightGBM (additive, depth 2)", "feature_fraction", 0.3, 1.0, "tekduze", "", ""),
+    ("bicim merdiveni kisitli modeller", "LightGBM (additive, depth 2)", "bagging_fraction", 0.5, 1.0, "tekduze", "", ""),
+    ("bicim merdiveni kisitli modeller", "LightGBM (additive, depth 2)", "lambda_l2", 1e-3, 100.0, "log-tekduze", "", ""),
+    ("bicim merdiveni kisitli modeller", "LightGBM (additive, depth 2)", "lambda_l1", 0.01, 5.0, "karisim: 0 (olasilik 0.5) veya log-tekduze", "", ""),
+    ("bicim merdiveni kisitli modeller", "LightGBM (additive, depth 2)", "cat_smooth", 1.0, 100.0, "log-tekduze", "", ""),
+    ("bicim merdiveni kisitli modeller", "LightGBM (additive, depth 2)", "min_gain_to_split", 0.0, 0.0, "sabit", "", ""),
+    ("bicim merdiveni kisitli modeller", "LightGBM (additive, depth 2)", "genisletme", None, None, "kural", "", "if the best configuration is near a bound: 30 perturbations (learning_rate clipped to [0.001, 1], min_data_in_leaf [1, 1000], lambda_l2 [1e-4, 300], feature_fraction [0.2, 1], bagging_fraction [0.4, 1], num_leaves [2, 128])"),
+    ("ridge", "Ridge logistic (linear, splines)", "C", 1e-5, 10.0, "secenek kumesi", "; ".join(f"{c:.4g}" for c in np.logspace(-5, 1, 13)), "13 log-spaced values; final C rescaled by mean fold training weight / full training weight; splines: cubic B-splines with 5 quantile knots"),
+    ("lasso", "Lasso logistic", "C (L1 yolu)", 1e-4, 1.0, "secenek kumesi", "41 log-spaced values", "largest C with at most six variables; refit with ridge penalty C = 10"),
+    ("CART", "Depth-3 tree", "criterion", None, None, "secenek kumesi", "entropy; gini", "max_depth 3"),
+    ("CART", "Depth-3 tree", "min_weight_fraction_leaf", 0.001, 0.1, "secenek kumesi", "0.001; 0.0025; 0.005; 0.01; 0.02; 0.05; 0.075; 0.1", ""),
+    ("CART", "Depth-3 tree", "ccp_alpha", None, None, "secenek kumesi", "union of both folds' cost-complexity pruning paths (rounded to 8 decimals)", "every value evaluated in both folds"),
+    ("MLP", "Multilayer perceptron", "gizli katmanlar", None, None, "secenek kumesi", "(128, 64); (256, 128)", "ReLU; AdamW; batch 512; weighted binary cross-entropy"),
+    ("MLP", "Multilayer perceptron", "dropout", None, None, "secenek kumesi", "0.1; 0.3", ""),
+    ("MLP", "Multilayer perceptron", "weight_decay", None, None, "secenek kumesi", "1e-5; 1e-3", ""),
+    ("MLP", "Multilayer perceptron", "learning_rate", 1e-3, 1e-3, "sabit", "", ""),
+    ("MLP", "Multilayer perceptron", "epok", 1, 40, "secim", "", "epoch with the lowest validation log-loss, averaged over folds; five seeds averaged in the final model"),
+]
+arama = pd.DataFrame(ARAMA, columns=["asama", "ogrenici", "parametre", "alt_sinir", "ust_sinir", "olcek", "secenekler", "not"])
+for i, k in enumerate(KONFIGLER):
+    asm = "1 genis" if i < N_KONFIG else "2 odakli"
+    for p_, v_ in k.items():
+        r_ = arama[(arama["asama"] == asm) & (arama["parametre"] == p_)].iloc[0]
+        if pd.notna(r_["alt_sinir"]) and pd.notna(r_["ust_sinir"]) and v_ != 0:
+            assert r_["alt_sinir"] - 1e-12 <= v_ <= r_["ust_sinir"] + 1e-12, (asm, p_, v_)
+        elif r_["secenekler"]:
+            assert str(v_) in [s.split(" ")[0] for s in r_["secenekler"].split("; ")] or float(v_) in [float(s.split(" ")[0]) for s in r_["secenekler"].split("; ")], (asm, p_, v_)
+for s in BICIM_SETLER:
+    for tur in ("ek", "d2"):
+        for k in konfig_uret_bicim(N_BICIM, np.random.default_rng(TOHUM + 600 + (0 if tur == "ek" else 1) + 10 * BICIM_SETLER.index(s)), tur):
+            for p_ in ("learning_rate", "min_data_in_leaf", "lambda_l2", "feature_fraction", "bagging_fraction", "cat_smooth"):
+                r_ = arama[(arama["asama"] == "bicim merdiveni kisitli modeller") & (arama["parametre"] == p_)].iloc[0]
+                assert r_["alt_sinir"] - 1e-12 <= k[p_] <= r_["ust_sinir"] + 1e-12, (s, tur, p_, k[p_])
+arama.to_csv(SON / "H2_arama_uzayi_tanim.csv", index=False)
+yaz("Arama uzayi tanimi yazildi:", len(arama), "satir")
 
 y = te["FI"].values.astype(float)
 w = te["HB040"].values.astype(float)
@@ -1213,6 +1359,102 @@ aralik = pd.DataFrame(aralik)
 aralik.to_csv(SON / "H2_aralik_yontemleri.csv", index=False)
 sure_kaydet("Model-model farklari ve aralik yontemleri (yuzdelik, basic, BCa; hane jackknife ivmesi)", t0)
 yaz("Aralik yontemleri (duyarlilik farki, yoksulluk cizgisine gore):\n" + aralik[["kol", "yontem", "fark", "alt", "ust", "z0", "ivme"]].round(3).to_string())
+
+t0 = time.time()
+
+
+def kollar_m(m, Wm, kollar):
+    c_pov = (Wm * yoksul[m][:, None]).sum(0) / Wm.sum(0)
+    v = {kol: kapsam(skor_al(kol)[m], y[m], cocuk[m], Wm, c_pov) for kol in kollar}
+    v["yoksul_60"] = bayrak(BAYRAK_KOLLAR["yoksul_60"][m], y[m], cocuk[m], Wm)
+    return v
+
+
+def yuzde(v, q):
+    return float(np.nanpercentile(v, q))
+
+
+KOLLAR_MM = ("l1_T1T2", "lgb_A1", "logit_lin_A1", "lgb_A2", "logit_lin_A2")
+W0a, WBa = W0[m_ana], WB[m_ana]
+a0 = kollar_m(m_ana, W0a, KOLLAR_MM)
+ab = kollar_m(m_ana, WBa, KOLLAR_MM)
+p0 = 100 * (W0a * yy_a[:, None]).sum(0) / W0a.sum(0)
+pb = 100 * (WBa * yy_a[:, None]).sum(0) / WBa.sum(0)
+tavan = []
+for nk, r0_, rb_ in (("yoksulluk_orani", a0["yoksul_60"]["kapsama"], ab["yoksul_60"]["kapsama"]), ("20", 20.0, 20.0), ("30", 30.0, 30.0), ("40", 40.0, 40.0), ("FI_yayginligi", p0, pb)):
+    t_0 = np.minimum(100, 100 * np.asarray(r0_) / p0)
+    t_b = np.minimum(100, 100 * np.asarray(rb_) / pb)
+    tavan.append({"sema": "temiz", "nufus": "A", "kapsama_noktasi": nk, "kapsama": float(np.asarray(r0_).ravel()[0]), "FI_yayginligi": float(p0[0]), "tavan_duyarlilik": float(t_0.ravel()[0]),
+                  "tavan_duyarlilik_alt": yuzde(t_b, 2.5), "tavan_duyarlilik_ust": yuzde(t_b, 97.5),
+                  "tavan_ppv": float(100 if np.asarray(r0_).ravel()[0] <= p0[0] else 100 * p0[0] / np.asarray(r0_).ravel()[0])})
+tavan = pd.DataFrame(tavan)
+tavan.to_csv(SON / "H2_tavan.csv", index=False)
+tav0 = np.minimum(100, 100 * a0["yoksul_60"]["kapsama"] / p0)
+tavb = np.minimum(100, 100 * ab["yoksul_60"]["kapsama"] / pb)
+es0, esb = a0["yoksul_60"]["duyarlilik"], ab["yoksul_60"]["duyarlilik"]
+kazanc = [{"sema": "temiz", "nufus": "A", "kol": "yoksul_60", "olcu": "esik_tavan_orani", "deger": float(100 * es0[0] / tav0[0]),
+           "alt": yuzde(100 * esb / tavb, 2.5), "ust": yuzde(100 * esb / tavb, 97.5), "duyarlilik": float(es0[0]), "esik_duyarlilik": float(es0[0]), "tavan": float(tav0[0])}]
+for kol in KOLLAR_MM:
+    g0 = 100 * (a0[kol]["duyarlilik"] - es0) / (tav0 - es0)
+    gb = 100 * (ab[kol]["duyarlilik"] - esb) / (tavb - esb)
+    kazanc.append({"sema": "temiz", "nufus": "A", "kol": kol, "olcu": "ulasilabilir_kazanc_payi", "deger": float(g0[0]), "alt": yuzde(gb, 2.5), "ust": yuzde(gb, 97.5),
+                   "duyarlilik": float(a0[kol]["duyarlilik"][0]), "esik_duyarlilik": float(es0[0]), "tavan": float(tav0[0])})
+kazanc = pd.DataFrame(kazanc)
+kazanc.to_csv(SON / "H2_kazanc_payi.csv", index=False)
+KARSILASTIRMA_MM = (("l1_T1T2", "lgb_A1"), ("l1_T1T2", "logit_lin_A1"), ("lgb_A1", "lgb_A2"), ("logit_lin_A1", "logit_lin_A2"))
+mm = []
+for sema in ("temiz", "temiz_siki"):
+    m = DEGER[sema] & POP_M["A"]
+    s0, sb = (a0, ab) if sema == "temiz" else (kollar_m(m, W0[m], KOLLAR_MM), kollar_m(m, WB[m], KOLLAR_MM))
+    for kol, ref in KARSILASTIRMA_MM:
+        for metr in ("duyarlilik", "ppv", "cocuk"):
+            dlt = sb[kol][metr] - sb[ref][metr]
+            mm.append({"sema": sema, "nufus": "A", "kol": kol, "karsilastirma": ref, "kapsama_noktasi": "yoksulluk_orani", "metrik": metr, "fark": float(s0[kol][metr][0] - s0[ref][metr][0]),
+                       "alt": yuzde(dlt, 2.5), "ust": yuzde(dlt, 97.5), "alt_yarim": yuzde(dlt[:B_YARIM], 2.5), "ust_yarim": yuzde(dlt[:B_YARIM], 97.5), "p_tek_yonlu": float(np.mean(dlt <= 0))})
+mm = pd.DataFrame(mm)
+r_ = fark_ek[(fark_ek["kol"] == "lgb_A1") & (fark_ek["metrik"] == "cocuk")].iloc[0]
+q_ = mm[(mm["sema"] == "temiz") & (mm["kol"] == "lgb_A1") & (mm["karsilastirma"] == "lgb_A2") & (mm["metrik"] == "cocuk")].iloc[0]
+assert abs(r_["fark"] - q_["fark"]) < 1e-9 and abs(r_["alt"] - q_["alt"]) < 1e-9
+mm.to_csv(SON / "H2_model_model_farklar.csv", index=False)
+
+
+def secim_payi(skor, ww, c):
+    u, inv = np.unique(-skor, return_inverse=True)
+    Wg = np.bincount(inv, weights=ww)
+    once = np.cumsum(Wg) - Wg
+    return np.where(Wg > 0, np.clip((c * ww.sum() - once) / np.where(Wg > 0, Wg, 1), 0, 1), 0)[inv]
+
+
+def agirlikli_medyan(x, ww):
+    o = np.argsort(x)
+    cw = np.cumsum(ww[o])
+    return float(x[o][np.searchsorted(cw, 0.5 * cw[-1])])
+
+
+c_pov0 = float(np.sum(w_a * yoksul[m_ana]) / w_a.sum())
+cocuk_a = te["n_cocuk_ham"].values[m_ana].astype(float)
+buyukluk_a = te["hane_buyuklugu"].values[m_ana].astype(float)
+yasli_a = te["n_65plus"].values[m_ana].astype(float)
+gelir_a = te["goreli_esdeger_gelir"].values[m_ana].astype(float)
+secimler = {"tum_haneler": np.ones(len(w_a)), "FI_haneler": yy_a, "yoksul_60": yoksul[m_ana]}
+for kol in ("l1_T1T2", "lgb_A1", "logit_lin_A1", "lgb_A2", "cart_T2"):
+    secimler[kol] = secim_payi(skor_al(kol)[m_ana], w_a, c_pov0)
+profil = []
+for ad, f in secimler.items():
+    ww = w_a * f
+    if ad in KOLLAR_MM or ad == "yoksul_60":
+        assert abs(100 * np.sum(ww * yy_a) / np.sum(w_a * yy_a) - a0[ad]["duyarlilik"][0]) < 1e-9
+    profil.append({"sema": "temiz", "kol": ad, "secilen_pay": 100 * ww.sum() / w_a.sum(), "duyarlilik": 100 * np.sum(ww * yy_a) / np.sum(w_a * yy_a), "ppv": 100 * np.sum(ww * yy_a) / ww.sum(),
+                   "ortalama_cocuk": np.sum(ww * cocuk_a) / ww.sum(), "cocuklu_hane_payi": 100 * np.sum(ww * (cocuk_a >= 1)) / ww.sum(),
+                   "tek_kisilik_hane_payi": 100 * np.sum(ww * (buyukluk_a == 1)) / ww.sum(), "yasli_uyeli_hane_payi": 100 * np.sum(ww * (yasli_a >= 1)) / ww.sum(),
+                   "medyan_goreli_gelir": agirlikli_medyan(gelir_a, ww), "ortalama_goreli_gelir": np.sum(ww * gelir_a) / ww.sum()})
+profil = pd.DataFrame(profil)
+profil.to_csv(SON / "H2_secilen_profil.csv", index=False)
+sure_kaydet("Hedefleme tavani, ulasilabilir kazanc payi, modeller arasi farklar ve secilen hane profili", t0)
+yaz("Tavan:\n" + tavan.round(2).to_string())
+yaz("Ulasilabilir kazanc payi:\n" + kazanc.round(2).to_string())
+yaz("Modeller arasi farklar:\n" + mm[["sema", "kol", "karsilastirma", "metrik", "fark", "alt", "ust"]].round(2).to_string())
+yaz("Secilen hane profili:\n" + profil.round(2).to_string())
 
 esiksiz = []
 for sema in ("temiz", "tam", "temiz_2023"):

@@ -99,6 +99,7 @@ def ap_w(s, y, w):
 konfigler = [{"gizli": g, "birakma": b, "wd": wd, "lr": 1e-3} for g in ((128, 64), (256, 128)) for b in (0.1, 0.3) for wd in (1e-5, 1e-3)]
 sonuc = []
 ayar = []
+mlp_skor = {}
 for s in ("A1", "A2"):
     feats = setler[s]
     katlar = [(h[h["yil"] == 2023], h[(h["yil"] == 2024) & (h["eslesen_onceki_yil"] == 0)]), (h[h["yil"] == 2024], h[(h["yil"] == 2023) & (h["eslesen_sonraki_yil"] == 0)])]
@@ -117,6 +118,7 @@ for s in ("A1", "A2"):
     te = h[(h["yil"] == 2025) & (h["test_temiz"] == 1)]
     Xtr, (Xte,) = kodla(tr, [te], feats)
     p = np.mean([tahmin(egit(Xtr, tr["FI"].values, tr["w"].values, en[1], TOHUM + i, en[2])[0], Xte) for i in range(5)], axis=0)
+    mlp_skor[f"mlp_{s}"] = pd.Series(p.astype(float), index=te["hane_kimlik"].values)
     y, w = te["FI"].values.astype(float), te["HB040"].values.astype(float)
     sk = pd.read_parquet(VERI / "ml" / "skorlar_2025.parquet").set_index("hane_kimlik").loc[te["hane_kimlik"].values]
     rng = np.random.default_rng(TOHUM + 7)
@@ -140,6 +142,7 @@ for s in ("A1", "A2"):
                   "auc_fark_alt": float(np.percentile(fark, 2.5)), "auc_fark_ust": float(np.percentile(fark, 97.5)), "n_test": n})
     print(sonuc[-1], flush=True)
 pd.DataFrame(ayar).to_csv(SON / "log" / "H2_mlp_ayar.csv", index=False)
+pd.DataFrame(mlp_skor).rename_axis("hane_kimlik").reset_index().to_parquet(VERI / "ml" / "mlp_skorlar_2025.parquet", index=False)
 r = pd.DataFrame(sonuc)
 r["sure_dk"] = round((time.time() - T_BAS) / 60, 2)
 r.to_csv(SON / "H2_mlp.csv", index=False)
