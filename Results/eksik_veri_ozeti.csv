@@ -1,0 +1,34 @@
+degisken,etiket,grup,n_eksik_y2023,yuzde_y2023,n_eksik_y2024,yuzde_y2024,n_eksik_y2025,yuzde_y2025,n_eksik_test2025,yuzde_test2025,n_eksik_gelistirme,yuzde_gelistirme,n_eksik_h3_yetiskin,yuzde_h3_yetiskin,n_eksik_h3_hane,yuzde_h3_hane,eksiklik_turu,islem
+FI,Food insecurity (HE090),Outcome and income,0,0,0,0,0,0,0,0,0,0,0,0,0,0,yok,-
+T1,"Income features (T1, 11 variables)",Outcome and income,0,0,0,0,0,0,0,0,0,0,0,0,0,0,yok,-
+is_yogunlugu,Work intensity,Features with missing values,5239,21.0131557837318,5688,21.9402121504339,5697,22.0506270320483,1681,21.3840478310648,10927,21.4857345104902,,,,,yapisal,"LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"
+reis_calisma7,Activity status of reference person,Features with missing values,16,0.0641745547890262,6,0.0231436837029894,13,0.0503173865923518,3,0.038163083577153,22,0.0432585484790688,,,,,yanitsizlik: referans kisinin bireysel kaydi yok,"LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"
+reis_egitim,Education of reference person,Features with missing values,16,0.0641745547890262,6,0.0231436837029894,13,0.0503173865923518,3,0.038163083577153,22,0.0432585484790688,,,,,yanitsizlik: referans kisinin bireysel kaydi yok,"LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"
+reis_gali,Activity limitation of reference person,Features with missing values,16,0.0641745547890262,6,0.0231436837029894,13,0.0503173865923518,3,0.038163083577153,22,0.0432585484790688,,,,,yanitsizlik: referans kisinin bireysel kaydi yok,"LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"
+reis_kronik,Reference person has chronic illness,Features with missing values,16,0.0641745547890262,6,0.0231436837029894,13,0.0503173865923518,3,0.038163083577153,22,0.0432585484790688,,,,,yanitsizlik: referans kisinin bireysel kaydi yok,"LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"
+reis_medeni,Marital status of reference person,Features with missing values,16,0.0641745547890262,6,0.0231436837029894,13,0.0503173865923518,3,0.038163083577153,22,0.0432585484790688,,,,,yanitsizlik: referans kisinin bireysel kaydi yok,"LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"
+reis_saglik,Self-rated health of reference person,Features with missing values,16,0.0641745547890262,6,0.0231436837029894,13,0.0503173865923518,3,0.038163083577153,22,0.0432585484790688,,,,,yanitsizlik: referans kisinin bireysel kaydi yok,"LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"
+calisan_oran,Share of adults employed,Features with missing values,0,0,0,0,1,0.00387056819941167,1,0.012721027859051,0,0,,,,,yanitsizlik: hicbir yetiskinin bireysel kaydi yok,"LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"
+egitim_max,Highest education among adults,Features with missing values,0,0,0,0,1,0.00387056819941167,1,0.012721027859051,0,0,,,,,yanitsizlik: hicbir yetiskinin bireysel kaydi yok,"LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"
+egitim_min,Lowest education among adults,Features with missing values,0,0,0,0,1,0.00387056819941167,1,0.012721027859051,0,0,,,,,yanitsizlik: hicbir yetiskinin bireysel kaydi yok,"LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"
+diger,All other features (73),Features with missing values,0,0,0,0,0,0,0,0,0,0,,,,,yok,-
+konut_orani_k,Housing cost-to-income ratio (not a model feature),Other derived variables,5,0.0200545483715707,25925,100,14,0.0541879547917634,7,0.0890471950133571,25930,50.986098275557,,,,,"tasarim geregi (2024, HH050 kirilmasi)",ozellik setlerine alinmadi
+dusuk_is_yogunlugu,Very low work intensity (fixed rule),Other derived variables,5239,21.0131557837318,5688,21.9402121504339,5697,22.0506270320483,1681,21.3840478310648,10927,21.4857345104902,,,,,yapisal,sabit kuralda 0 (cok dusuk degil) sayildi
+et_tavuk_balik_siklik,"Meat, chicken or fish frequency",H3 outcomes,,,,,,,,,,,0,0,,,yok,-
+vejetaryen,Vegetarian or vegan (excluded from the meat outcome),H3 outcomes,,,,,,,,,,,195,0.336793381578266,,,tanim geregi,et sonucunun paydasindan cikarildi (eksiklik degil)
+gunluk_meyve,Fruit frequency,H3 outcomes,,,,,,,,,,,0,0,,,yok,-
+gunluk_sebze,Vegetable or salad frequency,H3 outcomes,,,,,,,,,,,0,0,,,yok,-
+MODUL1_H_1,Medical costs a burden (household),H3 outcomes,,,,,,,,,,,,,0,0,yok,-
+MODUL1_H_3,Medicine costs a burden (household),H3 outcomes,,,,,,,,,,,,,0,0,yok,-
+yas,Age (adult; reference person for households),H3 covariates,,,,,,,,,,,0,0,0,0,yok,-
+cinsiyet,Sex,H3 covariates,,,,,,,,,,,0,0,0,0,yok,-
+egitim,Education,H3 covariates,,,,,,,,,,,0,0,13,0.0503173865923518,yanitsizlik: referans kisinin bireysel kaydi yok (hane),hane modelinde yetiskinlerin en yuksek egitimi kullanildi
+bolge,Region (NUTS 1),H3 covariates,,,,,,,,,,,0,0,0,0,yok,-
+hane_buyuklugu,Household size,H3 covariates,,,,,,,,,,,0,0,0,0,yok,-
+n_cocuk,Number of children,H3 covariates,,,,,,,,,,,0,0,0,0,yok,-
+medeni,Marital status,H3 covariates,,,,,,,,,,,0,0,13,0.0503173865923518,yanitsizlik: referans kisinin bireysel kaydi yok (hane),hane modelinde 'bilinmiyor' kategorisi
+faaliyet,Activity status,H3 covariates,,,,,,,,,,,0,0,13,0.0503173865923518,yanitsizlik: referans kisinin bireysel kaydi yok (hane),hane modelinde 'bilinmiyor' kategorisi
+kronik,Chronic illness (adult; number of members for households),H3 covariates,,,,,,,,,,,0,0,0,0,yok,-
+gali,Activity limitation (adult; number of members for households),H3 covariates,,,,,,,,,,,0,0,0,0,yok,-
+HB050,Household type,H3 covariates,,,,,,,,,,,0,0,0,0,yok,-
+HH020,Tenure status,H3 covariates,,,,,,,,,,,0,0,0,0,yok,-

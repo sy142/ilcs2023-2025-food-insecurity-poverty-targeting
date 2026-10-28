@@ -1,0 +1,56 @@
+asama,ogrenici,parametre,alt_sinir,ust_sinir,olcek,secenekler,not
+tum LightGBM asamalari,LightGBM,objective,,,sabit,binary,HB040 weights scaled to mean 1 within year; bagging_freq 1; deterministic
+tum LightGBM asamalari,LightGBM,num_boost_round (ayar),,10000.0,sabit ust sinir,,"early stopping on the validation fold; patience max(100, round(2 / learning_rate))"
+tum LightGBM asamalari,LightGBM,katlar,,,sabit,train 2023 -> validate 2024 unmatched; train 2024 -> validate 2023 unmatched,criterion: weighted log-loss averaged over folds (and seeds)
+1 genis,LightGBM,num_leaves,8.0,128.0,tamsayi tekduze,,"60 configurations, seed 20261026"
+1 genis,LightGBM,min_data_in_leaf,20.0,400.0,tamsayi tekduze,,
+1 genis,LightGBM,learning_rate,0.01,0.1,log-tekduze,,
+1 genis,LightGBM,feature_fraction,0.4,1.0,tekduze,,
+1 genis,LightGBM,bagging_fraction,0.5,1.0,tekduze,,
+1 genis,LightGBM,lambda_l2,0.001,20.0,log-tekduze,,
+1 genis,LightGBM,max_depth,,,secenek kumesi,-1; 4; 6; 8; 10,equal probabilities; -1 = no limit
+1 genis,LightGBM,lambda_l1,0.0,0.0,sabit,,LightGBM default
+1 genis,LightGBM,min_gain_to_split,0.0,0.0,sabit,,LightGBM default
+1 genis,LightGBM,cat_smooth,10.0,10.0,sabit,,LightGBM default
+2 odakli,LightGBM,num_leaves,24.0,256.0,log-tekduze (tamsayiya yuvarlanir),,"60 configurations, seed 20261027"
+2 odakli,LightGBM,min_data_in_leaf,10.0,200.0,log-tekduze (tamsayiya yuvarlanir),,
+2 odakli,LightGBM,learning_rate,0.004,0.03,log-tekduze,,
+2 odakli,LightGBM,feature_fraction,0.5,1.0,tekduze,,
+2 odakli,LightGBM,bagging_fraction,0.6,1.0,tekduze,,
+2 odakli,LightGBM,lambda_l2,0.01,30.0,log-tekduze,,
+2 odakli,LightGBM,lambda_l1,0.01,5.0,karisim: 0 (olasilik 0.5) veya log-tekduze,,
+2 odakli,LightGBM,min_gain_to_split,,,secenek kumesi,0 (p = 0.5); 0.01 (p = 0.25); 0.05 (p = 0.25),
+2 odakli,LightGBM,cat_smooth,1.0,50.0,log-tekduze,,
+2 odakli,LightGBM,max_depth,,,secenek kumesi,8; 10; 12; 14; -1,equal probabilities
+3 tohum yeniden degerlendirme,LightGBM,tohum,,,secenek kumesi,20261127; 20261128,the 5 configurations with the lowest mean log-loss re-run with two further seeds; selection among configurations with >= 6 evaluations (3 seeds x 2 folds)
+4 sinir genisletme,LightGBM,tetikleyici,,,kural,,"selected configuration within 15% of the lower learning_rate or min_data_in_leaf bound, within 10% of the upper num_leaves bound or within 15% of the upper lambda_l2 bound; at most 2 rounds of 30 configurations (seeds 20261427, 20261428); best 3 of each round re-run with two seeds"
+4 sinir genisletme,LightGBM,num_leaves,8.0,512.0,"carpimsal log-normal sapma (sd 0.4; ortalama 0.3 sinirdaysa), yuvarlanir ve kirpilir",,perturbation of the current best configuration
+4 sinir genisletme,LightGBM,min_data_in_leaf,2.0,400.0,"carpimsal log-normal sapma (sd 0.5; ortalama -0.5 sinirdaysa), yuvarlanir ve kirpilir",,
+4 sinir genisletme,LightGBM,learning_rate,0.002,0.1,"carpimsal log-normal sapma (sd 0.35; ortalama -0.4 sinirdaysa), kirpilir",,
+4 sinir genisletme,LightGBM,lambda_l2,0.001,100.0,"carpimsal log-normal sapma (sd 0.8; ortalama 0.4 sinirdaysa), kirpilir",,
+4 sinir genisletme,LightGBM,feature_fraction,0.3,1.0,"toplamsal normal sapma (sd 0.08), kirpilir",,
+4 sinir genisletme,LightGBM,bagging_fraction,0.4,1.0,"toplamsal normal sapma (sd 0.08), kirpilir",,
+4 sinir genisletme,LightGBM,lambda_l1,0.0,10.0,"carpimsal log-normal sapma (sd 0.8), kirpilir",,
+4 sinir genisletme,LightGBM,cat_smooth,1.0,100.0,"carpimsal log-normal sapma (sd 0.5), kirpilir",,
+4 sinir genisletme,LightGBM,min_gain_to_split; max_depth,,,sabit,,kept from the current best configuration
+bicim merdiveni kisitli modeller,"LightGBM (additive, depth 2)",num_boost_round (ayar),,30000.0,sabit ust sinir,,"60 configurations per set and form; additive: interaction constraints, one feature per tree; depth 2: num_leaves 4, max_depth 2"
+bicim merdiveni kisitli modeller,"LightGBM (additive, depth 2)",learning_rate,0.005,0.3,log-tekduze,,
+bicim merdiveni kisitli modeller,"LightGBM (additive, depth 2)",min_data_in_leaf,5.0,500.0,log-tekduze (tamsayiya yuvarlanir),,
+bicim merdiveni kisitli modeller,LightGBM (additive),num_leaves,2.0,32.0,log-tekduze (tamsayiya yuvarlanir),,depth 2: fixed at 4
+bicim merdiveni kisitli modeller,"LightGBM (additive, depth 2)",feature_fraction,0.3,1.0,tekduze,,
+bicim merdiveni kisitli modeller,"LightGBM (additive, depth 2)",bagging_fraction,0.5,1.0,tekduze,,
+bicim merdiveni kisitli modeller,"LightGBM (additive, depth 2)",lambda_l2,0.001,100.0,log-tekduze,,
+bicim merdiveni kisitli modeller,"LightGBM (additive, depth 2)",lambda_l1,0.01,5.0,karisim: 0 (olasilik 0.5) veya log-tekduze,,
+bicim merdiveni kisitli modeller,"LightGBM (additive, depth 2)",cat_smooth,1.0,100.0,log-tekduze,,
+bicim merdiveni kisitli modeller,"LightGBM (additive, depth 2)",min_gain_to_split,0.0,0.0,sabit,,
+bicim merdiveni kisitli modeller,"LightGBM (additive, depth 2)",genisletme,,,kural,,"if the best configuration is near a bound: 30 perturbations (learning_rate clipped to [0.001, 1], min_data_in_leaf [1, 1000], lambda_l2 [1e-4, 300], feature_fraction [0.2, 1], bagging_fraction [0.4, 1], num_leaves [2, 128])"
+ridge,"Ridge logistic (linear, splines)",C,1e-05,10.0,secenek kumesi,1e-05; 3.162e-05; 0.0001; 0.0003162; 0.001; 0.003162; 0.01; 0.03162; 0.1; 0.3162; 1; 3.162; 10,13 log-spaced values; final C rescaled by mean fold training weight / full training weight; splines: cubic B-splines with 5 quantile knots
+lasso,Lasso logistic,C (L1 yolu),0.0001,1.0,secenek kumesi,41 log-spaced values,largest C with at most six variables; refit with ridge penalty C = 10
+CART,Depth-3 tree,criterion,,,secenek kumesi,entropy; gini,max_depth 3
+CART,Depth-3 tree,min_weight_fraction_leaf,0.001,0.1,secenek kumesi,0.001; 0.0025; 0.005; 0.01; 0.02; 0.05; 0.075; 0.1,
+CART,Depth-3 tree,ccp_alpha,,,secenek kumesi,union of both folds' cost-complexity pruning paths (rounded to 8 decimals),every value evaluated in both folds
+MLP,Multilayer perceptron,gizli katmanlar,,,secenek kumesi,"(128, 64); (256, 128)",ReLU; AdamW; batch 512; weighted binary cross-entropy
+MLP,Multilayer perceptron,dropout,,,secenek kumesi,0.1; 0.3,
+MLP,Multilayer perceptron,weight_decay,,,secenek kumesi,1e-5; 1e-3,
+MLP,Multilayer perceptron,learning_rate,0.001,0.001,sabit,,
+MLP,Multilayer perceptron,epok,1.0,40.0,secim,,"epoch with the lowest validation log-loss, averaged over folds; five seeds averaged in the final model"

@@ -19,3 +19,5 @@ Prediction models,"","","","","","",""
 Poverty line plus top-up among non-poor households,"","","","","","",""
 Poverty line + tree among non-poor (structural),–,–,–,"","52.3 (50.9, 53.7)",68.6,"65.0 (63.4, 66.5)"
 Poverty line + LightGBM among non-poor,–,–,–,"","57.0 (55.3, 58.5)",74.7,"70.2 (68.6, 71.6)"
+Upper bound,"","","","","","",""
+Perfect ranking (ceiling),"39.1 (36.9, 41.3)",100.0,–,–,"76.3 (73.9, 78.8)",100.0,100.0

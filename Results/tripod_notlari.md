@@ -13,4 +13,5 @@
 - Fairness/subgroups (14): child coverage reported; results by household type for the poverty line (Supplementary Table S7).
 - Interpretability (12): TreeSHAP global importance and dependence; functional-form ladder (linear, smooth additive, boosted additive, pairwise, unrestricted) and Friedman H statistics for interactions; plain-language rule sets.
 - Limitations (25): residual panel overlap among households that moved or changed reference person; simulation S1 quantifies optimism from undetected overlap; single-item outcome; external validity beyond Turkey not assessed.
+- Model presentation (22): intercepts, coefficients and preprocessing parameters of the ridge and lasso models in Results/modeller; Codes/tahmin_uygula.py scores a household table with them. Trained gradient-boosting models are not distributed because individual trees contain leaves based on fewer than five training households; they are re-created exactly by the code from the licensed microdata.
 - Code and data availability (27): code in Codes/; micro data available from TurkStat on application.
