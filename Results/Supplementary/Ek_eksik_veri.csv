@@ -1,0 +1,39 @@
+Variable,"2023 (n = 24,932)","2024 (n = 25,925)","2025 (n = 25,836)","2025 main test set (n = 7,861)","Development (2023–2024) (n = 50,857)","H3 adults (n = 57,899)","H3 households (n = 25,836)",Missingness
+Outcome and income,"","","","","","","",""
+Food insecurity (HE090),0,0,0,0,0,0,0,None
+"Income features (T1, 11 variables)",0,0,0,0,0,0,0,None
+Features with missing values,"","","","","","","",""
+Work intensity,"5,239 (21.0)","5,688 (21.9)","5,697 (22.1)","1,681 (21.4)","10,927 (21.5)",–,–,Structural
+Activity status of reference person,16 (0.06),6 (0.02),13 (0.05),3 (0.04),22 (0.04),–,–,Item nonresponse
+Education of reference person,16 (0.06),6 (0.02),13 (0.05),3 (0.04),22 (0.04),–,–,Item nonresponse
+Activity limitation of reference person,16 (0.06),6 (0.02),13 (0.05),3 (0.04),22 (0.04),–,–,Item nonresponse
+Reference person has chronic illness,16 (0.06),6 (0.02),13 (0.05),3 (0.04),22 (0.04),–,–,Item nonresponse
+Marital status of reference person,16 (0.06),6 (0.02),13 (0.05),3 (0.04),22 (0.04),–,–,Item nonresponse
+Self-rated health of reference person,16 (0.06),6 (0.02),13 (0.05),3 (0.04),22 (0.04),–,–,Item nonresponse
+Share of adults employed,0,0,1 (<0.01),1 (0.01),0,–,–,Item nonresponse
+Highest education among adults,0,0,1 (<0.01),1 (0.01),0,–,–,Item nonresponse
+Lowest education among adults,0,0,1 (<0.01),1 (0.01),0,–,–,Item nonresponse
+All other features (73),0,0,0,0,0,–,–,None
+Other derived variables,"","","","","","","",""
+Housing cost-to-income ratio (not a model feature),5 (0.02),"25,925 (100.0)",14 (0.05),7 (0.09),"25,930 (51.0)",–,–,By design
+Very low work intensity (fixed rule),"5,239 (21.0)","5,688 (21.9)","5,697 (22.1)","1,681 (21.4)","10,927 (21.5)",–,–,Structural
+H3 outcomes,"","","","","","","",""
+"Meat, chicken or fish frequency",–,–,–,–,–,0,–,None
+Vegetarian or vegan (excluded from the meat outcome),–,–,–,–,–,195 (0.3),–,By definition
+Fruit frequency,–,–,–,–,–,0,–,None
+Vegetable or salad frequency,–,–,–,–,–,0,–,None
+Medical costs a burden (household),–,–,–,–,–,–,0,None
+Medicine costs a burden (household),–,–,–,–,–,–,0,None
+H3 covariates,"","","","","","","",""
+Age (adult; reference person for households),–,–,–,–,–,0,0,None
+Sex,–,–,–,–,–,0,0,None
+Education,–,–,–,–,–,0,13 (0.05),Item nonresponse
+Region (NUTS 1),–,–,–,–,–,0,0,None
+Household size,–,–,–,–,–,0,0,None
+Number of children,–,–,–,–,–,0,0,None
+Marital status,–,–,–,–,–,0,13 (0.05),Item nonresponse
+Activity status,–,–,–,–,–,0,13 (0.05),Item nonresponse
+Chronic illness (adult; number of members for households),–,–,–,–,–,0,0,None
+Activity limitation (adult; number of members for households),–,–,–,–,–,0,0,None
+Household type,–,–,–,–,–,0,0,None
+Tenure status,–,–,–,–,–,0,0,None

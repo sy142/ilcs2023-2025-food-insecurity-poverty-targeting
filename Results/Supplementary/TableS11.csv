@@ -45,6 +45,7 @@ Rule (leaf) or term,"Share of households, %","Food insecure, %","Share of househ
 7. Equivalized income relative to median > 1.95 and Owns a car: No,6.9,16.2,7.5,9.2,""
 8. Equivalized income relative to median > 1.95 and Owns a car: Yes,16.8,6.5,18.1,2.2,""
 "Lasso logistic, structural (all households)","","","","",""
+Intercept (odds),"","","","",3.43
 Heating system: Stove,"","","","",1.39
 Heating system: Central heating (building),"","","","",0.67
 Heating system: Individual central heating,"","","","",0.88
@@ -58,6 +59,7 @@ Highest education among adults: Lower secondary,"","","","",1.32
 Highest education among adults: Upper secondary,"","","","",1.10
 Highest education among adults: Tertiary,"","","","",0.63
 "Lasso logistic, income + structural (all households)","","","","",""
+Intercept (odds),"","","","",4.09
 Owns a computer: yes vs no,"","","","",0.79
 Owns a car: yes vs no,"","","","",0.58
 "Leaking roof, damp or rot: No vs Yes","","","","",0.61
@@ -69,6 +71,7 @@ Highest education among adults: Upper secondary,"","","","",1.04
 Highest education among adults: Tertiary,"","","","",0.79
 "Relative income, per unit of log","","","","",0.30
 "Lasso logistic, structural (non-poor households)","","","","",""
+Intercept (odds),"","","","",3.98
 Owns a computer: yes vs no,"","","","",0.70
 Owns a car: yes vs no,"","","","",0.50
 "Leaking roof, damp or rot: No vs Yes","","","","",0.57
