@@ -1,0 +1,131 @@
+{
+ "model": "l1_T1T2",
+ "aciklama": "Lasso logistic (at most six variables, refitted with a weak ridge penalty); income + structural; all households",
+ "nufus": "all households",
+ "egitim": "2023-2024",
+ "ozellikler": [
+  "HH180_var",
+  "HH240_var",
+  "HS010",
+  "HS020",
+  "egitim_max",
+  "log_goreli_gelir"
+ ],
+ "sirali_sayisal": false,
+ "spline": false,
+ "kategoriler": {
+  "egitim_max": [
+   1.0,
+   2.0,
+   3.0,
+   4.0,
+   5.0
+  ]
+ },
+ "sayisal": {
+  "HH180_var": {
+   "medyan": 0.0,
+   "eksik_gostergesi": false
+  },
+  "HH240_var": {
+   "medyan": 0.0,
+   "eksik_gostergesi": false
+  },
+  "HS010": {
+   "medyan": 2.0,
+   "eksik_gostergesi": false
+  },
+  "HS020": {
+   "medyan": 2.0,
+   "eksik_gostergesi": false
+  },
+  "log_goreli_gelir": {
+   "medyan": 0.008510230655269773,
+   "eksik_gostergesi": false
+  }
+ },
+ "spline_dugumleri": {},
+ "terimler": [
+  "HH180_var",
+  "HH240_var",
+  "HS010",
+  "HS020",
+  "egitim_max=1.0",
+  "egitim_max=2.0",
+  "egitim_max=3.0",
+  "egitim_max=4.0",
+  "egitim_max=5.0",
+  "egitim_max=bos",
+  "log_goreli_gelir"
+ ],
+ "terim_degiskeni": [
+  "HH180_var",
+  "HH240_var",
+  "HS010",
+  "HS020",
+  "egitim_max",
+  "egitim_max",
+  "egitim_max",
+  "egitim_max",
+  "egitim_max",
+  "egitim_max",
+  "log_goreli_gelir"
+ ],
+ "ortalama": [
+  0.4043297874432232,
+  0.44982991525257093,
+  1.7048390585366813,
+  1.6966199343256583,
+  0.06577265666476591,
+  0.24720294158129658,
+  0.08753957174037005,
+  0.2740035786617378,
+  0.32548125135182965,
+  0.0,
+  0.04498776446523328
+ ],
+ "standart_sapma": [
+  0.4907618673344712,
+  0.4974765950237274,
+  0.456115073307118,
+  0.4597179585636318,
+  0.2478842760242658,
+  0.4313857290811196,
+  0.28262412338639764,
+  0.4460107818677898,
+  0.4685543793097452,
+  1.0,
+  0.6970134724119329
+ ],
+ "sabit": -0.528591059817415,
+ "katsayilar": [
+  -0.11766035489965473,
+  -0.27197776570996285,
+  -0.22684418081261407,
+  -0.18449859726010215,
+  0.0295545730092228,
+  0.05713464238491972,
+  0.043868642083227306,
+  0.016858927509633102,
+  -0.11074655480543429,
+  0.0,
+  -0.8282146912902711
+ ],
+ "sabit_ham": 1.4089230790006557,
+ "katsayilar_ham": [
+  -0.23975040183687527,
+  -0.5467146965918884,
+  -0.4973398032383641,
+  -0.4013299759630008,
+  0.11922730026784617,
+  0.13244444248682108,
+  0.15521902928028206,
+  0.037799372111660214,
+  -0.2363579547982915,
+  0.0,
+  -1.1882334044768632
+ ],
+ "C_ayar": null,
+ "C_nihai": 10.0,
+ "C_l1_yol": 0.00031622776601683794
+}

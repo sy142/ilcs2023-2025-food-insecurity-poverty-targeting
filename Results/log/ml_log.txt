@@ -17,7 +17,9 @@
 [   0.0 dk] Kural setleri hazir: {'cart_T2': (8, 'gini', 0.02, 0.0, 0.5872), 'cart_T1T2': (8, 'gini', 0.02, 0.0, 0.5599), 'cart_T2idari': (8, 'entropy', 0.001, 0.0, 0.5967), 'cart_B_T2': (8, 'gini', 0.05, 0.0, 0.565), 'cart_B_T2gelir': (8, 'gini', 0.05, 0.0, 0.5472), 'cart_T2_2023': (8, 'gini', 0.02, 0.0, 0.5872)} {'l1_T2': [np.str_('HH080'), np.str_('HH180_var'), np.str_('HH240_var'), np.str_('HS010'), np.str_('egitim_max')], 'l1_T1T2': [np.str_('HH180_var'), np.str_('HH240_var'), np.str_('HS010'), np.str_('HS020'), np.str_('egitim_max'), np.str_('log_goreli_gelir')], 'l1_B_T2': [np.str_('HH180_var'), np.str_('HH240_var'), np.str_('HS010'), np.str_('HS020'), np.str_('egitim_max'), np.str_('reis_egitim')]}
 [   0.0 dk] Kurallar yazildi
 [   0.5 dk] 2025 skorlari yazildi: (25836, 30)
-[   6.8 dk] Bootstrap yakinsama (B/2 ile B arasinda sinir farki, puan):
+[   0.8 dk] Model dosyalari yazildi: 8 lojistik model; LightGBM dokumleri yerelde /Users/salim/Documents/makaleler/foods makaleleri 26-27/Foods Makalesi 2/R_Data ve Python Data/ml/lightgbm
+[   0.8 dk] Arama uzayi tanimi yazildi: 55 satir
+[   7.2 dk] Bootstrap yakinsama (B/2 ile B arasinda sinir farki, puan):
     tablo      metrik  en_buyuk  medyan  ana_test_en_buyuk  pay_0_1_ustu
 0  metrik     kapsama     0.047   0.000              0.010         0.000
 1  metrik  duyarlilik     0.105   0.021              0.062         0.003
@@ -26,13 +28,13 @@
 4    fark  duyarlilik     0.098   0.018              0.098         0.000
 5    fark         ppv     0.146   0.026              0.104         0.010
 6    fark       cocuk     0.259   0.048              0.218         0.161
-[   6.8 dk] Model-model eslesik farklar (temiz, yoksulluk orani):
+[   7.2 dk] Model-model eslesik farklar (temiz, yoksulluk orani):
             kol karsilastirma      metrik  fark   alt   ust
 0        lgb_A1        lgb_A2  duyarlilik  1.91  1.02  2.70
 1        lgb_A1        lgb_A2         ppv  4.89  2.63  6.84
 2        lgb_A1        lgb_A2       cocuk  4.98  2.51  7.81
 3  logit_lin_A1        lgb_A2  duyarlilik  2.14  1.23  2.99
-[   6.9 dk] Aralik yontemleri (duyarlilik farki, yoksulluk cizgisine gore):
+[   7.2 dk] Aralik yontemleri (duyarlilik farki, yoksulluk cizgisine gore):
             kol    yontem   fark    alt    ust     z0   ivme
 0       cart_T2  yuzdelik -0.920 -2.536  0.655    NaN    NaN
 1       cart_T2     basic -0.920 -2.496  0.696    NaN    NaN
@@ -43,8 +45,59 @@
 6  logit_lin_A1  yuzdelik  3.852  2.880  4.951    NaN    NaN
 7  logit_lin_A1     basic  3.852  2.752  4.823    NaN    NaN
 8  logit_lin_A1       BCa  3.852  2.799  4.856 -0.084 -0.004
-[   8.7 dk] Esiksiz metrikler yazildi
-[   8.8 dk] Bicim merdiveni:
+[   7.3 dk] Tavan:
+    sema nufus  kapsama_noktasi  kapsama  FI_yayginligi  tavan_duyarlilik  tavan_duyarlilik_alt  tavan_duyarlilik_ust  tavan_ppv
+0  temiz     A  yoksulluk_orani    15.36          39.32             39.07                 36.91                 41.26     100.00
+1  temiz     A               20    20.00          39.32             50.86                 49.29                 52.56     100.00
+2  temiz     A               30    30.00          39.32             76.29                 73.93                 78.85     100.00
+3  temiz     A               40    40.00          39.32            100.00                 98.58                100.00      98.31
+4  temiz     A    FI_yayginligi    39.32          39.32            100.00                100.00                100.00     100.00
+[   7.3 dk] Ulasilabilir kazanc payi:
+    sema nufus           kol                      olcu  deger    alt    ust  duyarlilik  esik_duyarlilik  tavan
+0  temiz     A     yoksul_60          esik_tavan_orani  75.77  73.12  78.36       29.60             29.6  39.07
+1  temiz     A       l1_T1T2  ulasilabilir_kazanc_payi  37.86  29.09  45.66       33.19             29.6  39.07
+2  temiz     A        lgb_A1  ulasilabilir_kazanc_payi  38.26  28.87  47.74       33.23             29.6  39.07
+3  temiz     A  logit_lin_A1  ulasilabilir_kazanc_payi  40.68  31.98  50.00       33.46             29.6  39.07
+4  temiz     A        lgb_A2  ulasilabilir_kazanc_payi  18.07   6.37  30.08       31.32             29.6  39.07
+5  temiz     A  logit_lin_A2  ulasilabilir_kazanc_payi  23.48  10.74  34.42       31.83             29.6  39.07
+[   7.3 dk] Modeller arasi farklar:
+          sema           kol karsilastirma      metrik  fark   alt    ust
+0        temiz       l1_T1T2        lgb_A1  duyarlilik -0.04 -0.97   0.81
+1        temiz       l1_T1T2        lgb_A1         ppv -0.10 -2.49   2.06
+2        temiz       l1_T1T2        lgb_A1       cocuk  6.38  3.17   9.06
+3        temiz       l1_T1T2  logit_lin_A1  duyarlilik -0.27 -1.16   0.52
+4        temiz       l1_T1T2  logit_lin_A1         ppv -0.68 -2.96   1.32
+5        temiz       l1_T1T2  logit_lin_A1       cocuk  6.31  2.92   9.02
+6        temiz        lgb_A1        lgb_A2  duyarlilik  1.91  1.02   2.70
+7        temiz        lgb_A1        lgb_A2         ppv  4.89  2.63   6.84
+8        temiz        lgb_A1        lgb_A2       cocuk  4.98  2.51   7.81
+9        temiz  logit_lin_A1  logit_lin_A2  duyarlilik  1.63  0.93   2.50
+10       temiz  logit_lin_A1  logit_lin_A2         ppv  4.17  2.40   6.36
+11       temiz  logit_lin_A1  logit_lin_A2       cocuk  4.21  1.86   6.94
+12  temiz_siki       l1_T1T2        lgb_A1  duyarlilik  0.13 -0.77   1.16
+13  temiz_siki       l1_T1T2        lgb_A1         ppv  0.33 -1.92   2.89
+14  temiz_siki       l1_T1T2        lgb_A1       cocuk  7.09  4.09  10.30
+15  temiz_siki       l1_T1T2  logit_lin_A1  duyarlilik -0.11 -0.94   0.90
+16  temiz_siki       l1_T1T2  logit_lin_A1         ppv -0.29 -2.38   2.24
+17  temiz_siki       l1_T1T2  logit_lin_A1       cocuk  7.01  3.83  10.27
+18  temiz_siki        lgb_A1        lgb_A2  duyarlilik  1.72  0.80   2.63
+19  temiz_siki        lgb_A1        lgb_A2         ppv  4.33  2.02   6.57
+20  temiz_siki        lgb_A1        lgb_A2       cocuk  5.28  2.23   8.31
+21  temiz_siki  logit_lin_A1  logit_lin_A2  duyarlilik  1.57  0.60   2.39
+22  temiz_siki  logit_lin_A1  logit_lin_A2         ppv  3.95  1.52   5.96
+23  temiz_siki  logit_lin_A1  logit_lin_A2       cocuk  3.84  1.05   6.36
+[   7.3 dk] Secilen hane profili:
+    sema           kol  secilen_pay  duyarlilik     ppv  ortalama_cocuk  cocuklu_hane_payi  tek_kisilik_hane_payi  yasli_uyeli_hane_payi  medyan_goreli_gelir  ortalama_goreli_gelir
+0  temiz   tum_haneler       100.00      100.00   39.32            0.74              38.11                  26.72                  23.74                 1.12                   1.57
+1  temiz    FI_haneler        39.32      100.00  100.00            0.70              31.68                  37.61                  33.07                 0.78                   0.86
+2  temiz     yoksul_60        15.36       29.60   75.77            1.53              58.34                  15.02                  25.83                 0.47                   0.45
+3  temiz       l1_T1T2        15.36       33.19   84.94            1.28              49.11                  23.19                  32.59                 0.50                   0.53
+4  temiz        lgb_A1        15.36       33.23   85.04            1.16              44.45                  25.99                  24.61                 0.56                   0.60
+5  temiz  logit_lin_A1        15.36       33.46   85.63            1.14              45.15                  23.80                  23.63                 0.55                   0.60
+6  temiz        lgb_A2        15.36       31.32   80.15            1.13              43.00                  27.11                  24.67                 0.62                   0.73
+7  temiz       cart_T2        15.36       28.68   73.41            0.89              38.59                  32.19                  32.53                 0.76                   0.90
+[   9.1 dk] Esiksiz metrikler yazildi
+[   9.2 dk] Bicim merdiveni:
   set    basamak  cv_logloss  logloss     auc  duyarlilik  d_logloss  d_logloss_alt  d_logloss_ust   d_auc  d_duyarlilik
 0  A1  logit_lin      0.5205   0.4707  0.8566     33.4557        NaN            NaN            NaN     NaN           NaN
 1  A1      logit      0.5190   0.4721  0.8559     33.1680     0.0015        -0.0002         0.0031 -0.0006       -0.2877
@@ -56,7 +109,7 @@
 7  A2     lgb_ek      0.5381   0.5132  0.8181     31.8687    -0.0031        -0.0047        -0.0015  0.0009        0.0276
 8  A2     lgb_d2      0.5355   0.5144  0.8154     31.1842     0.0012        -0.0005         0.0029 -0.0028       -0.6845
 9  A2        lgb      0.5279   0.5125  0.8171     31.3151    -0.0019        -0.0054         0.0016  0.0018        0.1309
-[   8.8 dk] Tohum degiskenligi:
+[   9.2 dk] Tohum degiskenligi:
          auc         duyarlilik        
        mean     std       mean     std
 set                                   
@@ -64,8 +117,8 @@ A1   0.8548  0.0006    33.2952  0.1494
 A2   0.8167  0.0004    31.4910  0.1682
 A3   0.8801  0.0005    34.4342  0.1219
 B1   0.8358  0.0007    43.7382  0.2270
-[   9.5 dk] Yil modelleri hazir
-[   9.9 dk] 3x3 matris:
+[   9.9 dk] Yil modelleri hazir
+[  10.3 dk] 3x3 matris:
      egitim_yili  test_yili  ... kalibrasyon_kesim  kalibrasyon_egim
 0          2023       2023  ...             0.066             0.942
 1          2023       2024  ...             0.090             1.019
@@ -84,7 +137,7 @@ B1   0.8358  0.0007    43.7382  0.2270
 14         2025       2025  ...             0.067             0.958
 
 [15 rows x 6 columns]
-[   9.9 dk] PSI:
+[  10.3 dk] PSI:
    set    referans   yil     PSI  ortalama_tahmin  gozlenen_FI
 0  A1  2023 (OOF)  2024  0.0013           0.3681       0.3830
 1  A1  2023 (OOF)  2025  0.0021           0.3589       0.3696
@@ -92,7 +145,7 @@ B1   0.8358  0.0007    43.7382  0.2270
 3  A3  2023 (OOF)  2025  0.0040           0.3558       0.3696
 4  B1  2023 (OOF)  2024  0.0005           0.3023       0.3226
 5  B1  2023 (OOF)  2025  0.0038           0.2949       0.2996
-[   9.9 dk] SHAP A1 ilk 12:
+[  10.3 dk] SHAP A1 ilk 12:
               degisken  ortalama_mutlak_shap                grup
 0    log_goreli_gelir              0.441574              Income
 1   hane_gelir_dilim5              0.240646              Income
@@ -106,7 +159,7 @@ B1   0.8358  0.0007    43.7382  0.2270
 54              HH145              0.068747  Housing and assets
 42         egitim_max              0.065260           Education
 33              HH070              0.056064  Housing and assets
-[   9.9 dk] SHAP grup paylari:
+[  10.3 dk] SHAP grup paylari:
      model                   grup  toplam    pay
 0  A1_ana              Education    0.20   6.98
 1  A1_ana             Employment    0.15   5.32
@@ -130,7 +183,7 @@ B1   0.8358  0.0007    43.7382  0.2270
 5  A3_ana     Housing and assets    0.82  26.70
 6  A3_ana                 Income    0.78  25.32
 7  A3_ana                 Region    0.17   5.51
-[   9.9 dk] Friedman H ciftler ilk 8:
+[  10.3 dk] Friedman H ciftler ilk 8:
            degisken_1 degisken_2      H2  H_mutlak
 1    log_goreli_gelir      HB031  0.0084    0.0490
 21              HB031  HH240_var  0.0086    0.0242
@@ -140,7 +193,7 @@ B1   0.8358  0.0007    43.7382  0.2270
 11  hane_gelir_dilim5      HB031  0.0036    0.0193
 22              HB031      HS010  0.0043    0.0169
 4    log_goreli_gelir      HS020  0.0010    0.0169
-[   9.9 dk] Friedman H ozellikler:
+[  10.3 dk] Friedman H ozellikler:
              degisken      H2  H_mutlak  ana_etki_sd
 2               HB031  0.0095    0.1362       0.2058
 0    log_goreli_gelir  0.0093    0.1347       0.4853
@@ -154,7 +207,7 @@ B1   0.8358  0.0007    43.7382  0.2270
 8          pay_sosyal  0.0012    0.0479       0.0892
 7         reis_egitim  0.0010    0.0452       0.1000
 10         egitim_max  0.0007    0.0380       0.0683
-[   9.9 dk] Yil SHAP Spearman:
+[  10.3 dk] Yil SHAP Spearman:
    set  yil_1  yil_2  spearman  spearman_ilk20
 0  A1   2023   2024     0.934           0.818
 1  A1   2024   2025     0.884           0.886
@@ -162,4 +215,4 @@ B1   0.8358  0.0007    43.7382  0.2270
 3  A3   2023   2024     0.929           0.979
 4  A3   2024   2025     0.896           0.776
 5  A3   2023   2025     0.877           0.797
-[   9.9 dk] ml.py bitti. Toplam sure (dk): 9.89
+[  10.3 dk] ml.py bitti. Toplam sure (dk): 10.33

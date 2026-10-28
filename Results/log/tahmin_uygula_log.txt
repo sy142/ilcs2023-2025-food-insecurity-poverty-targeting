@@ -1,0 +1,9 @@
+       model    n  en_buyuk_mutlak_fark
+     l1_B_T2 7861                   0.0
+     l1_T1T2 7861                   0.0
+       l1_T2 7861                   0.0
+    logit_A1 7861                   0.0
+    logit_A2 7861                   0.0
+    logit_B1 7861                   0.0
+logit_lin_A1 7861                   0.0
+logit_lin_A2 7861                   0.0

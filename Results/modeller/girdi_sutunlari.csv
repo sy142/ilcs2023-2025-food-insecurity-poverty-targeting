@@ -1,0 +1,71 @@
+degisken,etiket,tur,eksik_olabilir,modeller
+HB031,Region (NUTS 2),nominal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HB050,Household type,nominal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH010,Dwelling type,nominal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH020,Tenure status,nominal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH060,Number of rooms,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH070,Floor area (m²),sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH080,Heating system,nominal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1;l1_T2
+HH100,Bath or shower in dwelling,nominal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH110,Indoor flushing toilet,nominal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH120,Separate kitchen,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH145,Satisfaction with dwelling,sirali,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH180_var,Owns a computer,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1;l1_T2;l1_T1T2;l1_B_T2
+HH190_var,Has internet access,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH200_var,Owns a washing machine,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH220_var,Owns a dishwasher,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH230_var,Owns an air conditioner,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HH240_var,Owns a car,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1;l1_T2;l1_T1T2;l1_B_T2
+HS010,"Leaking roof, damp or rot",sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1;l1_T2;l1_T1T2;l1_B_T2
+HS020,Insufficient insulation for heating,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1;l1_T1T2;l1_B_T2
+HS030,Dwelling too dark,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HS040,Noise from neighbors or street,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HS050,Adequate living space,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HS060,Pollution or other environmental problems,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+HS070,Crime or violence in the area,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+bagimli_oran,Dependency ratio,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+calisan_oran,Share of adults employed,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+ciddi_konut_yoksunlugu,Severe housing deprivation,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+egitim_max,Highest education among adults,sirali,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1;l1_T2;l1_T1T2;l1_B_T2
+egitim_min,Lowest education among adults,sirali,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+goreli_kira,Rent relative to median rent,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+hane_buyuklugu,Household size,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+hane_gelir_dilim5,Household disposable income quintile,sirali,False,logit_lin_A1;logit_A1
+is_yogunlugu,Work intensity,sayisal,True,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+kalabalik_konut,Overcrowded dwelling,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+kira_geliri_var,Has rental income,sayisal,False,logit_lin_A1;logit_A1
+kira_orani,Rent-to-income ratio,sayisal,False,logit_lin_A1;logit_A1
+log_goreli_gelir,Equivalized income relative to median (log),sayisal,False,logit_lin_A1;logit_A1;logit_B1;l1_T1T2
+m2_kisi,Floor area per person (m²),sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_0_5,Children aged 0–5,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_65plus,Members aged ≥65,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_75plus,Members aged ≥75,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_calisan,Employed adults,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_cocuk,Children (<18 years),sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_emekli,Retired adults,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_ev_isi,Adults in domestic or care work,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_gali,Adults with activity limitation,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_gecici,Temporary employees,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_issiz,Unemployed adults,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_karsilanmayan,Adults with unmet medical need,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_kayitsiz,Informally employed adults,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_kotu_saglik,Adults in bad or very bad health,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_kronik,Adults with chronic illness,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_yetiskin,Adults (≥18 years),sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+n_yevmiyeli,Casual (daily-wage) workers,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+ozel_transfer_var,Receives private transfers,sayisal,False,logit_lin_A1;logit_A1
+pay_emekli,Share of income from pensions,sayisal,False,logit_lin_A1;logit_A1
+pay_mutesebbis,Share of income from self-employment,sayisal,False,logit_lin_A1;logit_A1
+pay_ozel_transfer,Share of income from private transfers,sayisal,False,logit_lin_A1;logit_A1
+pay_sosyal,Share of income from social transfers,sayisal,False,logit_lin_A1;logit_A1
+pay_ucret,Share of income from wages,sayisal,False,logit_lin_A1;logit_A1
+reis_calisma7,Activity status of reference person,nominal,True,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+reis_cinsiyet,Sex of reference person,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+reis_egitim,Education of reference person,sirali,True,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1;l1_B_T2
+reis_gali,Activity limitation of reference person,sirali,True,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+reis_kronik,Reference person has chronic illness,sayisal,True,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+reis_medeni,Marital status of reference person,nominal,True,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+reis_saglik,Self-rated health of reference person,sirali,True,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+reis_yas,Age of reference person,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1
+sosyal_yardim_var,Receives social transfers,sayisal,False,logit_lin_A1;logit_A1
+tek_yetiskin_cocuklu,Single adult with children,sayisal,False,logit_lin_A1;logit_lin_A2;logit_A1;logit_A2;logit_B1

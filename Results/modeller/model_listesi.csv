@@ -1,0 +1,9 @@
+model,tur,aciklama,n_ozellik,n_terim_veya_agac,dosyalar
+logit_lin_A1,lojistik,"Ridge logistic, linear terms; income + structural (T1 + T2); all households",70,138,lojistik/logit_lin_A1.json; lojistik/logit_lin_A1_katsayilar.csv
+logit_lin_A2,lojistik,"Ridge logistic, linear terms; structural only (T2); all households",59,127,lojistik/logit_lin_A2.json; lojistik/logit_lin_A2_katsayilar.csv
+logit_A1,lojistik,"Ridge logistic, cubic B-splines for continuous features; income + structural; all households",70,192,lojistik/logit_A1.json; lojistik/logit_A1_katsayilar.csv
+logit_A2,lojistik,"Ridge logistic, cubic B-splines for continuous features; structural only; all households",59,171,lojistik/logit_A2.json; lojistik/logit_A2_katsayilar.csv
+logit_B1,lojistik,"Ridge logistic, cubic B-splines; structural + relative income; non-poor households",60,177,lojistik/logit_B1.json; lojistik/logit_B1_katsayilar.csv
+l1_T2,lojistik,"Lasso logistic (at most six variables, refitted with a weak ridge penalty); structural; all households",5,14,lojistik/l1_T2.json; lojistik/l1_T2_katsayilar.csv
+l1_T1T2,lojistik,"Lasso logistic (at most six variables, refitted with a weak ridge penalty); income + structural; all households",6,11,lojistik/l1_T1T2.json; lojistik/l1_T1T2_katsayilar.csv
+l1_B_T2,lojistik,"Lasso logistic (at most six variables, refitted with a weak ridge penalty); structural; non-poor households",6,16,lojistik/l1_B_T2.json; lojistik/l1_B_T2_katsayilar.csv

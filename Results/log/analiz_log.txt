@@ -1,4 +1,4 @@
-analiz.R basladi: 2026-10-27 10:18:05 
+analiz.R basladi: 2026-10-27 16:47:14 
 Veri: 239985 satir, 266 sutun
 msy_etsiz_sayi + msy_et_tavuk_balik - msy_sayi en buyuk mutlak fark: 0 
 Key: <yil_1, yil_2>
@@ -47,6 +47,17 @@ H1 dislama hatasi farki 2025 - 2023 (hane), bootstrap duyarliligi:
 1:    taylor_bagimsiz -2.304   0.754 -3.781 -0.827
 2:  eslesik_bootstrap -2.304   0.700 -3.694 -0.913
 3: bagimsiz_bootstrap -2.304   0.751 -3.684 -0.798
+
+H1 aritmetik taban (yoksulluk kadar hane secen herhangi bir kural):
+Key: <yil, duzey>
+     yil  duzey yoksul_payi FI_payi gozlenen_dislama aritmetik_taban gozlenen_eksi_taban
+   <num> <char>       <num>   <num>            <num>           <num>               <num>
+1:  2023   hane       16.28   37.38            70.39           56.45               13.94
+2:  2023   kisi       21.28   39.14            63.31           45.64               17.67
+3:  2024   hane       16.51   38.30            70.33           56.90               13.43
+4:  2024   kisi       21.18   39.34            63.16           46.15               17.01
+5:  2025   hane       15.98   36.96            68.09           56.77               11.32
+6:  2025   kisi       20.63   35.07            57.64           41.17               16.47
 
 H1 dislama hatasi (yoksul_60):
      yil  duzey tahmin   alt   ust     n  olay
@@ -247,31 +258,73 @@ pr_C2h yas: FK070 + yas4_1 + yas4_2 + yas4_3  secilen: FI010, FS030, HH020
 40: C3_gelir_bandi_hane saglik_yuk     p_B5  10.76  7.82 14.16
                  analiz      sonuc     olcu tahmin   alt   ust
                  <char>     <char>   <char>  <num> <num> <num>
+       duzey      sonuc  satir              ad     n  olay tahmin    alt   ust
+      <char>     <char> <char>          <char> <num> <num>  <num>  <num> <num>
+ 1: yetiskin      et_az   grup              G1 36680  8301  23.51  22.62 24.43
+ 2: yetiskin      et_az   grup G1_yoksul_degil 33294  7356  23.09  22.15 24.07
+ 3: yetiskin      et_az   grup              G2 12284  6228  52.47  50.92 54.08
+ 4: yetiskin      et_az   grup              G3  8740  5035  58.70  56.53 60.90
+ 5: yetiskin      et_az   fark              C1 45578 13584  29.37  27.53 31.28
+ 6: yetiskin      et_az   oran              C1 45578 13584   2.27   2.16  2.39
+ 7: yetiskin      et_az   fark              C2 21024 11263  -6.24  -9.00 -3.50
+ 8: yetiskin      et_az   oran              C2 21024 11263   0.89   0.85  0.94
+ 9: yetiskin   meyve_az   grup              G1 36765 21169  58.19  57.29 59.11
+10: yetiskin   meyve_az   grup G1_yoksul_degil 33375 18892  57.64  56.71 58.60
+11: yetiskin   meyve_az   grup              G2 12356  8612  71.20  69.92 72.48
+12: yetiskin   meyve_az   grup              G3  8778  6944  76.35  74.54 78.15
+13: yetiskin   meyve_az   fark              C1 45731 27504  13.56  12.02 15.12
+14: yetiskin   meyve_az   oran              C1 45731 27504   1.24   1.21  1.26
+15: yetiskin   meyve_az   fark              C2 21134 15556  -5.15  -7.35 -2.93
+16: yetiskin   meyve_az   oran              C2 21134 15556   0.93   0.91  0.96
+17: yetiskin   sebze_az   grup              G1 36765 18405  49.62  48.65 50.57
+18: yetiskin   sebze_az   grup G1_yoksul_degil 33375 16314  48.85  47.85 49.90
+19: yetiskin   sebze_az   grup              G2 12356  7517  61.51  60.02 63.05
+20: yetiskin   sebze_az   grup              G3  8778  6404  69.60  67.61 71.66
+21: yetiskin   sebze_az   fark              C1 45731 23831  12.66  10.88 14.43
+22: yetiskin   sebze_az   oran              C1 45731 23831   1.26   1.22  1.30
+23: yetiskin   sebze_az   fark              C2 21134 13921  -8.09 -10.59 -5.52
+24: yetiskin   sebze_az   oran              C2 21134 13921   0.88   0.85  0.92
+25:     hane saglik_yuk   grup              G1 15772   872   5.94   5.51  6.39
+26:     hane saglik_yuk   grup G1_yoksul_degil 14419   801   6.00   5.55  6.47
+27:     hane saglik_yuk   grup              G2  6250   680  10.72   9.81 11.64
+28:     hane saglik_yuk   grup              G3  3814   478  12.80  11.47 14.06
+29:     hane saglik_yuk   fark              C1 20669  1481   4.73   3.70  5.74
+30:     hane saglik_yuk   oran              C1 20669  1481   1.79   1.59  2.00
+31:     hane saglik_yuk   fark              C2 10064  1158  -2.07  -3.67 -0.42
+32:     hane saglik_yuk   oran              C2 10064  1158   0.84   0.73  0.96
+       duzey      sonuc  satir              ad     n  olay tahmin    alt   ust
+      <char>     <char> <char>          <char> <num> <num>  <num>  <num> <num>
 Table 1 en buyuk p: 4.681225e-29 
-tablolar_tumu.xlsx 26 hucrede alt/ust simge
+tablolar_tumu.xlsx 28 hucrede alt/ust simge
+Key: <ana_model>
+   ana_model model_sayisi replikat_toplam iter_en_buyuk iter_sinira_ulasan
+      <lgcl>        <int>           <int>         <num>              <int>
+1:     FALSE           36           72000            24                  0
+2:      TRUE            8           32000            24                  0
                                               adim dakika
                                             <char>  <num>
- 1:                                          okuma   0.02
+ 1:                                          okuma   0.01
  2:                                      dogrulama   0.07
  3:                                 hane veri seti   0.02
  4:                                 ortusme imzasi   0.02
- 5:                                             H1   0.45
- 6:                                          ml.py   9.91
- 7:                                    H3 hazirlik   0.04
- 8: H3 ana karsilastirmalar (protokol + bootstrap)   0.21
- 9:                                H3 ek analizler   0.02
-10:    S3 aralik yontemleri (yuzdelik, basic, BCa)   0.06
-11:                                        Table 1   0.03
-12:                                        Table 2   0.01
-13:                                        Table 3   0.01
-14:                             Figur verileri (R)   0.00
-15:                                  Ek tablolar 1   0.03
-16:                                  Ek tablolar 2   0.02
-17:                                  Ek tablolar 3   0.03
-18:                                  Ek tablolar 4   0.02
-19:                                  Ek tablolar 5   0.03
-20:                             tablolar_tumu.xlsx   0.01
-21:                       sayilar.json ve belgeler   0.00
+ 5:                                             H1   0.43
+ 6:                                          ml.py  10.34
+ 7:                      tahmin_uygula.py denetimi   0.01
+ 8:                                    H3 hazirlik   0.04
+ 9: H3 ana karsilastirmalar (protokol + bootstrap)   0.21
+10:                                H3 ek analizler   0.02
+11:                                 H3 ham oranlar   0.02
+12:                                        Table 1   0.03
+13:                                        Table 2   0.01
+14:                                        Table 3   0.01
+15:                             Figur verileri (R)   0.00
+16:                                  Ek tablolar 1   0.04
+17:                                  Ek tablolar 2   0.01
+18:                                  Ek tablolar 3   0.03
+19:                                  Ek tablolar 4   0.02
+20:                                  Ek tablolar 5   0.04
+21:                             tablolar_tumu.xlsx   0.01
+22:                       sayilar.json ve belgeler   0.00
                                               adim dakika
                                             <char>  <num>
-analiz.R bitti. Toplam sure (dk): 11 
+analiz.R bitti. Toplam sure (dk): 11.4 

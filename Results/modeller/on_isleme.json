@@ -1,0 +1,107 @@
+{
+ "metin_sutunlar": [
+  "HB030",
+  "HB031"
+ ],
+ "kategori_birlestirme": [
+  {
+   "degisken": "HE040",
+   "kod": 6.0,
+   "hedef": 5.0
+  },
+  {
+   "degisken": "HH010",
+   "kod": 2.0,
+   "hedef": 142.0
+  },
+  {
+   "degisken": "HH080",
+   "kod": 5.0,
+   "hedef": 3.0
+  },
+  {
+   "degisken": "HH080",
+   "kod": 6.0,
+   "hedef": 3.0
+  },
+  {
+   "degisken": "reis_calisma7",
+   "kod": 7.0,
+   "hedef": 1.0
+  }
+ ],
+ "ust_sinir": [
+  {
+   "degisken": "HH060",
+   "ust": 7.0
+  },
+  {
+   "degisken": "hane_buyuklugu",
+   "ust": 10.0
+  },
+  {
+   "degisken": "n_0_5",
+   "ust": 3.0
+  },
+  {
+   "degisken": "n_65plus",
+   "ust": 2.0
+  },
+  {
+   "degisken": "n_75plus",
+   "ust": 2.0
+  },
+  {
+   "degisken": "n_calisan",
+   "ust": 4.0
+  },
+  {
+   "degisken": "n_cocuk",
+   "ust": 6.0
+  },
+  {
+   "degisken": "n_emekli",
+   "ust": 2.0
+  },
+  {
+   "degisken": "n_ev_isi",
+   "ust": 3.0
+  },
+  {
+   "degisken": "n_gali",
+   "ust": 4.0
+  },
+  {
+   "degisken": "n_gecici",
+   "ust": 2.0
+  },
+  {
+   "degisken": "n_issiz",
+   "ust": 2.0
+  },
+  {
+   "degisken": "n_karsilanmayan",
+   "ust": 2.0
+  },
+  {
+   "degisken": "n_kayitsiz",
+   "ust": 4.0
+  },
+  {
+   "degisken": "n_kotu_saglik",
+   "ust": 3.0
+  },
+  {
+   "degisken": "n_kronik",
+   "ust": 4.0
+  },
+  {
+   "degisken": "n_yetiskin",
+   "ust": 7.0
+  },
+  {
+   "degisken": "n_yevmiyeli",
+   "ust": 2.0
+  }
+ ]
+}
