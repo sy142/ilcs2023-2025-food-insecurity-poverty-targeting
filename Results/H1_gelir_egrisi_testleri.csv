@@ -1,18 +1,33 @@
-yil,test,n,F,df1,df2,p,tahmin,alt,ust
-2023,dogrusal_olmama,24932,23.6204370764872,3,24927,2.93113950810803e-15,,,
-2023,esik_adimi_OR,24932,,,,0.00273953569471662,1.27428553055907,1.0874142915129,1.49327043617667
-2023,esik_adimi_puan,24932,,,,0.00273953569471662,5.80203727239684,2.01869178701161,9.58538275778207
-2023,esik_adimi_puan_7dugum,24932,,,,0.766032429121884,0.868624243073346,-4.8532233628374,6.59047184898409
-2023,esik_adimi_puan_parcali,24932,,,,0.658580136765295,0.694622233421305,-2.38082435404812,3.77006882089073
-2024,dogrusal_olmama,25925,17.2034918710729,3,25920,3.71656889545507e-11,,,
-2024,esik_adimi_OR,25925,,,,0.0221349832744131,1.19824300410694,1.0262740696948,1.39902813418857
-2024,esik_adimi_puan,25925,,,,0.0221349832744131,4.30155480619655,0.625743580419406,7.9773660319737
-2024,esik_adimi_puan_7dugum,25925,,,,0.714247446847336,1.03999089910395,-4.52786902642574,6.60785082463364
-2024,esik_adimi_puan_parcali,25925,,,,0.599308664176903,0.808237314138871,-2.2003301355663,3.81680476384404
-2025,dogrusal_olmama,25836,48.4288203511508,3,25831,3.34690227669544e-31,,,
-2025,esik_adimi_OR,25836,,,,0.00954220190128057,1.23576597484735,1.05297860409439,1.45028354674292
-2025,esik_adimi_puan,25836,,,,0.00954220190128057,4.79027447812968,1.18087702523015,8.3996719310292
-2025,esik_adimi_puan_7dugum,25836,,,,0.294977643906601,2.84791659551689,-2.48458209700495,8.18041528803872
-2025,esik_adimi_puan_parcali,25836,,,,0.154874402607315,-2.0895476020239,-4.9936923665288,0.814597162480999
-2023-2025,yil_farki_egri,50768,30.4088442553614,5,50758,5.46720187088829e-31,,,
-2023-2025,yil_farki_bicim,50768,37.9944331915066,4,50758,8.56857612274619e-32,,,
+yil,test,n,F,df1,df2,p,tahmin,alt,ust,varyans,sinanan,dugumler_log,dugumler_goreli_gelir
+2023,dogrusal_olmama,24932,23.6204370764872,3,24927,2.93113950810803e-15,,,,yil_ici,Departure from linearity: the three non-linear spline terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023,esik_adimi_OR,24932,,,,0.00273953569471662,1.27428553055907,1.0874142915129,1.49327043617667,yil_ici,Step at the 60% line: indicator for income below the line added to the five-knot spline (odds ratio),-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023,esik_adimi_puan,24932,,,,0.00273953569471662,5.80203727239684,2.01869178701161,9.58538275778207,yil_ici,Step at the 60% line: difference in predicted probability at the line (five-knot spline),-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023,esik_adimi_puan_7dugum,24932,,,,0.766032429121884,0.868624243073346,-4.8532233628374,6.59047184898409,yil_ici,"Step at the 60% line, seven-knot spline (sensitivity)",-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023,esik_adimi_puan_parcali,24932,,,,0.658580136765295,0.694622233421305,-2.38082435404812,3.77006882089073,yil_ici,"Step at the 60% line, piecewise-linear model with a slope change at the line (sensitivity)",-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2024,dogrusal_olmama,25925,17.2034918710729,3,25920,3.71656889545507e-11,,,,yil_ici,Departure from linearity: the three non-linear spline terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2024,esik_adimi_OR,25925,,,,0.0221349832744131,1.19824300410694,1.0262740696948,1.39902813418857,yil_ici,Step at the 60% line: indicator for income below the line added to the five-knot spline (odds ratio),-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2024,esik_adimi_puan,25925,,,,0.0221349832744131,4.30155480619655,0.625743580419406,7.9773660319737,yil_ici,Step at the 60% line: difference in predicted probability at the line (five-knot spline),-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2024,esik_adimi_puan_7dugum,25925,,,,0.714247446847336,1.03999089910395,-4.52786902642574,6.60785082463364,yil_ici,"Step at the 60% line, seven-knot spline (sensitivity)",-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2024,esik_adimi_puan_parcali,25925,,,,0.599308664176903,0.808237314138871,-2.2003301355663,3.81680476384404,yil_ici,"Step at the 60% line, piecewise-linear model with a slope change at the line (sensitivity)",-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2025,dogrusal_olmama,25836,48.4288203511508,3,25831,3.34690227669544e-31,,,,yil_ici,Departure from linearity: the three non-linear spline terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2025,esik_adimi_OR,25836,,,,0.00954220190128057,1.23576597484735,1.05297860409439,1.45028354674292,yil_ici,Step at the 60% line: indicator for income below the line added to the five-knot spline (odds ratio),-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2025,esik_adimi_puan,25836,,,,0.00954220190128057,4.79027447812968,1.18087702523015,8.3996719310292,yil_ici,Step at the 60% line: difference in predicted probability at the line (five-knot spline),-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2025,esik_adimi_puan_7dugum,25836,,,,0.294977643906601,2.84791659551689,-2.48458209700495,8.18041528803872,yil_ici,"Step at the 60% line, seven-knot spline (sensitivity)",-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2025,esik_adimi_puan_parcali,25836,,,,0.154874402607315,-2.0895476020239,-4.9936923665288,0.814597162480999,yil_ici,"Step at the 60% line, piecewise-linear model with a slope change at the line (sensitivity)",-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023-2025,yil_farki_egri,50768,30.4088442553614,5,50758,5.46720187088829e-31,,,,bagimsiz,Equality of the two year-specific curves: year term and its interactions with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023-2025,yil_farki_bicim,50768,37.9944331915066,4,50758,8.56857612274619e-32,,,,bagimsiz,Equality of curve shape: interactions of year with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023,genel_iliski,24932,578.067256454734,4,24927,0,,,,yil_ici,Overall association with log relative income: all four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2024,genel_iliski,25925,623.546707400622,4,25920,0,,,,yil_ici,Overall association with log relative income: all four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2025,genel_iliski,25836,717.643456060736,4,25831,0,,,,yil_ici,Overall association with log relative income: all four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023-2025,yil_farki_egri,50768,33.510904593924,5,39394,2.87896552199646e-34,,,,bagli_kume,Equality of the two year-specific curves: year term and its interactions with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023-2025,yil_farki_bicim,50768,41.7931524206271,4,39394,5.02595174852816e-35,,,,bagli_kume,Equality of curve shape: interactions of year with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023-2024,yil_farki_egri,50857,0.701713986383382,5,50847,0.622093939816597,,,,bagimsiz,Equality of the two year-specific curves: year term and its interactions with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023-2024,yil_farki_bicim,50857,0.650165872355948,4,50847,0.626708315092769,,,,bagimsiz,Equality of curve shape: interactions of year with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023-2024,yil_farki_egri,50857,0.909860412615737,5,33634,0.47332811611111,,,,bagli_kume,Equality of the two year-specific curves: year term and its interactions with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023-2024,yil_farki_bicim,50857,0.792104250527738,4,33634,0.530056135953265,,,,bagli_kume,Equality of curve shape: interactions of year with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2024-2025,yil_farki_egri,51761,29.897034063235,5,51751,1.90569557850048e-30,,,,bagimsiz,Equality of the two year-specific curves: year term and its interactions with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2024-2025,yil_farki_bicim,51761,37.301189147562,4,51751,3.34592880179418e-31,,,,bagimsiz,Equality of curve shape: interactions of year with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2024-2025,yil_farki_egri,51761,38.4958449082195,5,33970,1.50019199950456e-39,,,,bagli_kume,Equality of the two year-specific curves: year term and its interactions with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2024-2025,yil_farki_bicim,51761,48.0299547722551,4,33970,2.42021961288657e-40,,,,bagli_kume,Equality of curve shape: interactions of year with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023-2024-2025,yil_farki_egri_3yil,76693,21.8184675601464,10,41490,3.34249709567139e-41,,,,bagli_kume,Equality of the three year-specific curves: two year terms and their interactions with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087
+2023-2024-2025,yil_farki_bicim_3yil,76693,27.0931233798128,8,41490,2.44879626986007e-42,,,,bagli_kume,Equality of curve shape across the three years: interactions of the two year terms with the four income terms are zero,-0.9857; -0.3682; 0.0084; 0.4125; 1.1966,0.3732; 0.6920; 1.0084; 1.5106; 3.3087

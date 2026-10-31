@@ -1,5 +1,5 @@
 degisken,etiket,grup,n_eksik_y2023,yuzde_y2023,n_eksik_y2024,yuzde_y2024,n_eksik_y2025,yuzde_y2025,n_eksik_test2025,yuzde_test2025,n_eksik_gelistirme,yuzde_gelistirme,n_eksik_h3_yetiskin,yuzde_h3_yetiskin,n_eksik_h3_hane,yuzde_h3_hane,eksiklik_turu,islem
-FI,Food insecurity (HE090),Outcome and income,0,0,0,0,0,0,0,0,0,0,0,0,0,0,yok,-
+FI,Meal-affordability deprivation (HE090),Outcome and income,0,0,0,0,0,0,0,0,0,0,0,0,0,0,yok,-
 T1,"Income features (T1, 11 variables)",Outcome and income,0,0,0,0,0,0,0,0,0,0,0,0,0,0,yok,-
 is_yogunlugu,Work intensity,Features with missing values,5239,21.0131557837318,5688,21.9402121504339,5697,22.0506270320483,1681,21.3840478310648,10927,21.4857345104902,,,,,yapisal,"LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"
 reis_calisma7,Activity status of reference person,Features with missing values,16,0.0641745547890262,6,0.0231436837029894,13,0.0503173865923518,3,0.038163083577153,22,0.0432585484790688,,,,,yanitsizlik: referans kisinin bireysel kaydi yok,"LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"

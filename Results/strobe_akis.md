@@ -3,7 +3,7 @@
 ## Flow
 
 - ILCS cross-sections 2023-2025: 239,985 persons in 76,693 households (2023: 24,932; 2024: 25,925; 2025: 25,836 households).
-- H1: each survey year analyzed separately at household (HB040) and person (FK050, household clusters) level; no pooling. 2023 has no TR63 households.
+- H1: each survey year estimated separately at household (HB040) and person (FK050, household clusters) level; year differences and year tests pool two (or three) years with households matched across survey years as one cluster (41,505 clusters for 76,693 household-years). 2023 has no TR63 households.
 - H2: training and year-blocked tuning on 2023 + 2024 (50,857 households; non-poor model: 40,515). Tuning validation folds restricted to households not matched to the training year (2024: 8,979; 2023: 7,986).
 - H2 main test set: 7,861 2025 households not matched to 2023 or 2024 (1,490 one-person); 17,975 matched households added back in the full-2025 sensitivity test.
 - H3: 57,899 adults aged >=18 with an individual questionnaire in 2025 (G1 36,765, G2 12,356, G3 8,778); meat outcome excludes 195 vegetarian or vegan adults; health-cost outcome 25,836 households.
@@ -13,7 +13,7 @@
 
 - Title/abstract (1): repeated cross-sections of TurkStat ILCS 2023-2025; household and person level.
 - Setting (5): fieldwork March-July 2023 and 2024, February-June 2025; income reference year preceding the survey.
-- Variables (7): food insecurity HE090 (single item); income poverty at 60% of median; structural features in Supplementary Table S2; dietary outcomes MODUL1_F_8, MODUL1_F_9, MODUL2_F_5; health-cost burden MODUL1_H_1/H_3.
-- Bias (9): rotational panel overlap handled by member-signature and reference-person-key matching and a cleaned test set (simulation S1 quantifies optimism from undetected overlap); single-item outcome misclassification (simulation S2).
-- Statistical methods (12): survey-weighted estimation with household clusters; linearization and household bootstrap; g-computation; LightGBM, ridge, lasso and depth-3 trees; SHAP.
-- Limitations (19): no stratum/PSU identifiers (intervals approximate; design-effect sensitivity in the supplement); HE090 is a single affordability item, not a validated food insecurity scale; households that moved or changed reference person cannot be matched; nominal incomes (relative measures used).
+- Variables (7-8): meal-affordability deprivation, HE090 = 2 (single item: household cannot afford a meal with meat, chicken or fish, or a vegetarian equivalent, every second day; codebook wording, coding and missing values in Supplementary Table S1); income poverty at 60% of the median; structural features in Supplementary Table S2; consumption-frequency outcomes MODUL1_F_8, MODUL1_F_9, MODUL2_F_5 (frequency only; intake and diet quality not measured); health-cost burden MODUL1_H_1/H_3.
+- Bias (9): rotational panel overlap handled by member-signature and reference-person-key matching, a cleaned test set and matched households as clusters in year comparisons (simulation S1 quantifies optimism from undetected overlap); single-item outcome misclassification (simulation S2); income reference year preceding the interview (classification by change in main activity since the income year); test set calibrated to the 2025 household population.
+- Statistical methods (12): survey-weighted estimation; linearization with household or matched-household clusters and household bootstrap; restricted cubic splines (knot sensitivity 3-7 knots, design-based AIC); g-computation; LightGBM, ridge, lasso and depth-3 trees; SHAP; raking of test-set weights.
+- Limitations (19): no stratum/PSU identifiers (intervals approximate; design effects at which each principal interval would include zero reported); HE090 is a single meal-affordability item, not a validated food insecurity scale; households that moved or changed reference person cannot be matched; nominal incomes (relative measures used; real value of the 60% line reported).
