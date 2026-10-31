@@ -1,10 +1,22 @@
-[   0.0 dk] S1 senaryo 1 (ICC 0.3, ortusme 0.3) bitti, 0.0 dk
-[   0.0 dk] S1 senaryo 2 (ICC 0.3, ortusme gercek) bitti, 0.0 dk
-[   0.0 dk] S1 senaryo 3 (ICC 0.3, ortusme 0.6) bitti, 0.0 dk
-[   0.0 dk] S1 senaryo 4 (ICC 0.6, ortusme 0.3) bitti, 0.0 dk
-[   0.0 dk] S1 senaryo 5 (ICC 0.6, ortusme gercek) bitti, 0.0 dk
-[   0.0 dk] S1 senaryo 6 (ICC 0.6, ortusme 0.6) bitti, 0.0 dk
-[   0.0 dk] S1 ozet:
+/Users/salim/veri-ortami/lib/python3.13/site-packages/joblib/externals/loky/process_executor.py:787: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+[   3.5 dk] S1 senaryo 1 (ICC 0.3, ortusme 0.3) bitti, 3.5 dk
+/Users/salim/veri-ortami/lib/python3.13/site-packages/joblib/externals/loky/process_executor.py:787: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+[   7.3 dk] S1 senaryo 2 (ICC 0.3, ortusme gercek) bitti, 3.7 dk
+/Users/salim/veri-ortami/lib/python3.13/site-packages/joblib/externals/loky/process_executor.py:787: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+[  11.1 dk] S1 senaryo 3 (ICC 0.3, ortusme 0.6) bitti, 3.8 dk
+/Users/salim/veri-ortami/lib/python3.13/site-packages/joblib/externals/loky/process_executor.py:787: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+[  15.0 dk] S1 senaryo 4 (ICC 0.6, ortusme 0.3) bitti, 3.9 dk
+/Users/salim/veri-ortami/lib/python3.13/site-packages/joblib/externals/loky/process_executor.py:787: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+[  18.9 dk] S1 senaryo 5 (ICC 0.6, ortusme gercek) bitti, 3.9 dk
+/Users/salim/veri-ortami/lib/python3.13/site-packages/joblib/externals/loky/process_executor.py:787: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+[  22.9 dk] S1 senaryo 6 (ICC 0.6, ortusme 0.6) bitti, 4.0 dk
+[  22.9 dk] S1 ozet:
     icc  ortusme_payi         test_seti  iyimserlik_auc  iyimserlik_duyarlilik  iyimserlik_egim
 0   0.3         0.300           eslesen          0.0130                 0.9551           0.0633
 1   0.3         0.300               tam          0.0040                 0.2792           0.0194
@@ -42,8 +54,8 @@
 33  0.6         0.600  temiz_gizli_10.0          0.0040                 0.2516           0.0192
 34  0.6         0.600  temiz_gizli_20.0          0.0080                 0.6014           0.0393
 35  0.6         0.600  temiz_gizli_35.8          0.0146                 1.0207           0.0729
-[   0.1 dk] S2 bitti. Gozlenen: {'dislama_hatasi': np.float64(68.09), 'FI_yoksul_icinde': np.float64(73.81), 'FI_yayginligi': np.float64(36.96), 'kural_seti_duyarlilik': 28.68, 'lgb_A1_duyarlilik': 33.23, 'yoksulluk_esigi_duyarlilik': np.float64(29.6), 'kural_eksi_esik': np.float64(-0.92), 'lgb_eksi_esik': np.float64(3.62)}
-[   0.1 dk] S2 hucreler:
+[  23.0 dk] S2 bitti. Gozlenen: {'dislama_hatasi': np.float64(68.09), 'FI_yoksul_icinde': np.float64(73.81), 'FI_yayginligi': np.float64(36.96), 'kural_seti_duyarlilik': 28.68, 'lgb_A1_duyarlilik': 33.23, 'yoksulluk_esigi_duyarlilik': np.float64(29.6), 'kural_eksi_esik': np.float64(-0.92), 'lgb_eksi_esik': np.float64(3.62)}
+[  23.0 dk] S2 hucreler:
    gelir_dilim5  yoksul     n  agirlik_payi  gozlenen_FI
 0             1       1  5012         15.44        73.96
 1             2       0  5054         18.25        56.97
@@ -51,8 +63,8 @@
 3             3       0  5083         20.22        41.87
 4             4       0  5165         21.78        23.95
 5             5       0  5367         23.76         4.57
-[   0.1 dk] S2 uyum sinirlari: {'ayrimci_degil': np.float64(0.9543), 'gelire_gore': np.float64(0.9543), 'Se': np.float64(0.7396)} risk ondaliklari: {'ayrimci_degil': np.float64(0.9953), 'gelire_gore': np.float64(0.9953), 'Se': np.float64(0.9522), 'ayrimci_degil_2se': np.float64(0.9926), 'gelire_gore_2se': np.float64(0.9926), 'Se_2se': np.float64(0.9179)} denetimler: {'en_buyuk_sim_eksi_kapali_form': 0.021, 'en_buyuk_Se_sapmasi': 0.0, 'en_buyuk_Sp_sapmasi': 0.0, 'ayrimci_olmayan_Se_araligi_en_buyuk': 0.0249}
-[   0.1 dk] S2 risk ondaliklari:
+[  23.0 dk] S2 uyum sinirlari: {'ayrimci_degil': np.float64(0.9543), 'gelire_gore': np.float64(0.9543), 'Se': np.float64(0.7396)} risk ondaliklari: {'ayrimci_degil': np.float64(0.9953), 'gelire_gore': np.float64(0.9953), 'Se': np.float64(0.9522), 'ayrimci_degil_2se': np.float64(0.9926), 'gelire_gore_2se': np.float64(0.9926), 'Se_2se': np.float64(0.9179)} denetimler: {'en_buyuk_sim_eksi_kapali_form': 0.021, 'en_buyuk_Se_sapmasi': 0.0, 'en_buyuk_Sp_sapmasi': 0.0, 'ayrimci_olmayan_Se_araligi_en_buyuk': 0.0249}
+[  23.0 dk] S2 risk ondaliklari:
     risk_ondaligi  gelir_Q12     n  gozlenen_FI    se  denetimde
 0               1          0  2584         0.47  0.13       True
 1               2          0  2569         2.93  0.33       True
@@ -73,15 +85,79 @@
 16              9          1  2094        77.64  0.91       True
 17             10          0   155        95.22  1.71       True
 18             10          1  2429        92.65  0.53       True
-[   0.1 dk] S2 aralik (uyumlu senaryolar):
+[  23.0 dk] S2 aralik (uyumlu senaryolar):
               dislama_hatasi        kural_seti_duyarlilik        yoksulluk_esigi_duyarlilik        kural_eksi_esik       lgb_eksi_esik      
                          min    max                   min    max                        min    max             min   max           min   max
 tur                                                                                                                                         
 ayrimci_degil          66.14  67.65                  25.5  28.41                      30.15  31.95           -6.04 -2.14         -0.75  2.58
 gelire_gore            66.00  67.66                  25.5  28.38                      30.12  32.11           -6.18 -2.17         -0.87  2.49
-[   0.2 dk] S3 ozet:
+[  23.1 dk] S2 B kalibrasyonu: hucre_rcs5 {'sabit_dogrusal': {'ondalik_ort_mutlak_sapma': 1.3796, 'ondalik_en_buyuk_mutlak_sapma': 2.6691, 'hucre_en_buyuk_mutlak_sapma': 4.1122, 'q_agirlikli_yuzde1': 0.0049, 'q_agirlikli_yuzde99': 0.9681, 'B_en_kucuk_Sp': 0.9951, 'B_en_kucuk_Se': 0.9681}, 'hucre_dogrusal': {'ondalik_ort_mutlak_sapma': 1.1122, 'ondalik_en_buyuk_mutlak_sapma': 2.2761, 'hucre_en_buyuk_mutlak_sapma': 0.0, 'q_agirlikli_yuzde1': 0.0038, 'q_agirlikli_yuzde99': 0.9637, 'B_en_kucuk_Sp': 0.9962, 'B_en_kucuk_Se': 0.9637}, 'hucre_rcs4': {'ondalik_ort_mutlak_sapma': 0.7177, 'ondalik_en_buyuk_mutlak_sapma': 2.4218, 'hucre_en_buyuk_mutlak_sapma': 0.0, 'q_agirlikli_yuzde1': 0.001, 'q_agirlikli_yuzde99': 0.9688, 'B_en_kucuk_Sp': 0.999, 'B_en_kucuk_Se': 0.9688}, 'hucre_rcs5': {'ondalik_ort_mutlak_sapma': 0.6098, 'ondalik_en_buyuk_mutlak_sapma': 2.3914, 'hucre_en_buyuk_mutlak_sapma': 0.0, 'q_agirlikli_yuzde1': 0.0013, 'q_agirlikli_yuzde99': 0.9727, 'B_en_kucuk_Sp': 0.9987, 'B_en_kucuk_Se': 0.9727}}
+[  23.1 dk] S2 iki tasarim:
+              tur    Se     Sp  izgara  kapali_form_dislama_hane  uyumlu_A  uyumlu_B  B_ihlal_payi  A_kural_eksi_esik  A_lgb_eksi_esik  B_kural_eksi_esik  B_lgb_eksi_esik
+0   ayrimci_degil  0.80  0.900    True                    62.183     False     False        41.828                NaN              NaN                NaN              NaN
+1   ayrimci_degil  0.80  0.920    True                    63.691     False     False        39.239                NaN              NaN                NaN              NaN
+2   ayrimci_degil  0.80  0.940    True                    65.004     False     False        36.207                NaN              NaN                NaN              NaN
+3   ayrimci_degil  0.80  0.960    True                    66.158      True     False        32.580             -6.045           -0.752                NaN              NaN
+4   ayrimci_degil  0.80  0.980    True                    67.179      True     False        27.146             -5.252           -0.458                NaN              NaN
+5   ayrimci_degil  0.80  0.990    True                    67.648      True     False        22.928             -4.909           -0.363                NaN              NaN
+6   ayrimci_degil  0.85  0.900    True                    62.183     False     False        38.517                NaN              NaN                NaN              NaN
+7   ayrimci_degil  0.85  0.920    True                    63.691     False     False        35.927                NaN              NaN                NaN              NaN
+8   ayrimci_degil  0.85  0.940    True                    65.004     False     False        32.895                NaN              NaN                NaN              NaN
+9   ayrimci_degil  0.85  0.960    True                    66.158      True     False        29.268             -5.091            0.322                NaN              NaN
+10  ayrimci_degil  0.85  0.980    True                    67.179      True     False        23.834             -4.304            0.554                NaN              NaN
+11  ayrimci_degil  0.85  0.990    True                    67.648      True     False        19.616             -3.929            0.653                NaN              NaN
+12  ayrimci_degil  0.90  0.900    True                    62.183     False     False        35.244                NaN              NaN                NaN              NaN
+13  ayrimci_degil  0.90  0.920    True                    63.691     False     False        32.655                NaN              NaN                NaN              NaN
+14  ayrimci_degil  0.90  0.940    True                    65.004     False     False        29.622                NaN              NaN                NaN              NaN
+15  ayrimci_degil  0.90  0.960    True                    66.158      True     False        25.996             -4.142            1.353                NaN              NaN
+16  ayrimci_degil  0.90  0.980    True                    67.179      True     False        20.561             -3.390            1.532                NaN              NaN
+17  ayrimci_degil  0.90  0.990    True                    67.648      True     False        16.344             -3.035            1.627                NaN              NaN
+18  ayrimci_degil  0.95  0.900    True                    62.183     False     False        31.523                NaN              NaN                NaN              NaN
+19  ayrimci_degil  0.95  0.920    True                    63.691     False     False        28.933                NaN              NaN                NaN              NaN
+20  ayrimci_degil  0.95  0.940    True                    65.004     False     False        25.901                NaN              NaN                NaN              NaN
+21  ayrimci_degil  0.95  0.960    True                    66.158      True     False        22.274             -3.242            2.307                NaN              NaN
+22  ayrimci_degil  0.95  0.980    True                    67.179      True     False        16.840             -2.482            2.507                NaN              NaN
+23  ayrimci_degil  0.95  0.990    True                    67.648      True     False        12.622             -2.142            2.576                NaN              NaN
+24  ayrimci_degil  0.98  0.999   False                    68.047      True      True         0.927             -1.298            3.242             -1.053            3.728
+25  ayrimci_degil  0.98  1.000   False                    68.091      True      True         0.500             -1.285            3.239             -1.043            3.735
+26  ayrimci_degil  0.99  0.999   False                    68.047      True      True         0.510             -1.137            3.421             -0.979            3.703
+27  ayrimci_degil  0.99  1.000   False                    68.091      True      True         0.084             -1.086            3.450             -0.979            3.681
+28  ayrimci_degil  1.00  0.999   False                    68.047      True      True         0.427             -0.960            3.614             -0.925            3.637
+29  ayrimci_degil  1.00  1.000   False                    68.091      True      True         0.000             -0.920            3.623             -0.920            3.623
+30    gelire_gore  0.80  0.900    True                    61.901     False     False        42.232                NaN              NaN                NaN              NaN
+31    gelire_gore  0.80  0.920    True                    63.457     False     False        39.529                NaN              NaN                NaN              NaN
+32    gelire_gore  0.80  0.940    True                    64.808     False     False        36.446                NaN              NaN                NaN              NaN
+33    gelire_gore  0.80  0.960    True                    65.992      True     False        32.720             -6.180           -0.875                NaN              NaN
+34    gelire_gore  0.80  0.980    True                    67.038      True     False        27.216             -5.388           -0.642                NaN              NaN
+35    gelire_gore  0.80  0.990    True                    67.517      True     False        22.974             -5.003           -0.486                NaN              NaN
+36    gelire_gore  0.85  0.900    True                    61.961     False     False        38.920                NaN              NaN                NaN              NaN
+37    gelire_gore  0.85  0.920    True                    63.516     False     False        36.217                NaN              NaN                NaN              NaN
+38    gelire_gore  0.85  0.940    True                    64.865     False     False        33.134                NaN              NaN                NaN              NaN
+39    gelire_gore  0.85  0.960    True                    66.047      True     False        29.408             -5.217            0.181                NaN              NaN
+40    gelire_gore  0.85  0.980    True                    67.091      True     False        23.904             -4.426            0.403                NaN              NaN
+41    gelire_gore  0.85  0.990    True                    67.568      True     False        19.663             -4.043            0.523                NaN              NaN
+42    gelire_gore  0.90  0.900    True                    62.013     False     False        35.648                NaN              NaN                NaN              NaN
+43    gelire_gore  0.90  0.920    True                    63.567     False     False        32.944                NaN              NaN                NaN              NaN
+44    gelire_gore  0.90  0.940    True                    64.915     False     False        29.861                NaN              NaN                NaN              NaN
+45    gelire_gore  0.90  0.960    True                    66.095      True     False        26.136             -4.259            1.202                NaN              NaN
+46    gelire_gore  0.90  0.980    True                    67.137      True     False        20.632             -3.428            1.426                NaN              NaN
+47    gelire_gore  0.90  0.990    True                    67.614      True     False        16.390             -3.117            1.519                NaN              NaN
+48    gelire_gore  0.95  0.900    True                    62.059     False     False        31.926                NaN              NaN                NaN              NaN
+49    gelire_gore  0.95  0.920    True                    63.612     False     False        29.223                NaN              NaN                NaN              NaN
+50    gelire_gore  0.95  0.940    True                    64.959     False     False        26.140                NaN              NaN                NaN              NaN
+51    gelire_gore  0.95  0.960    True                    66.138      True     False        22.414             -3.297            2.224                NaN              NaN
+52    gelire_gore  0.95  0.980    True                    67.179      True     False        16.910             -2.567            2.354                NaN              NaN
+53    gelire_gore  0.95  0.990    True                    67.655      True     False        12.669             -2.171            2.491                NaN              NaN
+54    gelire_gore  0.98  0.999   False                    68.083      True      True         0.958             -1.297            3.146             -0.695            4.230
+55    gelire_gore  0.98  1.000   False                    68.126      True      True         0.531             -1.287            3.158             -0.702            4.240
+56    gelire_gore  0.99  0.999   False                    68.090      True      True         0.541             -1.141            3.334             -0.650            4.204
+57    gelire_gore  0.99  1.000   False                    68.134      True      True         0.114             -1.097            3.356             -0.642            4.174
+58    gelire_gore  1.00  0.999   False                    68.097      True      True         0.457             -0.948            3.536             -0.606            4.127
+59    gelire_gore  1.00  1.000   False                    68.140      True      True         0.031             -0.921            3.527             -0.596            4.110
+[  23.1 dk] S2 B denetimleri: {'kalibrasyon_secilen': 'hucre_rcs5', 'uyumlu_B_izgarada': 0, 'uyumlu_B_toplam': 12, 'en_buyuk_SeSp_sapmasi': 0.011614332027582663, 'en_buyuk_sim_eksi_kapali_form': 0.05793511448078448, 'en_buyuk_kirpilan_pay': 0.9575806439204974}
+[  23.2 dk] S3 ozet:
                olcu  gercek  ortalama_tahmin  ampirik_se  ortalama_boot_se  kapsama    S  yanlilik  kapsama_mcse
 0    dislama_hatasi  70.859           70.853       0.505             0.518     95.8  500    -0.006         0.897
 1  kural_duyarlilik  35.124           35.170       0.590             0.563     91.0  500     0.046         1.280
 2         kural_ppv  60.523           60.547       0.744             0.760     94.0  500     0.024         1.062
-[   0.2 dk] simulasyon.py bitti. Toplam (dk): 0.17
+[  23.2 dk] simulasyon.py bitti. Toplam (dk): 23.15

@@ -1,4 +1,8 @@
-analiz.R basladi: 2026-10-27 16:47:14 
+analiz.R basladi: 2026-10-31 10:56:31 
+xlsx okuma suresi (sn): 6 
+           used  (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
+Ncells  2683691 143.4    5201405  277.8         NA   5201405  277.8
+Vcells 67350980 513.9  143359285 1093.8      65536 179027305 1365.9
 Veri: 239985 satir, 266 sutun
 msy_etsiz_sayi + msy_et_tavuk_balik - msy_sayi en buyuk mutlak fark: 0 
 Key: <yil_1, yil_2>
@@ -38,8 +42,18 @@ Siki temiz test seti: 6043 / 7861
 4:          1          yalniz imza 12241         49.13             30.8                 40.5     40.1         14.7         51.7
 5:         NA             tum 2025 25836        100.00             14.6                 19.9     37.0         16.0         51.2
 Hane satirlari: 76693  yil: 24932 / 25925 / 25836 
+Bagli hane kimligi: 41505 bilesen, 5 tur; ayni yildan iki hane iceren bilesen: 173 
+Key: <boyut, yil_sayisi>
+   boyut yil_sayisi bilesen  hane
+   <int>      <int>   <int> <int>
+1:     1          1   17487     1
+2:     2          2   13034     2
+3:     3          3   10811     3
+4:     4          3     160     4
+5:     5          3      13     5
 Empty data.table (0 rows and 5 cols): kontrol,kaynak,beklenen,bulunan,durum
 Dogrulama: 115 / 115 tuttu
+kesif.R calistiriliyor
 
 H1 dislama hatasi farki 2025 - 2023 (hane), bootstrap duyarliligi:
                yontem   fark se_fark    alt    ust
@@ -110,6 +124,133 @@ Gelir egrisi testleri (RCS 5 dugum, log goreli gelir; adim = egriye ek yoksul go
 15:      2025 esik_adimi_puan_parcali 25836       NA    NA    NA 1.548744e-01 -2.0895476 -4.9936924 0.8145972
 16: 2023-2025          yil_farki_egri 50768 30.40884     5 50758 5.467202e-31         NA         NA        NA
 17: 2023-2025         yil_farki_bicim 50768 37.99443     4 50758 8.568576e-32         NA         NA        NA
+
+Gelir egrisi: genel iliski ve bagli kumeli yil testleri:
+               yil                 test    varyans     n           F   df1   df2            p
+            <char>               <char>     <char> <int>       <num> <int> <num>        <num>
+ 1:           2023         genel_iliski    yil_ici 24932 578.0672565     4 24927 0.000000e+00
+ 2:           2024         genel_iliski    yil_ici 25925 623.5467074     4 25920 0.000000e+00
+ 3:           2025         genel_iliski    yil_ici 25836 717.6434561     4 25831 0.000000e+00
+ 4:      2023-2025       yil_farki_egri   bagimsiz 50768  30.4088443     5 50758 5.467202e-31
+ 5:      2023-2025      yil_farki_bicim   bagimsiz 50768  37.9944332     4 50758 8.568576e-32
+ 6:      2023-2025       yil_farki_egri bagli_kume 50768  33.5109046     5 39394 2.878966e-34
+ 7:      2023-2025      yil_farki_bicim bagli_kume 50768  41.7931524     4 39394 5.025952e-35
+ 8:      2023-2024       yil_farki_egri   bagimsiz 50857   0.7017140     5 50847 6.220939e-01
+ 9:      2023-2024      yil_farki_bicim   bagimsiz 50857   0.6501659     4 50847 6.267083e-01
+10:      2023-2024       yil_farki_egri bagli_kume 50857   0.9098604     5 33634 4.733281e-01
+11:      2023-2024      yil_farki_bicim bagli_kume 50857   0.7921043     4 33634 5.300561e-01
+12:      2024-2025       yil_farki_egri   bagimsiz 51761  29.8970341     5 51751 1.905696e-30
+13:      2024-2025      yil_farki_bicim   bagimsiz 51761  37.3011891     4 51751 3.345929e-31
+14:      2024-2025       yil_farki_egri bagli_kume 51761  38.4958449     5 33970 1.500192e-39
+15:      2024-2025      yil_farki_bicim bagli_kume 51761  48.0299548     4 33970 2.420220e-40
+16: 2023-2024-2025  yil_farki_egri_3yil bagli_kume 76693  21.8184676    10 41490 3.342497e-41
+17: 2023-2024-2025 yil_farki_bicim_3yil bagli_kume 76693  27.0931234     8 41490 2.448796e-42
+Ortak model ile yillik modellerin farki ( 2025 - 2023 ), en buyuk mutlak sapma, puan: 5.1e-06 
+Ortak model ile yillik modellerin farki ( 2024 - 2023 ), en buyuk mutlak sapma, puan: 3.7e-07 
+Ortak model ile yillik modellerin farki ( 2025 - 2024 ), en buyuk mutlak sapma, puan: 2.47e-07 
+
+Secilmis gelir duzeylerinde 2025 - 2023 farki (bagli kumeler ve bagimsiz):
+Key: <goreli_gelir>
+    goreli_gelir bagimsiz bagli_kume
+           <num>    <num>      <num>
+ 1:         0.30    1.781      1.696
+ 2:         0.40    1.138      1.061
+ 3:         0.50    0.987      0.914
+ 4:         0.60    1.074      1.005
+ 5:         0.80    0.890      0.823
+ 6:         1.00    1.112      1.049
+ 7:         1.25    0.887      0.833
+ 8:         1.50    0.999      0.962
+ 9:         2.00    0.736      0.710
+10:         3.00    0.689      0.680
+
+Dugum duyarliligi:
+    dugum_sayisi       yil    dAIC dAIC_5dugum_farki en_buyuk fark_0.6 fark_2.0
+           <int>    <char>   <num>             <num>    <num>    <num>    <num>
+ 1:            3      2023 28164.0               1.7     1.18       NA       NA
+ 2:            3      2024 29603.7              12.5     1.45       NA       NA
+ 3:            3      2025 26425.3               3.3     1.12       NA       NA
+ 4:            3 2025-2023      NA                NA       NA     5.61    -7.60
+ 5:            4      2023 28159.8              -2.5     0.13       NA       NA
+ 6:            4      2024 29589.1              -2.2     0.27       NA       NA
+ 7:            4      2025 26421.5              -0.5     0.81       NA       NA
+ 8:            4 2025-2023      NA                NA       NA     4.56    -7.50
+ 9:            5      2023 28162.3               0.0     0.00       NA       NA
+10:            5      2024 29591.3               0.0     0.00       NA       NA
+11:            5      2025 26422.0               0.0     0.00       NA       NA
+12:            5 2025-2023      NA                NA       NA     5.08    -7.26
+13:            6      2023 28156.1              -6.2     1.53       NA       NA
+14:            6      2024 29592.0               0.8     0.74       NA       NA
+15:            6      2025 26420.4              -1.6     1.07       NA       NA
+16:            6 2025-2023      NA                NA       NA     4.90    -6.87
+17:            7      2023 28145.1             -17.2     2.29       NA       NA
+18:            7      2024 29584.8              -6.5     1.70       NA       NA
+19:            7      2025 26418.5              -3.5     1.49       NA       NA
+20:            7 2025-2023      NA                NA       NA     4.91    -6.87
+    dugum_sayisi       yil    dAIC dAIC_5dugum_farki en_buyuk fark_0.6 fark_2.0
+           <int>    <char>   <num>             <num>    <num>    <num>    <num>
+
+Bagli kumeli yil farklari (dislama, %60), bagimsiz SE'ye orani:
+     duzey tr63_haric yil_1 yil_2  fark   alt   ust se_orani
+    <char>     <lgcl> <int> <int> <num> <num> <num>    <num>
+ 1:   hane      FALSE  2023  2024 -0.06 -1.26  1.13    0.812
+ 2:   hane      FALSE  2023  2025 -2.30 -3.67 -0.94    0.923
+ 3:   hane      FALSE  2024  2025 -2.24 -3.43 -1.05    0.808
+ 4:   hane       TRUE  2023  2024  0.47 -0.72  1.66    0.802
+ 5:   hane       TRUE  2023  2025 -1.61 -2.98 -0.25    0.919
+ 6:   hane       TRUE  2024  2025 -2.08 -3.28 -0.88    0.809
+ 7:   kisi      FALSE  2023  2024 -0.15 -1.77  1.47    0.832
+ 8:   kisi      FALSE  2023  2025 -5.67 -7.49 -3.85    0.935
+ 9:   kisi      FALSE  2024  2025 -5.52 -7.10 -3.93    0.814
+10:   kisi       TRUE  2023  2024  0.40 -1.22  2.01    0.823
+11:   kisi       TRUE  2023  2025 -5.11 -6.94 -3.27    0.932
+12:   kisi       TRUE  2024  2025 -5.50 -7.12 -3.88    0.817
+Eslesik bootstrap (2025 - 2023, hane): -2.3 ( -3.69 , -0.91 )
+   yil_1 yil_2        fark    se_fark     yontem        alt         ust
+   <num> <num>       <num>      <num>     <char>      <num>       <num>
+1:  2023  2025 -0.09199816 0.01005291 bagli_kume -0.1117019 -0.07229445
+Gelir yili uyumsuzlugu: f_kayit = 1 olup FI260 bos yetiskin: 0 ; yetiskini olmayan hane: 1 
+
+Gelir yili ile gorusme arasindaki faaliyet degisimi (hane):
+      yil           sinif     n   pay    FI dislama dislama_alt dislama_ust
+    <int>          <char> <int> <num> <num>   <num>       <num>       <num>
+ 1:  2023 olumsuz_degisim  1344   5.6  43.9    83.1        79.7        86.4
+ 2:  2023  olumlu_degisim  1985   8.4  40.4    62.5        58.7        66.3
+ 3:  2023    ikisi_birden   122   0.6  45.4    80.0        69.4        90.7
+ 4:  2023     degisim_yok 21368  84.9  36.5    70.2        69.0        71.3
+ 5:  2023   belirlenemedi   113   0.5  48.9    69.1        54.5        83.8
+ 6:  2023     tum_haneler 24932 100.0  37.4    70.4        69.3        71.4
+ 7:  2024 olumsuz_degisim  1341   5.5  43.0    81.4        77.7        85.0
+ 8:  2024  olumlu_degisim  1948   7.9  42.3    58.2        54.3        62.1
+ 9:  2024    ikisi_birden   136   0.7  50.3    62.1        48.5        75.7
+10:  2024     degisim_yok 22432  85.7  37.5    71.0        69.9        72.1
+11:  2024   belirlenemedi    68   0.3  54.7    48.0        28.7        67.3
+12:  2024     tum_haneler 25925 100.0  38.3    70.3        69.3        71.4
+13:  2025 olumsuz_degisim  1476   6.0  31.8    70.9        66.4        75.4
+14:  2025  olumlu_degisim  1921   7.9  41.8    53.0        49.2        56.9
+15:  2025    ikisi_birden   152   0.7  36.0    72.5        59.9        85.2
+16:  2025     degisim_yok 22197  85.0  36.9    69.5        68.4        70.6
+17:  2025   belirlenemedi    90   0.4  39.3    61.4        43.9        78.9
+18:  2025     tum_haneler 25836 100.0  37.0    68.1        67.0        69.1
+
+Madde gradyani (hane, yayginlik):
+Key: <kirilim, kategori>
+          kirilim kategori  2023  2024  2025
+           <char>   <char> <num> <num> <num>
+1:        he040_4        1  78.8  83.4  76.4
+2:        he040_4        2  56.5  59.2  55.6
+3:        he040_4        3  37.1  36.8  33.9
+4:        he040_4        4  13.1  12.6  14.5
+5: msy_etsiz_grup        1   1.2   2.5   1.6
+6: msy_etsiz_grup        2  28.4  33.0  34.1
+7: msy_etsiz_grup        3  63.5  69.8  75.6
+8: msy_etsiz_grup        4  83.9  85.3  92.1
+Key: <yil>
+     yil    medyan gelir_yili   esik_60 tufe_gelir_yili tufe_anket_yili esik_60_2022_fiyat anket_gelir_yili_tufe_orani esik_60_2022_fiyat_degisim_onceki
+   <num>     <num>      <num>     <num>           <num>           <num>              <num>                       <num>                             <num>
+1:  2023  64217.83       2022  38530.70          967.71         1488.91           38530.70                    1.538591                                NA
+2:  2024 136237.23       2023  81742.34         1488.91         2360.03           53128.05                    1.585072                          37.88498
+3:  2025 241150.63       2024 144690.38         2360.03         3183.23           59329.04                    1.348809                          11.67180
 ml.py calistiriliyor
 H3 yetiskin orneklemi: 57899 
    FK070 f_cins f_egit f_bolge  f_hb f_cocuk log_goreli_gelir f_medeni f_calisma f_kronik f_gali f_htip f_mulk et_az meyve_az sebze_az
@@ -295,36 +436,131 @@ pr_C2h yas: FK070 + yas4_1 + yas4_2 + yas4_3  secilen: FI010, FS030, HH020
        duzey      sonuc  satir              ad     n  olay tahmin    alt   ust
       <char>     <char> <char>          <char> <num> <num>  <num>  <num> <num>
 Table 1 en buyuk p: 4.681225e-29 
-tablolar_tumu.xlsx 28 hucrede alt/ust simge
+
+Kalibrasyon dengesi (standart farklar, tum 2025'e gore):
+              degisken   once  sonra
+                <char>  <num>  <num>
+ 1:                 FI  0.049  0.028
+ 2:             yoksul -0.017  0.000
+ 3:           tek_kisi  0.162  0.000
+ 4:            cocuklu -0.063 -0.001
+ 5:              yasli -0.051 -0.007
+ 6:     hane_buyuklugu -0.105  0.001
+ 7:       goreli_gelir  0.035  0.002
+ 8:           reis_yas -0.105 -0.013
+ 9:         reis_kadin  0.043  0.001
+10: reis_yuksekogretim  0.044 -0.008
+11:          ev_sahibi -0.035  0.000
+12:             kiraci  0.050  0.000
+13:           otomobil -0.040 -0.003
+14:                nem -0.007 -0.001
+15:           istanbul  0.015  0.000
+
+Ulusal karsilik (kalibre; bin):
+             kol  birim fark_pp fark_alt fark_ust    olcek  ek_bin ek_bin_alt ek_bin_ust
+          <char> <char>   <num>    <num>    <num>    <num>   <num>      <num>      <num>
+ 1:      cart_T2   hane    -1.8     -3.3     -0.2 10052597  -177.1     -328.5      -19.1
+ 2:      cart_T2  cocuk   -25.3    -29.6    -20.8  8476052 -2145.3    -2508.5    -1766.7
+ 3: cart_T2idari   hane    -1.5     -2.7     -0.3 10052597  -154.2     -274.3      -30.3
+ 4: cart_T2idari  cocuk   -26.8    -30.6    -22.9  8476052 -2273.8    -2592.8    -1944.7
+ 5:        l1_T2   hane     0.3     -1.0      1.7 10052597    25.1     -103.1      174.8
+ 6:        l1_T2  cocuk   -24.6    -28.9    -20.2  8476052 -2081.8    -2447.4    -1712.3
+ 7:    cart_T1T2   hane    -0.1     -0.4      0.2 10052597    -7.2      -38.5       22.1
+ 8:    cart_T1T2  cocuk    -0.2     -1.1      0.8  8476052   -17.5      -94.6       68.6
+ 9:      l1_T1T2   hane     3.7      2.8      4.8 10052597   375.0      277.7      485.6
+10:      l1_T1T2  cocuk    -2.8     -5.9      0.4  8476052  -233.2     -497.0       33.7
+11: logit_lin_A1   hane     3.9      2.8      5.1 10052597   396.9      282.7      508.1
+12: logit_lin_A1  cocuk    -8.8    -12.4     -5.0  8476052  -742.4    -1048.5     -423.8
+13:     logit_A1   hane     3.3      2.2      4.6 10052597   331.0      224.2      460.8
+14:     logit_A1  cocuk    -9.9    -13.7     -5.9  8476052  -835.3    -1164.2     -502.8
+15:      lgb_A2i   hane     0.8     -0.5      2.1 10052597    79.1      -51.0      210.2
+16:      lgb_A2i  cocuk   -10.9    -14.9     -6.9  8476052  -921.4    -1260.1     -587.4
+17:       lgb_A2   hane     1.4      0.2      2.7 10052597   140.9       17.0      274.9
+18:       lgb_A2  cocuk   -14.4    -18.3    -10.0  8476052 -1218.7    -1550.8     -844.9
+19:       lgb_A1   hane     3.7      2.5      4.8 10052597   368.7      250.9      485.0
+20:       lgb_A1  cocuk    -8.8    -12.6     -5.3  8476052  -743.8    -1068.4     -450.0
+21:       lgb_A3   hane     4.8      3.7      6.0 10052597   479.6      367.2      606.9
+22:       lgb_A3  cocuk   -10.4    -14.4     -6.4  8476052  -882.0    -1221.6     -539.6
+23:       lgb_A4   hane     9.5      8.3     10.7 10052597   953.4      832.4     1078.7
+24:       lgb_A4  cocuk   -23.7    -27.7    -20.3  8476052 -2010.5    -2350.3    -1716.8
+25:       mlp_A1   hane     3.3      2.1      4.5 10052597   326.9      213.2      451.6
+26:       mlp_A1  cocuk   -10.7    -14.3     -6.8  8476052  -903.4    -1210.6     -574.9
+27:       mlp_A2   hane     1.9      0.8      3.3 10052597   195.1       76.8      335.5
+28:       mlp_A2  cocuk   -13.9    -17.9     -9.7  8476052 -1178.1    -1520.6     -825.4
+             kol  birim fark_pp fark_alt fark_ust    olcek  ek_bin ek_bin_alt ek_bin_ust
+          <char> <char>   <num>    <num>    <num>    <num>   <num>      <num>      <num>
+
+Tasarim etkisi devrilme noktalari:
+                                                             karsilastirma tahmin    se k_yildiz
+                                                                    <char>  <num> <num>    <num>
+ 1:                        Exclusion error of the 60% line, households, pp -2.304 0.695     2.86
+ 2:                           Exclusion error of the 60% line, persons, pp -5.669 0.929     9.70
+ 3:              Prevalence of meal-affordability deprivation, persons, pp -4.070 0.530    15.33
+ 4:                               Income curve at 0.6 times the median, pp  5.084 1.005     6.66
+ 5:                               Income curve at 2.0 times the median, pp -7.263 0.710    27.25
+ 6:                                          Erreygers concentration index -0.092 0.010    21.80
+ 7: Δ sensitivity from the poverty line, Rule set (depth-3 tree), structur -0.920 0.806     0.34
+ 8: Δ sensitivity from the poverty line, Rule set (depth-3 tree), register -1.322 0.585     1.33
+ 9: Δ sensitivity from the poverty line, Lasso logistic (≤6 variables), st  0.798 0.712     0.33
+10: Δ sensitivity from the poverty line, Rule set (depth-3 tree), income + -0.010 0.145     0.00
+11: Δ sensitivity from the poverty line, Lasso logistic (≤6 variables), in  3.584 0.494    13.70
+12: Δ sensitivity from the poverty line, Ridge logistic (linear), income +  3.852 0.526    13.95
+13: Δ sensitivity from the poverty line, Ridge logistic (splines), income   3.564 0.557    10.64
+14: Δ sensitivity from the poverty line, LightGBM, register-like subset, p  0.993 0.631     0.64
+15:     Δ sensitivity from the poverty line, LightGBM, structural only, pp  1.711 0.616     2.01
+16: Δ sensitivity from the poverty line, LightGBM, income + structural, pp  3.623 0.551    11.24
+17:  Δ sensitivity from the poverty line, LightGBM, + financial strain, pp  4.892 0.563    19.68
+18:                    Children: lasso − LightGBM, income + structural, pp  6.376 1.502     4.69
+19: Marginal contribution of income, LightGBM (income + structural − struc  1.912 0.427     5.21
+20:           Marginal contribution of income, ridge logistic (linear), pp  1.628 0.405     4.21
+21:                              C1: G2 vs G1 (non-poor), Meat <1/week, pp 25.469 1.784    53.07
+22:                              C1: G2 vs G1 (non-poor), Fruit <1/day, pp 14.164 1.515    22.77
+23:                         C1: G2 vs G1 (non-poor), Vegetables <1/day, pp 13.028 1.791    13.78
+24:                 C1: G2 vs G1 (non-poor), Health costs heavy burden, pp  5.802 0.667    19.68
+25:                         C2: G2 vs G3 (meal-deprived), Meat <1/week, pp -6.170 1.594     3.90
+26: Three groups standardized to all adults (households): G2 − G3, Meat <1 -4.299 1.510     2.11
+27: Three groups standardized to all adults (households): G2 − G3, Fruit < -2.976 1.195     1.62
+28: Three groups standardized to all adults (households): G2 − G3, Vegetab -4.173 1.399     2.32
+29: Three groups standardized to all adults (households): G2 − G3, Health  -2.887 0.932     2.50
+                                                             karsilastirma tahmin    se k_yildiz
+                                                                    <char>  <num> <num>    <num>
+tablolar_tumu.xlsx 35 hucrede alt/ust simge
 Key: <ana_model>
    ana_model model_sayisi replikat_toplam iter_en_buyuk iter_sinira_ulasan
       <lgcl>        <int>           <int>         <num>              <int>
 1:     FALSE           36           72000            24                  0
 2:      TRUE            8           32000            24                  0
-                                              adim dakika
-                                            <char>  <num>
- 1:                                          okuma   0.01
- 2:                                      dogrulama   0.07
- 3:                                 hane veri seti   0.02
- 4:                                 ortusme imzasi   0.02
- 5:                                             H1   0.43
- 6:                                          ml.py  10.34
- 7:                      tahmin_uygula.py denetimi   0.01
- 8:                                    H3 hazirlik   0.04
- 9: H3 ana karsilastirmalar (protokol + bootstrap)   0.21
-10:                                H3 ek analizler   0.02
-11:                                 H3 ham oranlar   0.02
-12:                                        Table 1   0.03
-13:                                        Table 2   0.01
-14:                                        Table 3   0.01
-15:                             Figur verileri (R)   0.00
-16:                                  Ek tablolar 1   0.04
-17:                                  Ek tablolar 2   0.01
-18:                                  Ek tablolar 3   0.03
-19:                                  Ek tablolar 4   0.02
-20:                                  Ek tablolar 5   0.04
-21:                             tablolar_tumu.xlsx   0.01
-22:                       sayilar.json ve belgeler   0.00
-                                              adim dakika
-                                            <char>  <num>
-analiz.R bitti. Toplam sure (dk): 11.4 
+                                                                       adim dakika
+                                                                     <char>  <num>
+ 1:                                                                   okuma   0.18
+ 2:                                                               dogrulama   0.06
+ 3:                                                          hane veri seti   0.02
+ 4:                                                          ortusme imzasi   0.02
+ 5:                                                                 kesif.R   0.94
+ 6:                                                                      H1   0.45
+ 7: H1 ek analizler (bagli kumeler, egri, dugum, gelir yili, gradyan, esik)   0.28
+ 8:                                                                   ml.py 364.45
+ 9:                                                       mlp.py (GPU, MPS)   0.91
+10:                                                           esiksiz_ga.py  66.05
+11:                                               tahmin_uygula.py denetimi   0.01
+12:                                                             H3 hazirlik   0.03
+13:                          H3 ana karsilastirmalar (protokol + bootstrap)  72.80
+14:                                                         H3 ek analizler  11.83
+15:                                                          H3 ham oranlar   0.02
+16:                                            simulasyon pilot (50 tekrar)  31.70
+17:                                                          simulasyon tam  23.17
+18:                             S3 aralik yontemleri (yuzdelik, basic, BCa)   0.07
+19:                                                                 Table 1   0.04
+20:                                                                 Table 2   0.01
+21:                                                                 Table 3   0.01
+22:                                                      Figur verileri (R)   0.00
+23:                                                           Ek tablolar 1   0.05
+24:                                                           Ek tablolar 2   0.03
+25:                                                           Ek tablolar 3   0.03
+26:                                                           Ek tablolar 4   0.04
+27:                                                           Ek tablolar 5   0.05
+28:                                                      tablolar_tumu.xlsx   0.01
+29:                                                sayilar.json ve belgeler   0.01
+                                                                       adim dakika
+                                                                     <char>  <num>
+analiz.R bitti. Toplam sure (dk): 573.27 

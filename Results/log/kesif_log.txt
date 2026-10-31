@@ -375,4 +375,4 @@ Key: <degisken>
 10: yoksul_degil    T1_T2_T3        85         166      0.2563699       0.8267947     0.8388060
 11: yoksul_degil T1_T2_T3_T4       107         195      0.4983599       0.9290315     0.9410388
 12: yoksul_degil       T2_T3        73         145      0.2359455       0.8150655     0.8188478
-kesif.R bitti. Sure (dk): 0.92 
+kesif.R bitti. Sure (dk): 0.94 

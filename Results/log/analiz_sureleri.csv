@@ -1,23 +1,30 @@
 adim,dakika
-okuma,0.01
-dogrulama,0.07
+okuma,0.18
+dogrulama,0.06
 hane veri seti,0.02
 ortusme imzasi,0.02
-H1,0.43
-ml.py,10.34
+kesif.R,0.94
+H1,0.45
+"H1 ek analizler (bagli kumeler, egri, dugum, gelir yili, gradyan, esik)",0.28
+ml.py,364.45
+"mlp.py (GPU, MPS)",0.91
+esiksiz_ga.py,66.05
 tahmin_uygula.py denetimi,0.01
-H3 hazirlik,0.04
-H3 ana karsilastirmalar (protokol + bootstrap),0.21
-H3 ek analizler,0.02
+H3 hazirlik,0.03
+H3 ana karsilastirmalar (protokol + bootstrap),72.8
+H3 ek analizler,11.83
 H3 ham oranlar,0.02
-Table 1,0.03
+simulasyon pilot (50 tekrar),31.7
+simulasyon tam,23.17
+"S3 aralik yontemleri (yuzdelik, basic, BCa)",0.07
+Table 1,0.04
 Table 2,0.01
 Table 3,0.01
 Figur verileri (R),0
-Ek tablolar 1,0.04
-Ek tablolar 2,0.01
+Ek tablolar 1,0.05
+Ek tablolar 2,0.03
 Ek tablolar 3,0.03
-Ek tablolar 4,0.02
-Ek tablolar 5,0.04
+Ek tablolar 4,0.04
+Ek tablolar 5,0.05
 tablolar_tumu.xlsx,0.01
-sayilar.json ve belgeler,0
+sayilar.json ve belgeler,0.01

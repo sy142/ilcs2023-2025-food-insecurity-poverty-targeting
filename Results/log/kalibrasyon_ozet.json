@@ -1,0 +1,288 @@
+{
+ "n": 7861,
+ "toplam_hedef": 27195965.654008687,
+ "toplam_test_ozgun": 8198606.009909088,
+ "olcek": 3.317145087974566,
+ "sinirlar": [
+  0.2,
+  5.0
+ ],
+ "yineleme": 126,
+ "en_buyuk_marj_sapmasi": 9.809619783140988e-11,
+ "oran": {
+  "min": 0.49805711615921255,
+  "p05": 0.6574639282588454,
+  "medyan": 1.0495822281937774,
+  "p95": 1.3061229909911576,
+  "max": 1.6589637108247421
+ },
+ "sinirda_hane": {
+  "alt": 0,
+  "ust": 0
+ },
+ "kish_etkin_n_ozgun": 5617.6047107999275,
+ "kish_etkin_n_kalibre": 5626.006549129847,
+ "marjlar": [
+  {
+   "marj": "hane_tipi",
+   "kategori": "1",
+   "hedef_pay": 0.19881225975732159,
+   "ozgun_pay": 0.2672040265265826,
+   "kalibre_pay": 0.1988122597572781
+  },
+  {
+   "marj": "hane_tipi",
+   "kategori": "21",
+   "hedef_pay": 0.17305580560194622,
+   "ozgun_pay": 0.1652346621374421,
+   "kalibre_pay": 0.17305580558497013
+  },
+  {
+   "marj": "hane_tipi",
+   "kategori": "22",
+   "hedef_pay": 0.458317022083524,
+   "ozgun_pay": 0.40325118065759535,
+   "kalibre_pay": 0.4583170221011915
+  },
+  {
+   "marj": "hane_tipi",
+   "kategori": "23",
+   "hedef_pay": 0.07267972998103181,
+   "ozgun_pay": 0.06718248043402081,
+   "kalibre_pay": 0.07267972997782869
+  },
+  {
+   "marj": "hane_tipi",
+   "kategori": "3",
+   "hedef_pay": 0.08446584731330367,
+   "ozgun_pay": 0.08227135851785101,
+   "kalibre_pay": 0.08446584731669388
+  },
+  {
+   "marj": "hane_tipi",
+   "kategori": "4",
+   "hedef_pay": 0.012669335262872223,
+   "ozgun_pay": 0.014856291726509473,
+   "kalibre_pay": 0.012669335262035437
+  },
+  {
+   "marj": "hane_buyuklugu",
+   "kategori": "1",
+   "hedef_pay": 0.19881225975732159,
+   "ozgun_pay": 0.2672040265265826,
+   "kalibre_pay": 0.1988122597572781
+  },
+  {
+   "marj": "hane_buyuklugu",
+   "kategori": "2",
+   "hedef_pay": 0.2263282734228749,
+   "ozgun_pay": 0.21551447815312516,
+   "kalibre_pay": 0.2263282734228109
+  },
+  {
+   "marj": "hane_buyuklugu",
+   "kategori": "3",
+   "hedef_pay": 0.19958918540490123,
+   "ozgun_pay": 0.17787560811402797,
+   "kalibre_pay": 0.19958918540495343
+  },
+  {
+   "marj": "hane_buyuklugu",
+   "kategori": "4",
+   "hedef_pay": 0.1839892680049631,
+   "ozgun_pay": 0.16240458661677845,
+   "kalibre_pay": 0.18398926800504878
+  },
+  {
+   "marj": "hane_buyuklugu",
+   "kategori": "5",
+   "hedef_pay": 0.09676241697398737,
+   "ozgun_pay": 0.08947666124991453,
+   "kalibre_pay": 0.09676241697398545
+  },
+  {
+   "marj": "hane_buyuklugu",
+   "kategori": "6",
+   "hedef_pay": 0.09451859643594823,
+   "ozgun_pay": 0.08752463933957245,
+   "kalibre_pay": 0.09451859643592121
+  },
+  {
+   "marj": "ibbs1",
+   "kategori": "TR1",
+   "hedef_pay": 0.18555343431366036,
+   "ozgun_pay": 0.19124958934209763,
+   "kalibre_pay": 0.18555343431373902
+  },
+  {
+   "marj": "ibbs1",
+   "kategori": "TR2",
+   "hedef_pay": 0.05413930890404024,
+   "ozgun_pay": 0.05652110309252766,
+   "kalibre_pay": 0.054139308904034275
+  },
+  {
+   "marj": "ibbs1",
+   "kategori": "TR3",
+   "hedef_pay": 0.14978683713411298,
+   "ozgun_pay": 0.14039266717134247,
+   "kalibre_pay": 0.14978683713411547
+  },
+  {
+   "marj": "ibbs1",
+   "kategori": "TR4",
+   "hedef_pay": 0.10712254659829377,
+   "ozgun_pay": 0.09788471645432176,
+   "kalibre_pay": 0.10712254659831603
+  },
+  {
+   "marj": "ibbs1",
+   "kategori": "TR5",
+   "hedef_pay": 0.10134674855033614,
+   "ozgun_pay": 0.10315123334843045,
+   "kalibre_pay": 0.1013467485503552
+  },
+  {
+   "marj": "ibbs1",
+   "kategori": "TR6",
+   "hedef_pay": 0.13239106111273782,
+   "ozgun_pay": 0.14438479118478248,
+   "kalibre_pay": 0.13239106111271415
+  },
+  {
+   "marj": "ibbs1",
+   "kategori": "TR7",
+   "hedef_pay": 0.04758080955667097,
+   "ozgun_pay": 0.04754795162330591,
+   "kalibre_pay": 0.047580809556665694
+  },
+  {
+   "marj": "ibbs1",
+   "kategori": "TR8",
+   "hedef_pay": 0.05747163974612356,
+   "ozgun_pay": 0.0565888415241714,
+   "kalibre_pay": 0.05747163974611427
+  },
+  {
+   "marj": "ibbs1",
+   "kategori": "TR9",
+   "hedef_pay": 0.03298711471677915,
+   "ozgun_pay": 0.032422491930117654,
+   "kalibre_pay": 0.03298711471677291
+  },
+  {
+   "marj": "ibbs1",
+   "kategori": "TRA",
+   "hedef_pay": 0.02047927100271375,
+   "ozgun_pay": 0.020307071276836522,
+   "kalibre_pay": 0.020479271002706155
+  },
+  {
+   "marj": "ibbs1",
+   "kategori": "TRB",
+   "hedef_pay": 0.034853984595056016,
+   "ozgun_pay": 0.035579689535229664,
+   "kalibre_pay": 0.03485398459503854
+  },
+  {
+   "marj": "ibbs1",
+   "kategori": "TRC",
+   "hedef_pay": 0.07628724376947466,
+   "ozgun_pay": 0.07396985351683658,
+   "kalibre_pay": 0.07628724376942615
+  },
+  {
+   "marj": "reis_yas",
+   "kategori": "35-49",
+   "hedef_pay": 0.33179053318857543,
+   "ozgun_pay": 0.32292396736786516,
+   "kalibre_pay": 0.3317905331886003
+  },
+  {
+   "marj": "reis_yas",
+   "kategori": "50-64",
+   "hedef_pay": 0.2962976909102598,
+   "ozgun_pay": 0.27601871505430237,
+   "kalibre_pay": 0.2962976909102528
+  },
+  {
+   "marj": "reis_yas",
+   "kategori": "<35",
+   "hedef_pay": 0.15784303791583182,
+   "ozgun_pay": 0.20604320964433304,
+   "kalibre_pay": 0.1578430379158844
+  },
+  {
+   "marj": "reis_yas",
+   "kategori": ">=65",
+   "hedef_pay": 0.21406873798532977,
+   "ozgun_pay": 0.1950141079335014,
+   "kalibre_pay": 0.2140687379852602
+  },
+  {
+   "marj": "mulkiyet",
+   "kategori": "kiraci",
+   "hedef_pay": 0.2818027674336414,
+   "ozgun_pay": 0.3043794622174012,
+   "kalibre_pay": 0.2818027674336467
+  },
+  {
+   "marj": "mulkiyet",
+   "kategori": "lojman_kirasiz",
+   "hedef_pay": 0.16389945390411054,
+   "ozgun_pay": 0.15876309744124872,
+   "kalibre_pay": 0.16389945390410182
+  },
+  {
+   "marj": "mulkiyet",
+   "kategori": "sahibi",
+   "hedef_pay": 0.5542977786622476,
+   "ozgun_pay": 0.5368574403413509,
+   "kalibre_pay": 0.5542977786622494
+  },
+  {
+   "marj": "gelir_bandi",
+   "kategori": "1",
+   "hedef_pay": 0.15979838899709498,
+   "ozgun_pay": 0.15364227445923923,
+   "kalibre_pay": 0.15979838899709528
+  },
+  {
+   "marj": "gelir_bandi",
+   "kategori": "2",
+   "hedef_pay": 0.14742818118616863,
+   "ozgun_pay": 0.14302547606838079,
+   "kalibre_pay": 0.1474281811861688
+  },
+  {
+   "marj": "gelir_bandi",
+   "kategori": "3",
+   "hedef_pay": 0.13536741677104044,
+   "ozgun_pay": 0.13270523572194914,
+   "kalibre_pay": 0.13536741677104056
+  },
+  {
+   "marj": "gelir_bandi",
+   "kategori": "4",
+   "hedef_pay": 0.24565012888641,
+   "ozgun_pay": 0.2427316792323686,
+   "kalibre_pay": 0.24565012888640972
+  },
+  {
+   "marj": "gelir_bandi",
+   "kategori": "5",
+   "hedef_pay": 0.31175588415928296,
+   "ozgun_pay": 0.327895334518063,
+   "kalibre_pay": 0.31175588415928385
+  }
+ ],
+ "replikat_en_cok_yineleme": 162,
+ "replikat_en_buyuk_marj_sapmasi": 9.804190792550571e-11,
+ "yoksulluk_orani_hedef": 0.15979838899709514,
+ "FI_yayginligi_tum_2025": 0.3696356101649173,
+ "FI_hane_toplam_2025": 10052597.358543634,
+ "FI_hanelerde_cocuk_HB040": 8476052.381396642,
+ "yoksul_hane_toplam_2025": 4345871.498730919,
+ "tr63_haric_n": 7566,
+ "tr63_ana_testte_n": 295
+}

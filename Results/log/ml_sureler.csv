@@ -1,11 +1,31 @@
 adim,dakika,yer
-LightGBM nihai modeller (5 tohum),0.0,CPU
-Bicim merdiveni: kisitli LightGBM ayari ve nihai modeller,0.0,CPU
-Cezali lojistik (L2) ayar ve nihai,0.0,CPU
-"Sade kural setleri (CART, L1)",0.0,CPU
+LightGBM ayari A1 (260 model),1.2,CPU
+LightGBM sinir genisletme A1 tur 1 (72 model),1.41,CPU
+LightGBM ayari A2 (260 model),1.22,CPU
+LightGBM sinir genisletme A2 tur 1 (72 model),1.38,CPU
+LightGBM ayari A3 (260 model),1.24,CPU
+LightGBM sinir genisletme A3 tur 1 (72 model),1.37,CPU
+LightGBM ayari A4 (260 model),1.28,CPU
+LightGBM sinir genisletme A4 tur 1 (72 model),1.64,CPU
+LightGBM ayari B1 (260 model),0.78,CPU
+LightGBM sinir genisletme B1 tur 1 (72 model),0.85,CPU
+LightGBM ayari B2 (260 model),0.89,CPU
+LightGBM sinir genisletme B2 tur 1 (72 model),1.03,CPU
+LightGBM ayari B3 (260 model),0.8,CPU
+LightGBM sinir genisletme B3 tur 1 (72 model),0.94,CPU
+LightGBM ayari A2i (260 model),0.65,CPU
+LightGBM nihai modeller (5 tohum),1.47,CPU
+Bicim merdiveni LightGBM ayari ek A1 (140 model),0.67,CPU
+Bicim merdiveni LightGBM ayari d2 A1 (140 model),0.61,CPU
+Bicim merdiveni LightGBM ayari ek A2 (220 model),5.29,CPU
+Bicim merdiveni LightGBM ayari d2 A2 (140 model),0.73,CPU
+Bicim merdiveni: kisitli LightGBM ayari ve nihai modeller,8.14,CPU
+Cezali lojistik (L2) ayar ve nihai,0.1,CPU
+"Sade kural setleri (CART, L1)",6.22,CPU
 Model dosyalari (Results/modeller; LightGBM yalniz yerel),0.36,CPU
-Hedefleme metrikleri ve eslesik bootstrap (B = 8000),6.29,CPU
+Hedefleme metrikleri ve eslesik bootstrap (B = 8000),6.24,CPU
 "Model-model farklari ve aralik yontemleri (yuzdelik, basic, BCa; hane jackknife ivmesi)",0.05,CPU
 "Hedefleme tavani, ulasilabilir kazanc payi, modeller arasi farklar ve secilen hane profili",0.07,CPU
-"Yil modelleri (3 yil x 3 set, 5 katli OOF)",0.0,CPU
-"SHAP (TreeSHAP, LightGBM pred_contrib) ve etkilesim taramasi",0.04,CPU
+"Yil modelleri (3 yil x 3 set, 5 katli OOF)",5.83,CPU
+"Friedman H etkilesim istatistikleri (400 hane, A1 5 tohum, ilk 12 ozellik)",3.67,CPU
+"SHAP (TreeSHAP, LightGBM pred_contrib) ve etkilesim taramasi",300.81,CPU
