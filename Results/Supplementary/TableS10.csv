@@ -3,7 +3,7 @@ All households (main test set),"","","","","",""
 "LightGBM, income + structural","0.855 (0.846, 0.865)","0.785 (0.769, 0.801)",0.155,0.17,1.37,0.860
 "LightGBM, structural only","0.817 (0.806, 0.828)","0.739 (0.722, 0.756)",0.172,0.21,1.22,0.825
 "LightGBM, + financial strain","0.880 (0.871, 0.889)","0.817 (0.801, 0.832)",0.142,0.15,1.41,0.884
-"LightGBM, + deprivation items (upper bound)","0.971 (0.967, 0.975)","0.958 (0.951, 0.964)",0.066,0.13,1.40,0.971
+"LightGBM, upper bound: + other deprivation items (same battery as the outcome)","0.971 (0.967, 0.975)","0.958 (0.951, 0.964)",0.066,0.13,1.40,0.971
 "LightGBM, register-like subset","0.807 (0.796, 0.819)","0.717 (0.698, 0.736)",0.177,0.13,1.38,0.818
 "Ridge logistic (splines), income + structural","0.856 (0.846, 0.865)","0.782 (0.765, 0.798)",0.156,0.15,1.49,0.863
 "Ridge logistic, structural only","0.817 (0.806, 0.828)","0.737 (0.719, 0.754)",0.173,0.17,1.33,0.829

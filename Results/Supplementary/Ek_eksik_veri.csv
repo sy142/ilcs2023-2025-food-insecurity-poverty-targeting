@@ -1,6 +1,6 @@
 Variable,"2023 (n = 24,932)","2024 (n = 25,925)","2025 (n = 25,836)","2025 main test set (n = 7,861)","Development (2023–2024) (n = 50,857)","H3 adults (n = 57,899)","H3 households (n = 25,836)",Missingness
 Outcome and income,"","","","","","","",""
-Food insecurity (HE090),0,0,0,0,0,0,0,None
+Meal-affordability deprivation (HE090),0,0,0,0,0,0,0,None
 "Income features (T1, 11 variables)",0,0,0,0,0,0,0,None
 Features with missing values,"","","","","","","",""
 Work intensity,"5,239 (21.0)","5,688 (21.9)","5,697 (22.1)","1,681 (21.4)","10,927 (21.5)",–,–,Structural

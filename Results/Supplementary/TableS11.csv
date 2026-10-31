@@ -1,4 +1,4 @@
-Rule (leaf) or term,"Share of households, %","Food insecure, %","Share of households, % ","Food insecure, % ",Odds ratio (lasso)
+Rule (leaf) or term,"Share of households, %","Meal-deprived, %","Share of households, % ","Meal-deprived, % ",Odds ratio (lasso)
 "Rule set (depth-3 tree), structural (all households)","","","","",""
 "1. Highest education among adults ≤ Upper secondary and Leaking roof, damp or rot: Yes and Owns a car: No",15.7,68.7,12.7,78.7,""
 2. Highest education among adults ≥ Tertiary and Owns a car: No and Heating system: Stove,2.1,53.4,2.0,52.6,""
