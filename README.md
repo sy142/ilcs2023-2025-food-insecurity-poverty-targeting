@@ -2,13 +2,14 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23685840.svg)](https://doi.org/10.5281/zenodo.23685840)
 
-Analysis code and aggregated outputs for a study of household food insecurity and
+Analysis code and aggregated outputs for a study of household food insecurity
+(meal-affordability deprivation, a single-item proxy for food insecurity) and
 relative income poverty in Türkiye, using the 2023–2025 cross-sections of the
 Income and Living Conditions Survey (ILCS/EU-SILC, Turkish Statistical Institute).
 The analysis estimates the exclusion error of the 60% relative poverty line,
 compares targeting rules (decision trees, penalized regression, gradient boosting)
-trained on 2023–2024 and evaluated on 2025, and standardizes dietary frequencies
-by g-computation. A manuscript describing the analysis is under review; citation
+trained on 2023–2024 and evaluated on 2025, and standardizes dietary frequencies by
+g-computation. A manuscript describing the analysis is under review; citation
 information will be added here.
 
 ## Data
