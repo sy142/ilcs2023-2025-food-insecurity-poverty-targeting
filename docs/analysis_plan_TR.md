@@ -37,7 +37,7 @@ Proje kökü: `[proje kökü]/`. Bütün komutlar proje kökünden çalıştır�
   GYKA_2023_2025_birlesik.xlsx
   GYKA_2023_2025_inceleme_raporu.docx
   GYKA_2023_2025_tarif.docx
-  Talimat_Foods2.md                 (bu belge)
+  [talimat dosyası].md              (bu belge)
   Rapor.md                          (sen yazacaksın)
   Codes/
     README_kodlar.md
