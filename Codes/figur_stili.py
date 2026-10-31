@@ -25,8 +25,8 @@ ZEMIN = "#FFFFFF"
 KAGIT = "#F5F2EC"
 
 RENK_GRUP = {1: "#0E9384", 2: "#D47228", 3: "#8E3563"}
-ETIKET_GRUP = {1: "Food secure", 2: "Food insecure, not poor", 3: "Food insecure, poor"}
-ETIKET_GRUP_KISA = {1: "Food secure", 2: "FI, not poor", 3: "FI, poor"}
+ETIKET_GRUP = {1: "Not meal-deprived", 2: "Meal-deprived, not poor", 3: "Meal-deprived, poor"}
+ETIKET_GRUP_KISA = {1: "Not meal-deprived", 2: "Meal-deprived, not poor", 3: "Meal-deprived, poor"}
 ZEMIN_GRUP = {1: "#D3EDEA", 2: "#F7E2D1", 3: "#EFD9E3"}
 RENK_YOKSUL = "#5B606A"
 GRI_YOKSUL = "#C4C8CE"

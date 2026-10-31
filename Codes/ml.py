@@ -1012,7 +1012,7 @@ pd.DataFrame([{"degisken": v, "etiket": degisken_etiket(v), "tur": "nominal" if 
               for v in girdi]).to_csv(MODK / "girdi_sutunlari.csv", index=False)
 pd.DataFrame(model_liste).to_csv(MODK / "model_listesi.csv", index=False)
 sure_kaydet("Model dosyalari (Results/modeller; LightGBM yalniz yerel)", t0)
-yaz("Model dosyalari yazildi:", len(model_liste), "lojistik model; LightGBM dokumleri yerelde", MODK_LGB)
+yaz("Model dosyalari yazildi:", len(model_liste), "lojistik model; LightGBM dokumleri yerelde", MODK_LGB.relative_to(KOK))
 
 ARAMA = [
     ("tum LightGBM asamalari", "LightGBM", "objective", None, None, "sabit", "binary", "HB040 weights scaled to mean 1 within year; bagging_freq 1; deterministic"),

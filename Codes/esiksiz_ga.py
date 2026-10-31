@@ -1,3 +1,4 @@
+import json
 import time
 from pathlib import Path
 
@@ -194,4 +195,199 @@ for kol in S2B:
         egri.append({"kol": kol, **d, "kalibrasyon_kesim": r["kalibrasyon_kesim"], "kalibrasyon_kesim_alt": r["kalibrasyon_kesim_alt"], "kalibrasyon_kesim_ust": r["kalibrasyon_kesim_ust"],
                      "kalibrasyon_egim": r["kalibrasyon_egim"], "kalibrasyon_egim_alt": r["kalibrasyon_egim_alt"], "kalibrasyon_egim_ust": r["kalibrasyon_egim_ust"]})
 pd.DataFrame(egri).to_csv(FV / "figS2b_kalibrasyon_2025.csv", index=False)
+print(f"[{(time.time() - T_BAS) / 60:5.1f} dk] esiksiz metrik GA'lari bitti; satir {len(sonuc)}", flush=True)
+
+KAL_SINIR = (0.2, 5.0)
+KAL_TOL = 1e-10
+KAL_PARCA = 1000
+cocuk = te["n_cocuk"].values.astype(float)
+yoksul = te["yoksul"].values.astype(float)
+assert (yoksul == (te["goreli_esdeger_gelir"].values < 0.6)).all()
+assert (yoksul == (te["gelir_bandi"].values == 1)).all()
+kal_marj = {
+    "hane_tipi": te["HB050"].astype(int).astype(str).values,
+    "hane_buyuklugu": np.minimum(te["hane_buyuklugu"].values, 6).astype(int).astype(str),
+    "ibbs1": te["HB030"].astype(str).values,
+    "reis_yas": np.select([te["reis_yas"].values < 35, te["reis_yas"].values < 50, te["reis_yas"].values < 65], ["<35", "35-49", "50-64"], ">=65"),
+    "mulkiyet": np.where(te["HH020"].values == 1, "sahibi", np.where(te["HH020"].values == 2, "kiraci", "lojman_kirasiz")),
+    "gelir_bandi": te["gelir_bandi"].astype(int).astype(str).values,
+}
+for k, v in kal_marj.items():
+    assert not pd.isna(v).any(), k
+T_TOP = w.sum()
+kal_A, kal_T, kal_kat = [], [], []
+for k, v in kal_marj.items():
+    u, inv = np.unique(v, return_inverse=True)
+    A = sparse.csr_matrix((np.ones(n_te), (inv, np.arange(n_te))), shape=(len(u), n_te))
+    kal_A.append(A[:, temiz])
+    kal_T.append(A @ w)
+    kal_kat.append((k, u))
+    assert (kal_A[-1].sum(1) > 0).all(), k
+
+
+def rake(W0):
+    pozitif = W0 > 0
+    W = W0.copy()
+    for it in range(5000):
+        for A, T in zip(kal_A, kal_T):
+            S = np.asarray(A @ W)
+            f = np.where(S > 0, T[:, None] / np.where(S > 0, S, 1), 1.0)
+            W = W * np.asarray(A.T @ f)
+        G = np.clip(np.where(pozitif, W / np.where(pozitif, W0, 1), 1.0), *KAL_SINIR)
+        W = np.where(pozitif, W0 * G, 0.0)
+        sapma = max(float(np.max(np.abs(np.asarray(A @ W) / T[:, None] - 1))) for A, T in zip(kal_A, kal_T))
+        if sapma < KAL_TOL:
+            break
+    return W, it + 1, sapma
+
+
+wt = w[temiz]
+W0k = (wt * T_TOP / wt.sum())[:, None]
+Wk0, kal_it, kal_sapma = rake(W0k)
+assert kal_sapma < KAL_TOL, kal_sapma
+oran = Wk0[:, 0] / W0k[:, 0]
+pd.DataFrame({"hane_kimlik": te["hane_kimlik"].values[temiz], "w_kalibre": Wk0[:, 0], "w_ozgun": wt}).to_parquet(VERI / "ml" / "kalibre_agirlik_test_2025.parquet", index=False)
+kal_ozet = {"n": int(temiz.sum()), "toplam_hedef": float(T_TOP), "toplam_test_ozgun": float(wt.sum()), "olcek": float(T_TOP / wt.sum()), "sinirlar": list(KAL_SINIR),
+            "yineleme": kal_it, "en_buyuk_marj_sapmasi": kal_sapma,
+            "oran": {"min": float(oran.min()), "p05": float(np.percentile(oran, 5)), "medyan": float(np.median(oran)), "p95": float(np.percentile(oran, 95)), "max": float(oran.max())},
+            "sinirda_hane": {"alt": int(np.sum(oran <= KAL_SINIR[0] + 1e-12)), "ust": int(np.sum(oran >= KAL_SINIR[1] - 1e-12))},
+            "kish_etkin_n_ozgun": float(wt.sum() ** 2 / np.sum(wt ** 2)), "kish_etkin_n_kalibre": float(Wk0[:, 0].sum() ** 2 / np.sum(Wk0[:, 0] ** 2)),
+            "marjlar": [{"marj": k, "kategori": str(c), "hedef_pay": float(T[i] / T_TOP), "ozgun_pay": float((A @ wt)[i] / wt.sum()), "kalibre_pay": float((A @ Wk0[:, 0])[i] / T_TOP)}
+                        for (k, u), A, T in zip(kal_kat, kal_A, kal_T) for i, c in enumerate(u)]}
+print(f"[{(time.time() - T_BAS) / 60:5.1f} dk] kalibrasyon: {kal_it} yineleme, oran {oran.min():.3f}-{oran.max():.3f}, Kish n {kal_ozet['kish_etkin_n_ozgun']:.0f} -> {kal_ozet['kish_etkin_n_kalibre']:.0f}", flush=True)
+kal_it_b, kal_sapma_b = 0, 0.0
+
+H2_KOLLAR = ["gelir_sirasi", "cart_T2", "cart_T2idari", "l1_T2", "cart_T1T2", "l1_T1T2", "logit_lin_A1", "logit_A1", "lgb_A2i", "lgb_A2", "lgb_A1", "lgb_A3", "lgb_A4",
+             "yoksul+cart_B_T2", "yoksul+lgb_B1", "mlp_A1", "mlp_A2", "logit_lin_A2"]
+H2_MM = (("logit_lin_A1", "lgb_A1", "cocuk"), ("l1_T1T2", "lgb_A1", "cocuk"), ("lgb_A1", "lgb_A2", "duyarlilik"), ("logit_lin_A1", "logit_lin_A2", "duyarlilik"))
+
+
+def skor_al(kol):
+    if kol == "gelir_sirasi":
+        return gelir_skor
+    if kol.startswith("yoksul+"):
+        return np.where(yoksul == 1, 10.0, skorlar[kol.split("+", 1)[1]].values)
+    return skorlar[kol].values
+
+
+def kapsam(A, yy, kk, Wb, c):
+    Wg = A @ Wb
+    W1g = A @ (Wb * yy[:, None])
+    Kg = A @ (Wb * (kk * yy)[:, None])
+    once = np.cumsum(Wg, axis=0) - Wg
+    hedef = c * Wg.sum(0)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        frac = np.where(Wg > 0, np.clip((hedef - once) / Wg, 0, 1), 0)
+    sec = (frac * Wg).sum(0)
+    secFI = (frac * W1g).sum(0)
+    return {"kapsama": 100 * sec / Wg.sum(0), "duyarlilik": 100 * secFI / W1g.sum(0), "ppv": 100 * secFI / sec, "cocuk": 100 * (frac * Kg).sum(0) / Kg.sum(0)}
+
+
+def bayrak(f, yy, kk, Wb):
+    tot = Wb.sum(0)
+    sec = (Wb * f[:, None]).sum(0)
+    secFI = (Wb * (f * yy)[:, None]).sum(0)
+    return {"kapsama": 100 * sec / tot, "duyarlilik": 100 * secFI / (Wb * yy[:, None]).sum(0), "ppv": 100 * secFI / sec, "cocuk": 100 * (Wb * (f * yy * kk)[:, None]).sum(0) / (Wb * (yy * kk)[:, None]).sum(0)}
+
+
+def degerlendir(m, Wb, kollar, gm):
+    yy, kk = y[m], cocuk[m]
+    tot = Wb.sum(0)
+    noktalar = {"yoksulluk_orani": (Wb * yoksul[m][:, None]).sum(0) / tot, "30": np.full(Wb.shape[1], 0.30), "FI_yayginligi": (Wb * yy[:, None]).sum(0) / tot}
+    out = {("yoksul_60", "yoksulluk_orani"): bayrak(yoksul[m], yy, kk, Wb)}
+    for kol in kollar:
+        for nk, c in noktalar.items():
+            out[(kol, nk)] = kapsam(gm[kol], yy, kk, Wb, c)
+    for nk, c in noktalar.items():
+        p_ = noktalar["FI_yayginligi"]
+        out[("tavan", nk)] = {"kapsama": 100 * c, "duyarlilik": np.minimum(100, 100 * c / p_), "ppv": np.where(c <= p_, 100.0, 100 * p_ / c), "cocuk": np.full(Wb.shape[1], np.nan)}
+    return out
+
+
+def ozet_satirlari(v0, vb, etiket):
+    sat = []
+    for (kol, nk), d0 in v0.items():
+        for metr in ("kapsama", "duyarlilik", "ppv", "cocuk"):
+            x = vb[(kol, nk)][metr]
+            if np.isnan(d0[metr][0]):
+                continue
+            sat.append({"test_seti": etiket, "tur": "metrik", "kol": kol, "karsilastirma": "", "kapsama_noktasi": nk, "metrik": metr, "deger": float(d0[metr][0]),
+                        "alt": float(np.nanpercentile(x, 2.5)), "ust": float(np.nanpercentile(x, 97.5)), "se_boot": float(np.nanstd(x, ddof=1))})
+    for (kol, nk), d0 in v0.items():
+        if nk != "yoksulluk_orani" or kol in ("yoksul_60", "tavan"):
+            continue
+        for metr in ("duyarlilik", "ppv", "cocuk"):
+            x = vb[(kol, nk)][metr] - vb[("yoksul_60", nk)][metr]
+            sat.append({"test_seti": etiket, "tur": "fark", "kol": kol, "karsilastirma": "yoksul_60", "kapsama_noktasi": nk, "metrik": metr, "deger": float(d0[metr][0] - v0[("yoksul_60", nk)][metr][0]),
+                        "alt": float(np.nanpercentile(x, 2.5)), "ust": float(np.nanpercentile(x, 97.5)), "se_boot": float(np.nanstd(x, ddof=1))})
+    for kol, ref, metr in H2_MM:
+        nk = "yoksulluk_orani"
+        x = vb[(kol, nk)][metr] - vb[(ref, nk)][metr]
+        sat.append({"test_seti": etiket, "tur": "fark", "kol": kol, "karsilastirma": ref, "kapsama_noktasi": nk, "metrik": metr, "deger": float(v0[(kol, nk)][metr][0] - v0[(ref, nk)][metr][0]),
+                    "alt": float(np.nanpercentile(x, 2.5)), "ust": float(np.nanpercentile(x, 97.5)), "se_boot": float(np.nanstd(x, ddof=1))})
+    return sat
+
+
+def birlestir(parcalar):
+    return {k: {metr: np.concatenate([p[k][metr] for p in parcalar]) for metr in parcalar[0][k]} for k in parcalar[0]}
+
+
+def calistir(m, kalibre):
+    kollar = [k for k in H2_KOLLAR if not np.isnan(skor_al(k)[m]).any()]
+    gm = {k: grup_matris(skor_al(k)[m]) for k in kollar}
+    global kal_it_b, kal_sapma_b
+    if kalibre:
+        v0 = degerlendir(m, Wk0, kollar, gm)
+    else:
+        v0 = degerlendir(m, w[m][:, None], kollar, gm)
+    parcalar = []
+    for j0 in range(0, B_BOOT, KAL_PARCA):
+        Wb = WB[m, j0:j0 + KAL_PARCA]
+        if kalibre:
+            Wb, it_, sp_ = rake(Wb * (T_TOP / Wb.sum(0))[None, :])
+            kal_it_b, kal_sapma_b = max(kal_it_b, it_), max(kal_sapma_b, sp_)
+        parcalar.append(degerlendir(m, Wb, kollar, gm))
+    return v0, birlestir(parcalar)
+
+
+v0o, vbo = calistir(temiz, False)
+ozgun = ozet_satirlari(v0o, vbo, "ana_test_ozgun_agirlik")
+eski_m = pd.read_csv(SON / "H2_hedefleme_metrikleri.csv").query("sema == 'temiz' and nufus == 'A'")
+eski_f = pd.read_csv(SON / "H2_eslesik_farklar.csv").query("sema == 'temiz' and nufus == 'A' and karsilastirma == 'yoksul_60'")
+kontrol_n = 0
+for r in ozgun:
+    if r["tur"] == "metrik" and r["metrik"] != "kapsama":
+        k_ = "kendi" if r["kol"] == "yoksul_60" else r["kapsama_noktasi"]
+        e = eski_m[(eski_m["kol"] == r["kol"]) & (eski_m["kapsama_noktasi"] == k_)]
+        if len(e):
+            for c, c2 in (("deger", r["metrik"]), ("alt", r["metrik"] + "_alt"), ("ust", r["metrik"] + "_ust")):
+                assert abs(r[c] - e.iloc[0][c2]) < 1e-9, (r["kol"], k_, r["metrik"], c, r[c], e.iloc[0][c2])
+            kontrol_n += 1
+    if r["tur"] == "fark" and r["karsilastirma"] == "yoksul_60":
+        e = eski_f[(eski_f["kol"] == r["kol"]) & (eski_f["metrik"] == r["metrik"])]
+        if len(e):
+            for c in ("deger", "alt", "ust"):
+                assert abs(r[c] - e.iloc[0]["fark" if c == "deger" else c]) < 1e-9, (r["kol"], r["metrik"], c)
+            kontrol_n += 1
+print(f"[{(time.time() - T_BAS) / 60:5.1f} dk] ozgun agirlikli yeniden hesap: {kontrol_n} satir mevcut H2 ciktilariyla ayni", flush=True)
+pd.DataFrame([r for r in ozgun if r["tur"] == "fark"]).to_csv(SON / "H2_fark_bootstrap_sd.csv", index=False)
+
+v0k, vbk = calistir(temiz, True)
+kal_ozet["replikat_en_cok_yineleme"] = kal_it_b
+kal_ozet["replikat_en_buyuk_marj_sapmasi"] = kal_sapma_b
+assert kal_sapma_b < KAL_TOL, kal_sapma_b
+kal_ozet["yoksulluk_orani_hedef"] = float(np.sum(w * yoksul) / T_TOP)
+kal_ozet["FI_yayginligi_tum_2025"] = float(np.sum(w * y) / T_TOP)
+kal_ozet["FI_hane_toplam_2025"] = float(np.sum(w * y))
+kal_ozet["FI_hanelerde_cocuk_HB040"] = float(np.sum(w * y * cocuk))
+kal_ozet["yoksul_hane_toplam_2025"] = float(np.sum(w * yoksul))
+pd.DataFrame(ozgun + ozet_satirlari(v0k, vbk, "ana_test_kalibre")).to_csv(SON / "H2_kalibre_test.csv", index=False)
+print(f"[{(time.time() - T_BAS) / 60:5.1f} dk] kalibre degerlendirme bitti; replikatlarda en cok {kal_it_b} yineleme", flush=True)
+
+tr63 = temiz & (te["HB031"].astype(str).values != "TR63")
+v0t, vbt = calistir(tr63, False)
+pd.DataFrame(ozet_satirlari(v0t, vbt, "ana_test_tr63_haric")).to_csv(SON / "H2_tr63_haric.csv", index=False)
+kal_ozet["tr63_haric_n"] = int(tr63.sum())
+kal_ozet["tr63_ana_testte_n"] = int((temiz & ~tr63).sum())
+(SON / "log" / "kalibrasyon_ozet.json").write_text(json.dumps(kal_ozet, ensure_ascii=False, indent=1), encoding="utf-8")
 print(f"esiksiz_ga.py bitti, {(time.time() - T_BAS) / 60:.1f} dk; satir {len(sonuc)}", flush=True)

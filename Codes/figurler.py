@@ -121,7 +121,7 @@ def figure1():
             f"+{sayi(a['test_eslesen_reis_cok_kisili'])} changed composition; added back in the full-2025 test", renk=IKINCIL, boyut=6.8, alt_boyut=6.2)
 
     sp = 0.36 / a["kisi_2025"]
-    xP, xQ = 0.715, 0.80
+    xP, xQ = 0.718, 0.778
     yP = 0.87
     h25 = a["kisi_2025"] * sp
     cubuk(axa, xP, yP, yP - h25, H3_R)
@@ -133,8 +133,8 @@ def figure1():
     for g in (1, 2, 3):
         hg = a[f"yetiskin_G{g}"] * sp
         cubuk(axa, xQ, yg, yg - hg, RENK_GRUP[g])
-        axa.text(xQ + 0.022, yg - hg / 2, f"{ETIKET_GRUP_KISA[g]} · {sayi(a[f'yetiskin_G{g}'])}", ha="left", va="center", fontsize=6.4, color=RENK_GRUP[g],
-                 fontweight="bold", transform=axa.transAxes)
+        axa.text(xQ + 0.020, yg - hg / 2, f"{ETIKET_GRUP_KISA[g]} · {sayi(a[f'yetiskin_G{g}'])}", ha="left", va="center", fontsize=6.6, color=RENK_GRUP[g],
+                 fontweight="bold", fontfamily=DAR, transform=axa.transAxes)
         yg -= hg
     axa.text(xQ, yQ - hy - 0.025, f"{sayi(a['yetiskin_2025'])} adults aged ≥18\nwith an individual questionnaire", ha="left", va="top",
              fontsize=6.2, color=IKINCIL, transform=axa.transAxes, linespacing=1.25)
@@ -184,11 +184,12 @@ def figure2():
     ax.grid(axis="y", visible=False)
     not_(ax, 0.995, 1.0, "Exclusion error, % (95% CI)", ha="right", va="top", fontsize=6.0)
     leg = [Rectangle((0, 0), 1, 1, color=RENK_GRUP[3]), Rectangle((0, 0), 1, 1, color=RENK_GRUP[2]), Rectangle((0, 0), 1, 1, color=GRI_YOKSUL)]
-    ax.legend(leg, ["Food insecure, poor", "Food insecure, not poor", "Food secure, poor"], loc="lower left", bbox_to_anchor=(0.0, 1.0), ncol=3, fontsize=6.0,
+    ax.legend(leg, ["Meal-deprived, poor", "Meal-deprived, not poor", "Not meal-deprived, poor"], loc="lower left", bbox_to_anchor=(0.0, 1.0), ncol=3, fontsize=6.0,
               handlelength=1.0, columnspacing=1.0, borderaxespad=0.3)
 
-    ax = fig.add_axes([0.685, 0.672, 0.30, 0.258])
-    axs = fig.add_axes([0.685, 0.585, 0.30, 0.072], sharex=ax)
+    ax = fig.add_axes([0.685, 0.764, 0.30, 0.166])
+    axd = fig.add_axes([0.685, 0.668, 0.30, 0.068], sharex=ax)
+    axs = fig.add_axes([0.685, 0.585, 0.30, 0.066], sharex=ax)
     panel_etiketi_fig(fig, "b", 0.615, 0.995)
     for yil, lw, alf in ((2023, 1.1, 0.22), (2025, 1.6, 0.20)):
         e = eg[eg["yil"] == yil]
@@ -203,12 +204,29 @@ def figure2():
     ax.text(0.59, 3, "60% line", rotation=90, fontsize=6.0, color=MUREKKEP, ha="right", va="bottom", path_effects=HALE)
     ax.text(0.98, 3, "median", rotation=90, fontsize=6.0, color=SOLUK, ha="right", va="bottom", path_effects=HALE)
     rn = tst[tst["test"] == "dogrusal_olmama"]
-    not_(ax, 0.98, 0.96, "non-linearity,\neach year p < 0.001" if (rn["p"] < 0.001).all() else "non-linearity: see Table 2", ha="right", va="top", fontsize=6.2, linespacing=1.15)
+    not_(ax, 0.98, 0.96, "departure from linearity:\np < 0.001 in each year" if (rn["p"] < 0.001).all() else "departure from linearity: see Table 2", ha="right", va="top", fontsize=6.0, linespacing=1.15)
     gelir_ekseni(ax)
     ax.tick_params(axis="x", labelbottom=False, length=0)
     ax.set_xlim(0.1, 5)
     ax.set_ylim(0, 100)
-    ax.set_ylabel("Food insecure, % of households")
+    ax.set_ylabel("Meal-deprived,\n% of households", linespacing=1.05)
+    ax.yaxis.set_label_coords(-0.13, 0.5)
+    yf = pd.read_csv(VERI / "fig2b_yil_farki.csv")
+    yf = yf[(yf["goreli_gelir"] >= 0.1) & (yf["goreli_gelir"] <= 5)]
+    axd.fill_between(yf["goreli_gelir"], yf["alt"], yf["ust"], color=YIL_RENK[2025], alpha=0.16, lw=0, zorder=2)
+    axd.plot(yf["goreli_gelir"], yf["fark"], color=YIL_RENK[2025], lw=1.2, zorder=3)
+    axd.axhline(0, color=MUREKKEP, lw=0.6, zorder=1)
+    axd.axvline(0.6, color=MUREKKEP, lw=0.8, ls=(0, (3, 2)), zorder=4)
+    axd.axvline(1.0, color=SOLUK, lw=0.6, ls=(0, (1, 2)), zorder=1)
+    ymx = float(np.ceil(np.nanmax(np.abs(yf[["alt", "ust"]].values)) / 5) * 5)
+    axd.set_ylim(-ymx, ymx)
+    axd.set_yticks([-ymx, 0, ymx])
+    axd.yaxis.set_major_formatter(FixedFormatter([f"{-ymx:.0f}".replace("-", "−"), "0", f"+{ymx:.0f}"]))
+    axd.tick_params(axis="y", labelsize=6.0)
+    axd.tick_params(axis="x", labelbottom=False, length=0)
+    axd.set_ylabel("2025 − 2023,\npp", fontsize=5.9, linespacing=1.05)
+    axd.yaxis.set_label_coords(-0.13, 0.5)
+    axd.grid(axis="x", visible=False)
     d25 = yg[yg["yil"] == 2025]
     x_, d_ = d25["goreli_gelir"].values, d25["yogunluk_log"].values
     sol = x_ <= 0.6
@@ -226,7 +244,7 @@ def figure2():
     gelir_ekseni(axs)
     axs.set_xlim(0.1, 5)
     axs.set_xlabel("Relative income (log scale)")
-    axs.text(-0.02, 0.5, "FI\nhouseholds,\n2025", transform=axs.transAxes, fontsize=6.0, color=IKINCIL, ha="right", va="center", linespacing=1.1)
+    axs.text(-0.02, 0.5, "Meal-deprived\nhouseholds,\n2025", transform=axs.transAxes, fontsize=6.0, color=IKINCIL, ha="right", va="center", linespacing=1.1)
 
     ax = fig.add_axes([0.215, 0.095, 0.235, 0.345])
     panel_etiketi_fig(fig, "c", 0.004, 0.50)
@@ -239,7 +257,7 @@ def figure2():
     genel = a[(a["yil"] == 2025) & (a["duzey"] == "hane") & (a["olcu"] == "dislama")]["tahmin"].iloc[0]
     ax.axvline(genel, color=SOLUK, lw=0.7, ls=(0, (3, 2)), zorder=1)
     ax.text(genel - 1.2, len(t) - 0.55, f"all {genel:.1f}%", fontsize=6.0, color=SOLUK, ha="right", va="center", path_effects=HALE)
-    ax.text(111, len(t) - 0.55, "n FI", fontsize=6.0, color=SOLUK, ha="right", va="center")
+    ax.text(111, len(t) - 0.55, "n meal-deprived", fontsize=6.0, color=SOLUK, ha="right", va="center")
     ax.set_yticks(yy)
     ax.set_yticklabels(t["etiket"], fontsize=6.0)
     ax.set_ylim(-0.6, len(t) - 0.2)
@@ -259,7 +277,7 @@ def figure2():
         ax.text(xi, r["ust"] + 0.12, f"{pay.loc[r['yil'], 'tahmin']:.1f}%", ha="center", va="bottom", fontsize=6.0, color=MUREKKEP, path_effects=HALE)
     ax.set_xticks(xx)
     ax.set_xticklabels(km["yil"].astype(int))
-    ax.set_ylabel("Children in food-insecure,\nnon-poor households, millions", linespacing=1.1)
+    ax.set_ylabel("Children living in meal-deprived,\nnon-poor households, millions", linespacing=1.1)
     ax.set_ylim(0, 6.3)
     ax.set_yticks([0, 1, 2, 3, 4, 5, 6])
     ax.grid(axis="x", visible=False)
@@ -326,7 +344,7 @@ def figure3():
     ax.set_ylim(0, 101.5)
     ax.set_yticks([0, 20, 40, 60, 80, 100])
     ax.set_xlabel("Targeting rate, % of households")
-    ax.set_ylabel("Food-insecure households selected, %")
+    ax.set_ylabel("Meal-deprived households selected, %")
     h_, l_ = ax.get_legend_handles_labels()
     n_c = len(h_) - len(tut)
     lg = ax.legend(h_[:n_c], l_[:n_c], loc="lower right", fontsize=6.0, handlelength=2.4, labelspacing=0.3, borderaxespad=0.2)
@@ -348,7 +366,7 @@ def figure3():
             y_ += 1.0
         y_ += 0.25
     f = fk[(fk["sema"] == "temiz") & (fk["karsilastirma"] == "yoksul_60")]
-    for j, (metr, bas, x0) in enumerate((("duyarlilik", "Food-insecure\nhouseholds", 0.665), ("cocuk", "Children in food-\ninsecure households", 0.835))):
+    for j, (metr, bas, x0) in enumerate((("duyarlilik", "Meal-deprived\nhouseholds", 0.665), ("cocuk", "Children living in\nmeal-deprived households", 0.835))):
         ax = fig.add_axes([x0, 0.57, 0.15, 0.37])
         if j == 0:
             panel_etiketi_fig(fig, "b", 0.455, 0.995)
@@ -442,7 +460,7 @@ def figure3():
             ax.text(x, y0_ - 0.042, f"training {kr_['egitim_FI']:.0f}%", ha="center", va="center", fontsize=6.0, color=IKINCIL, fontfamily=DAR, zorder=3)
             ax.text(x, y0_ - 0.083, f"{kr_['test_pay']:.1f}% of hh", ha="center", va="center", fontsize=6.0, color=IKINCIL, fontfamily=DAR, zorder=3)
     eksik = pov - kum
-    fig.text(0.02, 0.012, f"Large: % food insecure, 2025 test set · training: % in 2023–2024 · hh: share of 2025 households · at the {pov:.1f}% targeting rate the rule set takes the shaded leaves\n"
+    fig.text(0.02, 0.012, f"Large: % meal-deprived, 2025 test set · training: % in 2023–2024 · hh: share of 2025 households · at the {pov:.1f}% targeting rate the rule set takes the shaded leaves\n"
                           f"in full and {eksik:.1f}% of households from the dashed leaf",
              fontsize=6.0, color=IKINCIL, ha="left", va="bottom", linespacing=1.3)
     return kaydet(fig, "Figure3")
@@ -496,7 +514,7 @@ def figure4():
     ax.grid(axis="y", visible=False)
     ax.tick_params(axis="y", length=0)
     ax.spines["left"].set_visible(False)
-    ax.set_xlabel("SHAP value, log-odds of food insecurity")
+    ax.set_xlabel("SHAP value, log-odds of meal-affordability deprivation")
     cax = fig.add_axes([0.255, 0.505, 0.14, 0.009])
     cb = fig.colorbar(ScalarMappable(norm=Normalize(0, 1), cmap=AURORA_CMAP), cax=cax, orientation="horizontal")
     cb.set_ticks([0, 1])
@@ -629,7 +647,7 @@ def figure5():
     ax.text(0.05, 97, "poor", fontsize=6.0, color=SOLUK, ha="center", va="top")
     ax.set_xlim(-0.6, 5.6)
     ax.set_ylim(0, 100)
-    ax.set_xlabel("Relative income (food-insecure adults)")
+    ax.set_xlabel("Relative income (meal-deprived adults)")
     ax.set_ylabel("Standardized prevalence, %")
     ax.grid(axis="x", visible=False)
     ax.spines["bottom"].set_bounds(-0.6, 4.3)
@@ -765,7 +783,7 @@ def figureS_kalibrasyon():
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.set_xlabel("Predicted probability, model trained on 2023")
-    ax.set_ylabel("Observed food insecurity")
+    ax.set_ylabel("Observed meal-affordability deprivation")
     not_(ax, 0.97, 0.03, "deciles of predicted risk;\nhouseholds not matched\nto the training year", ha="right", va="bottom", fontsize=6.0, color=SOLUK, linespacing=1.1)
     panel_etiketi(ax, "a")
     bx.plot([0, 1], [0, 1], color="#D0D2D6", lw=0.8, ls=(0, (2, 2)), zorder=0)
@@ -784,7 +802,7 @@ def figureS_kalibrasyon():
     bx.set_xlim(0, 1)
     bx.set_ylim(0, 1)
     bx.set_xlabel("Predicted probability, models trained on 2023–2024")
-    bx.set_ylabel("Observed food insecurity")
+    bx.set_ylabel("Observed meal-affordability deprivation")
     not_(bx, 0.03, 0.97, "deciles of predicted risk;\n2025 main test set", ha="left", va="top", fontsize=6.0, color=SOLUK, linespacing=1.1)
     panel_etiketi(bx, "b")
     fig.tight_layout(w_pad=2.2)

@@ -336,6 +336,27 @@ fwrite(ortusme_bilesim, "Results/ortusme_test_bilesimi_2025.csv")
 setorder(h, yil, hane_kimlik)
 write_parquet(h, file.path(ddir, "hane_2023_2025.parquet"))
 cat("Hane satirlari:", nrow(h), " yil:", paste(h[, .N, keyby = yil]$N, collapse = " / "), "\n")
+bag_kenar <- unique(eslesme_bir[, .(a = hane_1, b = hane_2)])
+bag_lab <- h[, .(hane_kimlik, bag_kimlik = hane_kimlik)]
+setkey(bag_lab, hane_kimlik)
+bag_tur <- 0L
+repeat {
+  bag_tur <- bag_tur + 1L
+  m_ <- data.table(a = bag_kenar$a, b = bag_kenar$b, la = bag_lab[J(bag_kenar$a), bag_kimlik], lb = bag_lab[J(bag_kenar$b), bag_kimlik])
+  m_[, l := pmin(la, lb)]
+  yeni_ <- rbind(m_[, .(hane_kimlik = a, l)], m_[, .(hane_kimlik = b, l)])[, .(l = min(l)), by = hane_kimlik]
+  deg_ <- merge(bag_lab, yeni_, by = "hane_kimlik")[l < bag_kimlik, .(hane_kimlik, l)]
+  if (!nrow(deg_)) break
+  bag_lab[deg_, on = "hane_kimlik", bag_kimlik := i.l]
+}
+h[bag_lab, on = "hane_kimlik", bag_kimlik := i.bag_kimlik]
+stopifnot(!anyNA(h$bag_kimlik), all(h[.(eslesme_bir$hane_1), on = "hane_kimlik", bag_kimlik] == h[.(eslesme_bir$hane_2), on = "hane_kimlik", bag_kimlik]))
+bag_ozet <- h[, .(boyut = .N, yil_sayisi = uniqueN(yil)), by = bag_kimlik]
+bag_dagilim <- bag_ozet[, .(bilesen = .N, hane = sum(boyut)), keyby = .(boyut, yil_sayisi)]
+bag_ayni_yil <- bag_ozet[boyut > yil_sayisi, .N]
+cat("Bagli hane kimligi:", uniqueN(h$bag_kimlik), "bilesen,", bag_tur, "tur; ayni yildan iki hane iceren bilesen:", bag_ayni_yil, "\n")
+print(bag_dagilim)
+fwrite(bag_dagilim, "Results/H1_bagli_kume_dagilimi.csv")
 sure_ekle("ortusme imzasi", t0)
 
 dogr <- rbindlist(dogr)
@@ -355,7 +376,7 @@ t0 <- Sys.time()
 fdir <- file.path(ddir, "figur_verileri")
 h[, `:=`(e_yoksul_60 = yoksul, e_yoksul_50 = as.integer(yoksul_50), e_yoksul_70 = as.integer(yoksul_70), e_msy_etsiz_5 = as.integer(msy_etsiz_5), e_dusuk_is = fifelse(is.na(dusuk_is_yogunlugu), 0L, as.integer(dusuk_is_yogunlugu)))]
 esikler <- c("e_yoksul_60", "e_yoksul_50", "e_yoksul_70", "e_msy_etsiz_5", "e_dusuk_is")
-hane_sut <- c("hane_kimlik", "FI", "yoksul", "kacirilan", esikler, "HB030", "HB031", "HB050", "gelir_bandi", "gelir_dilim5", "HH020", "cocuk_var", "calisan_var", "is_yog_grup", "reis_faaliyet3", "yasli_var", "test_temiz")
+hane_sut <- c("hane_kimlik", "FI", "yoksul", "kacirilan", esikler, "HB030", "HB031", "HB050", "gelir_bandi", "gelir_dilim5", "HH020", "cocuk_var", "calisan_var", "is_yog_grup", "reis_faaliyet3", "yasli_var", "test_temiz", "bag_kimlik")
 p_dt <- merge(d[, .(yil, hane_kimlik, FK050, FK070, esdeger_gelir)], h[, ..hane_sut], by = "hane_kimlik")
 p_dt[, cocuk := as.integer(FK070 < 18)]
 tasarim <- function(dat, duzey, tabaka = FALSE) {
@@ -554,7 +575,7 @@ egri_izgara <- list()
 egri_yog <- list()
 egri_veri <- list()
 for (yy in 2023:2025) {
-  dat <- h[yil == yy, .(FI, yoksul, x = log_goreli_gelir, HB040, yil)]
+  dat <- h[yil == yy, .(FI, yoksul, x = log_goreli_gelir, HB040, yil, hane_kimlik, bag_kimlik, HB031)]
   cat("yoksul ile goreli gelir < 0,6 uyumsuzlugu", yy, ":", dat[, sum(yoksul != as.integer(x < x_esik))], "\n")
   B <- rcs_baz(dat$x, gk)
   dat[, `:=`(s1 = B[, 1], s2 = B[, 2], s3 = B[, 3])]
@@ -603,6 +624,272 @@ cat("\nGelir egrisi testleri (RCS 5 dugum, log goreli gelir; adim = egriye ek yo
 print(egri_test)
 sure_ekle("H1", t0)
 
+t0 <- Sys.time()
+egri_kur <- function(dd, kn) {
+  B <- matrix(rcs_baz(dd$x, kn), nrow = nrow(dd))
+  dd <- copy(dd)
+  for (j in seq_len(ncol(B))) set(dd, j = paste0("t", j), value = B[, j])
+  dd
+}
+egri_terim <- function(kn) c("x", paste0("t", seq_len(length(kn) - 2)))
+egri_form <- function(kn, yil_etk = FALSE) as.formula(paste("FI ~", if (yil_etk) paste0("(", paste(egri_terim(kn), collapse = " + "), ") * yb") else paste(egri_terim(kn), collapse = " + ")))
+egri_yil <- function(dat, kn) svyglm(egri_form(kn), design = svydesign(ids = ~1, weights = ~HB040, data = egri_kur(dat, kn)), family = quasibinomial())
+ev_tum <- rbindlist(egri_veri)
+egri_cift <- function(y1, y2, kn, kume, tr63 = FALSE) {
+  dd <- egri_kur(ev_tum[yil %in% c(y1, y2)], kn)
+  if (tr63) dd <- dd[HB031 != "TR63"]
+  dd[, yb := as.integer(yil == y2)]
+  des <- if (kume) svydesign(ids = ~bag_kimlik, weights = ~HB040, data = dd) else svydesign(ids = ~1, weights = ~HB040, data = dd)
+  svyglm(egri_form(kn, TRUE), design = des, family = quasibinomial())
+}
+egri_tahmin <- function(m_, xg, kn) {
+  Z <- cbind(1, xg, matrix(rcs_baz(xg, kn), nrow = length(xg)))
+  eta <- as.numeric(Z %*% coef(m_))
+  se_ <- sqrt(rowSums((Z %*% vcov(m_)) * Z))
+  data.table(tahmin = 100 * plogis(eta), alt = 100 * plogis(eta - 1.96 * se_), ust = 100 * plogis(eta + 1.96 * se_))
+}
+egri_fark <- function(m_, xg, kn) {
+  b <- coef(m_)
+  tt <- egri_terim(kn)
+  B <- cbind(1, xg, matrix(rcs_baz(xg, kn), nrow = length(xg)))
+  Z1 <- matrix(0, length(xg), length(b), dimnames = list(NULL, names(b)))
+  Z1[, c("(Intercept)", tt)] <- B
+  Z2 <- Z1
+  Z2[, c("yb", paste0(tt, ":yb"))] <- B
+  e1 <- as.numeric(Z1 %*% b)
+  e2 <- as.numeric(Z2 %*% b)
+  G <- dlogis(e2) * Z2 - dlogis(e1) * Z1
+  data.table(fark = 100 * (plogis(e2) - plogis(e1)), se = 100 * sqrt(rowSums((G %*% vcov(m_)) * G)))
+}
+egri_yil_test <- function(m_, kn, bicim) {
+  tt <- egri_terim(kn)
+  regTermTest(m_, as.formula(paste("~", paste(c(if (!bicim) "yb", paste0(tt, ":yb")), collapse = " + "))), method = "Wald")
+}
+sinanan_ad <- c(genel_iliski = "Overall association with log relative income: all four income terms are zero",
+                dogrusal_olmama = "Departure from linearity: the three non-linear spline terms are zero",
+                esik_adimi_OR = "Step at the 60% line: indicator for income below the line added to the five-knot spline (odds ratio)",
+                esik_adimi_puan = "Step at the 60% line: difference in predicted probability at the line (five-knot spline)",
+                esik_adimi_puan_7dugum = "Step at the 60% line, seven-knot spline (sensitivity)",
+                esik_adimi_puan_parcali = "Step at the 60% line, piecewise-linear model with a slope change at the line (sensitivity)",
+                yil_farki_egri = "Equality of the two year-specific curves: year term and its interactions with the four income terms are zero",
+                yil_farki_bicim = "Equality of curve shape: interactions of year with the four income terms are zero",
+                yil_farki_egri_3yil = "Equality of the three year-specific curves: two year terms and their interactions with the four income terms are zero",
+                yil_farki_bicim_3yil = "Equality of curve shape across the three years: interactions of the two year terms with the four income terms are zero")
+egri_ek <- list()
+egri_myil <- list()
+for (dat in egri_veri) {
+  yy <- dat$yil[1]
+  m_ <- egri_yil(dat, gk)
+  egri_myil[[as.character(yy)]] <- m_
+  gi_ <- regTermTest(m_, ~ x + t1 + t2 + t3, method = "Wald")
+  dn_ <- regTermTest(m_, ~ t1 + t2 + t3, method = "Wald")
+  stopifnot(abs(as.numeric(dn_$Ftest) - egri_test[yil == as.character(yy) & test == "dogrusal_olmama", F]) < 1e-8)
+  egri_ek[[length(egri_ek) + 1]] <- data.table(yil = as.character(yy), test = "genel_iliski", varyans = "yil_ici", n = nrow(dat), F = as.numeric(gi_$Ftest), df1 = gi_$df, df2 = gi_$ddf, p = as.numeric(gi_$p))
+}
+yil_ciftleri <- list(c(2023L, 2025L), c(2023L, 2024L), c(2024L, 2025L))
+egri_mcift <- list()
+for (yp in yil_ciftleri) for (vr in c("bagimsiz", "bagli_kume", "bagli_kume_tr63_haric")) {
+  m_ <- egri_cift(yp[1], yp[2], gk, vr != "bagimsiz", vr == "bagli_kume_tr63_haric")
+  egri_mcift[[paste(yp[1], yp[2], vr)]] <- m_
+  if (vr == "bagli_kume_tr63_haric") next
+  for (ts in c("yil_farki_egri", "yil_farki_bicim")) {
+    tt_ <- egri_yil_test(m_, gk, ts == "yil_farki_bicim")
+    egri_ek[[length(egri_ek) + 1]] <- data.table(yil = paste0(yp[1], "-", yp[2]), test = ts, varyans = vr, n = ev_tum[yil %in% yp, .N], F = as.numeric(tt_$Ftest), df1 = tt_$df, df2 = tt_$ddf, p = as.numeric(tt_$p))
+  }
+}
+stopifnot(abs(egri_ek[[which(sapply(egri_ek, function(z) z$yil == "2023-2025" & z$test == "yil_farki_egri" & z$varyans == "bagimsiz"))]]$F - as.numeric(yt_$Ftest)) < 1e-8,
+          abs(egri_ek[[which(sapply(egri_ek, function(z) z$yil == "2023-2025" & z$test == "yil_farki_bicim" & z$varyans == "bagimsiz"))]]$F - as.numeric(yt_s$Ftest)) < 1e-8)
+ev3 <- egri_kur(ev_tum, gk)
+ev3[, `:=`(y24 = as.integer(yil == 2024), y25 = as.integer(yil == 2025))]
+m3_ <- svyglm(FI ~ (x + t1 + t2 + t3) * (y24 + y25), design = svydesign(ids = ~bag_kimlik, weights = ~HB040, data = ev3), family = quasibinomial())
+t3e_ <- regTermTest(m3_, ~ y24 + y25 + x:y24 + t1:y24 + t2:y24 + t3:y24 + x:y25 + t1:y25 + t2:y25 + t3:y25, method = "Wald")
+t3b_ <- regTermTest(m3_, ~ x:y24 + t1:y24 + t2:y24 + t3:y24 + x:y25 + t1:y25 + t2:y25 + t3:y25, method = "Wald")
+egri_ek[[length(egri_ek) + 1]] <- data.table(yil = "2023-2024-2025", test = "yil_farki_egri_3yil", varyans = "bagli_kume", n = nrow(ev3), F = as.numeric(t3e_$Ftest), df1 = t3e_$df, df2 = t3e_$ddf, p = as.numeric(t3e_$p))
+egri_ek[[length(egri_ek) + 1]] <- data.table(yil = "2023-2024-2025", test = "yil_farki_bicim_3yil", varyans = "bagli_kume", n = nrow(ev3), F = as.numeric(t3b_$Ftest), df1 = t3b_$df, df2 = t3b_$ddf, p = as.numeric(t3b_$p))
+egri_ek <- rbindlist(egri_ek, fill = TRUE)
+egri_test_genis <- unique(rbindlist(list(copy(egri_test)[, varyans := fifelse(grepl("-", yil), "bagimsiz", "yil_ici")], egri_ek), fill = TRUE), by = c("yil", "test", "varyans"))
+egri_test_genis[, sinanan := unname(sinanan_ad[test])]
+egri_test_genis[, dugumler_log := paste(formatC(gk, format = "f", digits = 4), collapse = "; ")]
+egri_test_genis[, dugumler_goreli_gelir := paste(formatC(exp(gk), format = "f", digits = 4), collapse = "; ")]
+fwrite(egri_test_genis, "Results/H1_gelir_egrisi_testleri.csv")
+cat("\nGelir egrisi: genel iliski ve bagli kumeli yil testleri:\n")
+print(egri_ek)
+gelir_nokta <- c(0.3, 0.4, 0.5, 0.6, 0.8, 1.0, 1.25, 1.5, 2.0, 3.0)
+egri_tah <- list()
+for (yy in names(egri_myil)) egri_tah[[length(egri_tah) + 1]] <- cbind(data.table(tur = "tahmin", yil = yy, goreli_gelir = gelir_nokta, varyans = "yil_ici"), egri_tahmin(egri_myil[[yy]], log(gelir_nokta), gk))
+for (yp in yil_ciftleri) {
+  ref_ <- egri_fark(egri_mcift[[paste(yp[1], yp[2], "bagimsiz")]], log(gelir_nokta), gk)
+  tah_ <- egri_tahmin(egri_myil[[as.character(yp[2])]], log(gelir_nokta), gk)$tahmin - egri_tahmin(egri_myil[[as.character(yp[1])]], log(gelir_nokta), gk)$tahmin
+  cat("Ortak model ile yillik modellerin farki (", yp[2], "-", yp[1], "), en buyuk mutlak sapma, puan:", signif(max(abs(ref_$fark - tah_)), 3), "\n")
+  stopifnot(max(abs(ref_$fark - tah_)) < 1e-4)
+  for (vr in c("bagli_kume", "bagimsiz", "bagli_kume_tr63_haric", "bagli_kume_deff2")) {
+    f_ <- egri_fark(egri_mcift[[paste(yp[1], yp[2], if (vr == "bagli_kume_deff2") "bagli_kume" else vr)]], log(gelir_nokta), gk)
+    if (vr == "bagli_kume_deff2") f_[, se := se * sqrt(2)]
+    egri_tah[[length(egri_tah) + 1]] <- data.table(tur = "fark", yil = paste0(yp[2], "-", yp[1]), goreli_gelir = gelir_nokta, varyans = vr, tahmin = f_$fark, alt = f_$fark - 1.96 * f_$se, ust = f_$fark + 1.96 * f_$se, se = f_$se)
+  }
+}
+egri_tah <- rbindlist(egri_tah, fill = TRUE)
+fwrite(egri_tah, "Results/H1_egri_tahminleri.csv")
+f_iz <- egri_fark(egri_mcift[["2023 2025 bagli_kume"]], izgara, gk)
+fwrite(data.table(goreli_gelir = exp(izgara), fark = f_iz$fark, alt = f_iz$fark - 1.96 * f_iz$se, ust = f_iz$fark + 1.96 * f_iz$se), file.path(fdir, "fig2b_yil_farki.csv"))
+cat("\nSecilmis gelir duzeylerinde 2025 - 2023 farki (bagli kumeler ve bagimsiz):\n")
+print(dcast(egri_tah[tur == "fark" & yil == "2025-2023" & varyans %in% c("bagli_kume", "bagimsiz")], goreli_gelir ~ varyans, value.var = "se")[, lapply(.SD, round, 3)])
+dugum_konum <- list(`3` = c(0.10, 0.50, 0.90), `4` = c(0.05, 0.35, 0.65, 0.95), `5` = c(0.05, 0.275, 0.5, 0.725, 0.95), `6` = c(0.05, 0.23, 0.41, 0.59, 0.77, 0.95),
+                    `7` = c(0.025, 0.1833, 0.3417, 0.5, 0.6583, 0.8167, 0.975))
+dugum_k <- lapply(dugum_konum, function(q) as.numeric(quantile(h$log_goreli_gelir, q)))
+stopifnot(max(abs(dugum_k[["5"]] - gk)) < 1e-12, max(abs(dugum_k[["7"]] - gk7)) < 1e-12)
+wq_ <- function(x, w, p) { o <- order(x); cw <- cumsum(w[o]) / sum(w); sapply(p, function(pp) x[o][which(cw >= pp)[1]]) }
+dug_rows <- list()
+for (k in names(dugum_k)) {
+  kn <- dugum_k[[k]]
+  for (dat in egri_veri) {
+    yy <- as.character(dat$yil[1])
+    m_ <- egri_yil(dat, kn)
+    aic_ <- AIC(m_)
+    sn_ <- wq_(dat$x, dat$HB040, c(0.05, 0.95))
+    xg_ <- seq(sn_[1], sn_[2], length.out = 400)
+    fk_ <- egri_tahmin(m_, xg_, kn)$tahmin - egri_tahmin(egri_myil[[yy]], xg_, gk)$tahmin
+    dug_rows[[length(dug_rows) + 1]] <- data.table(dugum_sayisi = as.integer(k), yil = yy, n = nrow(dat), dAIC = unname(aic_["AIC"]), etkin_parametre = unname(aic_["eff.p"]),
+                                                   en_buyuk_mutlak_fark_5dugum_pp = max(abs(fk_)), aralik_alt = exp(sn_[1]), aralik_ust = exp(sn_[2]))
+  }
+  m_ <- egri_cift(2023L, 2025L, kn, TRUE)
+  f_ <- egri_fark(m_, log(c(0.6, 2.0)), kn)
+  dug_rows[[length(dug_rows) + 1]] <- data.table(dugum_sayisi = as.integer(k), yil = "2025-2023", n = ev_tum[yil %in% c(2023, 2025), .N],
+                                                 fark_0.6 = f_$fark[1], fark_0.6_alt = f_$fark[1] - 1.96 * f_$se[1], fark_0.6_ust = f_$fark[1] + 1.96 * f_$se[1],
+                                                 fark_2.0 = f_$fark[2], fark_2.0_alt = f_$fark[2] - 1.96 * f_$se[2], fark_2.0_ust = f_$fark[2] + 1.96 * f_$se[2])
+}
+dugum_duy <- rbindlist(dug_rows, fill = TRUE)
+dugum_duy[, `:=`(konumlar = sapply(as.character(dugum_sayisi), function(k) paste(dugum_konum[[k]], collapse = "; ")),
+                 dugumler_log = sapply(as.character(dugum_sayisi), function(k) paste(formatC(dugum_k[[k]], format = "f", digits = 4), collapse = "; ")),
+                 dugumler_goreli_gelir = sapply(as.character(dugum_sayisi), function(k) paste(formatC(exp(dugum_k[[k]]), format = "f", digits = 4), collapse = "; ")))]
+dugum_duy[, dAIC_5dugum_farki := dAIC - dugum_duy[dugum_sayisi == 5 & yil == .BY$yil, dAIC], by = yil]
+fwrite(dugum_duy, "Results/H1_dugum_duyarliligi.csv")
+cat("\nDugum duyarliligi:\n")
+print(dugum_duy[, .(dugum_sayisi, yil, dAIC = round(dAIC, 1), dAIC_5dugum_farki = round(dAIC_5dugum_farki, 1), en_buyuk = round(en_buyuk_mutlak_fark_5dugum_pp, 2), fark_0.6 = round(fark_0.6, 2), fark_2.0 = round(fark_2.0, 2))])
+h1_bag_fark <- function(y1, y2, dz, tr = FALSE) {
+  dat <- copy(if (dz == "hane") h[yil %in% c(y1, y2), c("yil", "bag_kimlik", "HB040", "HB031", "FI", "yoksul", "kacirilan", esikler), with = FALSE] else p_dt[yil %in% c(y1, y2)])
+  if (tr) dat <- dat[HB031 != "TR63"]
+  dat[, yb := as.integer(yil == y2)]
+  for (e in esikler) {
+    set(dat, j = paste0("ve_", e), value = dat$FI * dat[[e]])
+    set(dat, j = paste0("degil_", e), value = dat$FI * (1 - dat[[e]]))
+    set(dat, j = paste0("dis_", e), value = 1 - dat[[e]])
+  }
+  des <- svydesign(ids = ~bag_kimlik, weights = if (dz == "hane") ~HB040 else ~FK050, data = dat)
+  kontrast <- function(vars, dd, ad, esk, olcek = 100, fn = svymean) {
+    r <- svyby(as.formula(paste("~", paste(vars, collapse = " + "))), ~yb, dd, fn, covmat = TRUE, na.rm = TRUE)
+    cf <- coef(r)
+    V <- vcov(r)
+    rbindlist(lapply(seq_along(vars), function(j) {
+      g <- setNames(rep(0, length(cf)), names(cf))
+      if (length(vars) == 1) g[c("0", "1")] <- c(-1, 1) else g[paste0(c("0:", "1:"), vars[j])] <- c(-1, 1)
+      data.table(olcu = ad[j], esik = esk[j], fark = olcek * sum(g * cf), se_fark = olcek * sqrt(as.numeric(t(g) %*% V %*% g)))
+    }))
+  }
+  out <- list(kontrast(c("FI", esikler, paste0("ve_", esikler), paste0("degil_", esikler)), des, c("FI", rep(c("esik", "FI_ve_esik", "FI_esik_degil"), each = length(esikler))), c("", rep(esikler, 3))),
+              kontrast(paste0("dis_", esikler), des[dat$FI == 1, ], rep("dislama", length(esikler)), esikler))
+  for (e in esikler) out[[length(out) + 1]] <- kontrast("FI", des[dat[[e]] == 1, ], "FI_esik_icinde", e)
+  if (dz == "kisi") {
+    cc <- dat$cocuk == 1
+    out[[length(out) + 1]] <- kontrast(c("kacirilan", "FI"), des[cc, ], c("cocuk_kacirilan_milyon", "cocuk_FI_milyon"), c("e_yoksul_60", ""), 1e-6, svytotal)
+    out[[length(out) + 1]] <- kontrast(c("kacirilan", "FI"), des[cc, ], c("cocuk_kacirilan_pay_tum_cocuk", "cocuk_FI"), c("e_yoksul_60", ""))
+    out[[length(out) + 1]] <- kontrast("dis_e_yoksul_60", des[cc & dat$FI == 1, ], "cocuk_dislama", "e_yoksul_60")
+  } else {
+    out[[length(out) + 1]] <- kontrast("kacirilan", des, "kacirilan_hane_milyon", "e_yoksul_60", 1e-6, svytotal)
+  }
+  r <- rbindlist(out)
+  r[, `:=`(duzey = dz, tr63_haric = tr, ibbs2_tabaka = FALSE, yil_1 = y1, yil_2 = y2)]
+  r
+}
+h1_fark_bag <- rbindlist(lapply(yil_ciftleri, function(yp) rbindlist(lapply(c("hane", "kisi"), function(dz) rbindlist(lapply(c(FALSE, TRUE), function(tr) h1_bag_fark(yp[1], yp[2], dz, tr)))))))
+h1_fark_bag <- merge(h1_fark_bag, h1_fark[, .(olcu, esik, duzey, tr63_haric, ibbs2_tabaka, yil_1, yil_2, tahmin_1, tahmin_2, fark_bagimsiz = fark, se_bagimsiz = se_fark)],
+                     by = c("olcu", "esik", "duzey", "tr63_haric", "ibbs2_tabaka", "yil_1", "yil_2"), all.x = TRUE)
+stopifnot(nrow(h1_fark_bag) == nrow(h1_fark[ibbs2_tabaka == FALSE]), max(abs(h1_fark_bag$fark - h1_fark_bag$fark_bagimsiz)) < 1e-8)
+h1_fark_bag[, `:=`(alt = fark - 1.96 * se_fark, ust = fark + 1.96 * se_fark, p = 2 * pnorm(-abs(fark / se_fark)), se_orani = se_fark / se_bagimsiz)]
+h1_fark_bag[, c("fark_bagimsiz", "se_bagimsiz") := NULL]
+setcolorder(h1_fark_bag, c("olcu", "esik", "duzey", "tr63_haric", "ibbs2_tabaka", "yil_1", "yil_2", "tahmin_1", "tahmin_2", "fark", "se_fark", "alt", "ust", "p"))
+fwrite(rbind(copy(h1_fark)[, yontem := "taylor_bagimsiz"], h1_fark_bs, copy(h1_fark_bag)[, yontem := "taylor_bagli_kume"], fill = TRUE), "Results/H1_yil_farklari.csv")
+cat("\nBagli kumeli yil farklari (dislama, %60), bagimsiz SE'ye orani:\n")
+print(h1_fark_bag[olcu == "dislama" & esik == "e_yoksul_60", .(duzey, tr63_haric, yil_1, yil_2, fark = round(fark, 2), alt = round(alt, 2), ust = round(ust, 2), se_orani = round(se_orani, 3))])
+cat("Eslesik bootstrap (2025 - 2023, hane):", round(h1_fark_bs$fark[1], 2), "(", round(h1_fark_bs$alt[1], 2), ",", round(h1_fark_bs$ust[1], 2), ")\n")
+ery_hazir <- function(dat) {
+  o <- dat[order(esdeger_gelir)]
+  W <- sum(o$FK050)
+  o[, R0 := (cumsum(FK050) - FK050 / 2) / W]
+  o[, R := sum(R0 * FK050) / sum(FK050), by = esdeger_gelir]
+  list(o = o, vR = sum(o$FK050 * (o$R - sum(o$FK050 * o$R) / W)^2) / W)
+}
+e23_ <- ery_hazir(p_dt[yil == 2023])
+e25_ <- ery_hazir(p_dt[yil == 2025])
+eo_ <- rbind(e23_$o[, .(FI, R, FK050, bag_kimlik, yb = 0L)], e25_$o[, .(FI, R, FK050, bag_kimlik, yb = 1L)])
+me_ <- svyglm(FI ~ R * yb, design = svydesign(ids = ~bag_kimlik, weights = ~FK050, data = eo_))
+g_ <- setNames(rep(0, length(coef(me_))), names(coef(me_)))
+g_[c("R", "R:yb")] <- c(8 * (e25_$vR - e23_$vR), 8 * e25_$vR)
+ery_bag <- data.table(yil_1 = 2023, yil_2 = 2025, fark = sum(g_ * coef(me_)), se_fark = sqrt(as.numeric(t(g_) %*% vcov(me_) %*% g_)), yontem = "bagli_kume")
+ery_bag[, `:=`(alt = fark - 1.96 * se_fark, ust = fark + 1.96 * se_fark)]
+stopifnot(abs(ery_bag$fark - ci_fark[yil_2 == 2025, fark]) < 1e-8)
+fwrite(rbind(copy(ci_fark)[, yontem := "bagimsiz"], ery_bag, use.names = TRUE), "Results/H1_erreygers_farklar.csv")
+print(ery_bag)
+fi_ay_ <- function(x) fifelse(is.na(x), 0, as.numeric(x))
+gy_y <- d[FK070 >= 18, .(gy_kayitsiz = any(f_kayit == 0), gy_olumsuz = any(f_kayit == 1 & fi_ay_(FI260) + fi_ay_(FI270) >= 7 & !(FI010 %in% 1:4)),
+                         gy_olumlu = any(f_kayit == 1 & fi_ay_(FI260) + fi_ay_(FI270) < 7 & FI010 %in% 1:4)), by = hane_kimlik]
+cat("Gelir yili uyumsuzlugu: f_kayit = 1 olup FI260 bos yetiskin:", d[FK070 >= 18 & f_kayit == 1 & is.na(FI260), .N], "; yetiskini olmayan hane:", h[!hane_kimlik %in% gy_y$hane_kimlik, .N], "\n")
+h[gy_y, on = "hane_kimlik", `:=`(gy_kayitsiz = i.gy_kayitsiz, gy_olumsuz = i.gy_olumsuz, gy_olumlu = i.gy_olumlu)]
+h[, gelir_yili_degisim := fcase(is.na(gy_kayitsiz) | gy_kayitsiz, 5L, gy_olumsuz & !gy_olumlu, 1L, gy_olumlu & !gy_olumsuz, 2L, gy_olumsuz & gy_olumlu, 3L, default = 4L)]
+h[, `:=`(he040_4 = fcase(HE040 == 1, 1L, HE040 == 2, 2L, HE040 == 3, 3L, HE040 %in% 4:6, 4L, default = NA_integer_),
+         msy_etsiz_grup = fcase(msy_etsiz_sayi == 0, 1L, msy_etsiz_sayi <= 2, 2L, msy_etsiz_sayi <= 4, 3L, msy_etsiz_sayi >= 5, 4L, default = NA_integer_))]
+stopifnot(!anyNA(h$he040_4), !anyNA(h$msy_etsiz_grup))
+p_dt[h, on = "hane_kimlik", `:=`(gelir_yili_degisim = i.gelir_yili_degisim, he040_4 = i.he040_4, msy_etsiz_grup = i.msy_etsiz_grup)]
+kirilimlar_ek <- c("gelir_yili_degisim", "he040_4", "msy_etsiz_grup")
+h1_kir_ek <- list()
+for (yy in 2023:2025) for (dz in c("hane", "kisi")) {
+  dat <- if (dz == "hane") h[yil == yy] else p_dt[yil == yy]
+  des <- tasarim(dat, dz)
+  for (k in kirilimlar_ek) {
+    fk <- as.formula(paste0("~", k))
+    a <- svyby(~FI, fk, des, svymean, na.rm = TRUE)
+    b <- svyby(~I(1 - yoksul), fk, des[dat$FI == 1, ], svymean, na.rm = TRUE)
+    cmp <- svymean(as.formula(paste0("~factor(", k, ")")), des[dat$kacirilan == 1, ])
+    pay <- svymean(as.formula(paste0("~factor(", k, ")")), des)
+    nn <- dat[, .(n = .N, n_FI = sum(FI), n_kacirilan = sum(kacirilan)), keyby = .(kategori = as.character(get(k)))]
+    r <- data.table(kategori = as.character(a[[k]]), FI = 100 * a$FI, FI_se = 100 * SE(a), dislama = 100 * b[["I(1 - yoksul)"]][match(as.character(a[[k]]), as.character(b[[k]]))],
+                    dislama_se = 100 * SE(b)[match(as.character(a[[k]]), as.character(b[[k]]))])
+    r <- merge(r, nn, by = "kategori", all.x = TRUE)
+    r <- merge(r, data.table(kategori = sub(paste0("factor\\(", k, "\\)"), "", names(coef(cmp))), kacirilan_bilesim = 100 * as.numeric(coef(cmp)), kacirilan_bilesim_se = 100 * as.numeric(SE(cmp))), by = "kategori", all.x = TRUE)
+    r <- merge(r, data.table(kategori = sub(paste0("factor\\(", k, "\\)"), "", names(coef(pay))), agirlikli_pay = 100 * as.numeric(coef(pay)), agirlikli_pay_se = 100 * as.numeric(SE(pay))), by = "kategori", all.x = TRUE)
+    r[, `:=`(yil = yy, duzey = dz, kirilim = k)]
+    h1_kir_ek[[length(h1_kir_ek) + 1]] <- r
+  }
+}
+h1_kir_ek <- rbindlist(h1_kir_ek, fill = TRUE)
+h1_kir_ek[, kucuk_hucre := fcase(n_FI < 20, "suppressed", n_FI <= 50, "flag", default = "")]
+h1_kir_ek[, `:=`(FI_alt = FI - 1.96 * FI_se, FI_ust = FI + 1.96 * FI_se, dislama_alt = dislama - 1.96 * dislama_se, dislama_ust = dislama + 1.96 * dislama_se)]
+gy_ad <- c("1" = "olumsuz_degisim", "2" = "olumlu_degisim", "3" = "ikisi_birden", "4" = "degisim_yok", "5" = "belirlenemedi")
+gyu <- h1_kir_ek[kirilim == "gelir_yili_degisim"][, sinif := gy_ad[kategori]]
+gyu <- rbind(gyu, h1_ana[!tr63_haric & !ibbs2_tabaka & ((olcu == "FI" & esik == "") | (olcu == "dislama" & esik == "e_yoksul_60")),
+                         .(kategori = "tum", sinif = "tum_haneler", FI = tahmin[olcu == "FI"], FI_se = se[olcu == "FI"], dislama = tahmin[olcu == "dislama"], dislama_se = se[olcu == "dislama"],
+                           n = n[olcu == "FI"], n_FI = olay[olcu == "FI"], agirlikli_pay = 100), by = .(yil, duzey)], fill = TRUE)
+gyu[sinif == "tum_haneler", `:=`(FI_alt = FI - 1.96 * FI_se, FI_ust = FI + 1.96 * FI_se, dislama_alt = dislama - 1.96 * dislama_se, dislama_ust = dislama + 1.96 * dislama_se, kirilim = "gelir_yili_degisim")]
+setorder(gyu, yil, duzey, kategori)
+fwrite(gyu, "Results/H1_gelir_yili_uyumsuzlugu.csv")
+fwrite(h1_kir_ek[kirilim %in% c("he040_4", "msy_etsiz_grup")], "Results/H1_madde_gradyan.csv")
+cat("\nGelir yili ile gorusme arasindaki faaliyet degisimi (hane):\n")
+print(gyu[duzey == "hane", .(yil, sinif, n, pay = round(agirlikli_pay, 1), FI = round(FI, 1), dislama = round(dislama, 1), dislama_alt = round(dislama_alt, 1), dislama_ust = round(dislama_ust, 1))])
+cat("\nMadde gradyani (hane, yayginlik):\n")
+print(dcast(h1_kir_ek[duzey == "hane" & kirilim %in% c("he040_4", "msy_etsiz_grup")], kirilim + kategori ~ yil, value.var = "FI")[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])
+tufe_yil <- c("2022" = 967.71, "2023" = 1488.91, "2024" = 2360.03, "2025" = 3183.23)
+esik_reel <- d[, .(medyan = unique(round(esdeger_gelir[goreli_esdeger_gelir > 0] / goreli_esdeger_gelir[goreli_esdeger_gelir > 0], 2))[1],
+                   medyan_n = uniqueN(round(esdeger_gelir[goreli_esdeger_gelir > 0] / goreli_esdeger_gelir[goreli_esdeger_gelir > 0], 0)), gelir_yili = gelir_yili[1]), keyby = yil]
+stopifnot(all(esik_reel$medyan_n <= 2))
+esik_reel[, `:=`(esik_60 = 0.6 * medyan, tufe_gelir_yili = tufe_yil[as.character(gelir_yili)], tufe_anket_yili = tufe_yil[as.character(yil)])]
+esik_reel[, `:=`(esik_60_2022_fiyat = esik_60 * tufe_yil[["2022"]] / tufe_gelir_yili, anket_gelir_yili_tufe_orani = tufe_anket_yili / tufe_gelir_yili)]
+esik_reel[, esik_60_2022_fiyat_degisim_onceki := 100 * (esik_60_2022_fiyat / shift(esik_60_2022_fiyat) - 1)]
+stopifnot(all(d[, all(yoksul_60 == as.integer(esdeger_gelir < 0.6 * esik_reel$medyan[match(yil, esik_reel$yil)] * (1 + 1e-9))), by = yil]$V1))
+esik_reel[, medyan_n := NULL]
+fwrite(esik_reel, "Results/H1_esik_reel_deger.csv")
+print(esik_reel)
+sure_ekle("H1 ek analizler (bagli kumeler, egri, dugum, gelir yili, gradyan, esik)", t0)
+
 py <- "/Users/salim/veri-ortami/bin/python3"
 if (!file.exists("Results/H2_ozet.json")) {
   t0 <- Sys.time()
@@ -617,7 +904,7 @@ if (!file.exists("Results/H2_mlp.csv")) {
   if (st != 0) cat("mlp.py (istege bagli kol) calismadi; Results/log/mlp_log.txt\n")
   sure_ekle("mlp.py (GPU, MPS)", t0)
 }
-if (!file.exists("Results/H2_esiksiz_metrikler_GA.csv")) {
+if (!all(file.exists(c("Results/H2_esiksiz_metrikler_GA.csv", "Results/H2_kalibre_test.csv", "Results/H2_tr63_haric.csv", "Results/H2_fark_bootstrap_sd.csv", "Results/log/kalibrasyon_ozet.json")))) {
   t0 <- Sys.time()
   st <- system2(py, "Codes/esiksiz_ga.py", stdout = "Results/log/esiksiz_ga_log.txt", stderr = "Results/log/esiksiz_ga_log.txt")
   if (st != 0) stop("esiksiz_ga.py hata verdi; Results/log/esiksiz_ga_log.txt")
@@ -1495,10 +1782,10 @@ hn_n <- t1h[, .N, keyby = grup]$N
 setnames(t1_disp, c("Characteristic", paste0("(n\u00a0=\u00a0", nfmt(hn_n[1]), ")"), paste0("Not poor (n\u00a0=\u00a0", nfmt(hn_n[2]), ")"), paste0("Poor (n\u00a0=\u00a0", nfmt(hn_n[3]), ")")))
 cat("Table 1 en buyuk p:", max(t1_p), "\n")
 fwrite(t1_disp, "Results/table1_veri_uzun.csv")
-tablo_cikar(t1_disp, "Table1", "Table 1. Characteristics of households and adults by food insecurity and income poverty, Turkey, 2025.",
-            ust = list(degerler = c("Characteristic", "Food secure", "Food insecure"), genislik = c(1, 1, 2), dikey = 1),
+tablo_cikar(t1_disp, "Table1", "Table 1. Characteristics of households and adults by meal-affordability deprivation and income poverty, T\u00fcrkiye, 2025.",
+            ust = list(degerler = c("Characteristic", "Not meal-deprived", "Meal-deprived"), genislik = c(1, 1, 2), dikey = 1),
             notlar = c(paste("Values are n (%):", not_n, "Household characteristics weighted with HB040; adults (individual questionnaire) weighted with FB030."),
-                       "Food insecure: household cannot afford a meal with meat, chicken or fish every second day (HE090). Poor: equivalized disposable income below 60% of the national median.",
+                       "Meal-deprived: household cannot afford a meal with meat, chicken or fish, or a vegetarian equivalent, every second day (HE090 = 2). Poor: equivalized disposable income below 60% of the national median.",
                        paste0("Every characteristic differed across the three groups (Rao\u2013Scott second-order corrected chi-square test, adults with households as clusters; largest p ", if (max(t1_p) < 0.001) "< 0.001" else formatC(max(t1_p), format = "f", digits = 3),
                               "). \u2013, 0% or 100% by construction (poverty is defined by income below 0.6 of the median). MSD, material and social deprivation.")),
             grup_satir = t1_grup, girinti = t1_gir)
@@ -1508,7 +1795,7 @@ t0 <- Sys.time()
 ek_no <- c(degisken = 1, ozellik = 2, ortusme = 3, ayar = 4, h3_model = 5, sim_senaryo = 6, h1_kirilim = 7, h1_duyarlilik = 8, kesif = 9, esiksiz = 10,
            kurallar = 11, yil = 12, shap = 13, bicim = 14, h2_duyarlilik = 15, h3_tam = 16, h3_ek = 17, sim_sonuc = 18, sim_s2 = 19, sim_s3 = 20)
 h1a <- h1_ana[tr63_haric == FALSE & ibbs2_tabaka == FALSE]
-h1f <- h1_fark[tr63_haric == FALSE & ibbs2_tabaka == FALSE & yil_1 == 2023 & yil_2 == 2025]
+h1f <- h1_fark_bag[tr63_haric == FALSE & ibbs2_tabaka == FALSE & yil_1 == 2023 & yil_2 == 2025]
 t2_hucre <- function(o, e, dz, yy, d = 1) {
   r <- h1a[olcu == o & esik == e & duzey == dz & yil == yy]
   if (!nrow(r)) return("")
@@ -1520,10 +1807,10 @@ t2_fark <- function(o, e, dz, d = 1) {
   ga(r$fark, r$alt, r$ust, d)
 }
 t2_satirlar <- list(
-  list("Food insecurity", "FI", ""),
+  list("Meal-affordability deprivation", "FI", ""),
   list("Income poverty (60% threshold)", "esik", "e_yoksul_60"),
-  list("Food insecure and not poor", "FI_esik_degil", "e_yoksul_60"),
-  list("Food insecurity among the poor (60% threshold)", "FI_esik_icinde", "e_yoksul_60")
+  list("Meal-deprived and not poor", "FI_esik_degil", "e_yoksul_60"),
+  list("Meal-affordability deprivation among the poor (60% threshold)", "FI_esik_icinde", "e_yoksul_60")
 )
 t2_dislama <- list(
   list("60% poverty threshold", "dislama", "e_yoksul_60"),
@@ -1545,20 +1832,22 @@ for (dz in c("hane", "kisi")) {
   t2_grup <- c(t2_grup, length(t2_rows))
   for (s in t2_satirlar) t2_ekle(s, dz)
   if (dz == "hane") {
-    t2_ekle(list("Households food insecure and not poor, millions", "kacirilan_hane_milyon", "e_yoksul_60", 2), dz)
+    t2_ekle(list("Meal-deprived, non-poor households, millions", "kacirilan_hane_milyon", "e_yoksul_60", 2), dz)
   } else {
-    for (s in list(list("Children (<18 years) in food-insecure households, %", "cocuk_FI", "", 1), list("Of whom not poor, %", "cocuk_dislama", "e_yoksul_60", 1),
-                   list("Children in food-insecure, non-poor households, millions", "cocuk_kacirilan_milyon", "e_yoksul_60", 2))) t2_ekle(s, dz)
+    for (s in list(list("Children (<18 years) living in meal-deprived households, %", "cocuk_FI", "", 1), list("Of whom not poor, %", "cocuk_dislama", "e_yoksul_60", 1),
+                   list("Children living in meal-deprived, non-poor households, millions", "cocuk_kacirilan_milyon", "e_yoksul_60", 2))) t2_ekle(s, dz)
   }
-  t2_rows[[length(t2_rows) + 1]] <- c("Exclusion error, % of food insecure not identified", "", "", "", "")
+  t2_rows[[length(t2_rows) + 1]] <- c("Exclusion error, % of meal-deprived not identified", "", "", "", "")
   t2_gir <- c(t2_gir, length(t2_rows))
   for (s in t2_dislama) t2_ekle(s, dz)
 }
-t2_rows[[length(t2_rows) + 1]] <- c("Income gradient of food insecurity (households)", "", "", "", "")
+t2_rows[[length(t2_rows) + 1]] <- c("Income gradient of meal-affordability deprivation (households)", "", "", "", "")
 t2_grup <- c(t2_grup, length(t2_rows))
-et_ <- function(yy, ts) egri_test[yil == yy & test == ts]
+et_ <- function(yy, ts, vr = NULL) { r <- egri_test_genis[yil == yy & test == ts]; if (!is.null(vr)) r <- r[varyans == vr]; r }
 fp_ <- function(r) paste0("F = ", formatC(r$F, format = "f", digits = 1), " (p ", fifelse(r$p < 0.001, "< 0.001", paste0("= ", formatC(r$p, format = "f", digits = 3))), ")")
-t2_rows[[length(t2_rows) + 1]] <- c("Non-linearity in log relative income", sapply(as.character(2023:2025), function(yy) fp_(et_(yy, "dogrusal_olmama"))), "")
+t2_rows[[length(t2_rows) + 1]] <- c("Association with log relative income, Wald F (4 df)", sapply(as.character(2023:2025), function(yy) fp_(et_(yy, "genel_iliski"))), "")
+t2_gir <- c(t2_gir, length(t2_rows))
+t2_rows[[length(t2_rows) + 1]] <- c("Departure from linearity, Wald F (3 df)", sapply(as.character(2023:2025), function(yy) fp_(et_(yy, "dogrusal_olmama"))), "")
 t2_gir <- c(t2_gir, length(t2_rows))
 t2_rows[[length(t2_rows) + 1]] <- c("Step at the 60% threshold, percentage points", sapply(as.character(2023:2025), function(yy) { r <- et_(yy, "esik_adimi_puan"); ga(r$tahmin, r$alt, r$ust) }), "")
 t2_gir <- c(t2_gir, length(t2_rows))
@@ -1566,18 +1855,21 @@ t2_rows[[length(t2_rows) + 1]] <- c("Step, seven-knot spline (sensitivity)", sap
 t2_gir <- c(t2_gir, length(t2_rows))
 t2_rows[[length(t2_rows) + 1]] <- c("Step, piecewise-linear (sensitivity)", sapply(as.character(2023:2025), function(yy) { r <- et_(yy, "esik_adimi_puan_parcali"); ga(r$tahmin, r$alt, r$ust) }), "")
 t2_gir <- c(t2_gir, length(t2_rows))
-t2_rows[[length(t2_rows) + 1]] <- c("Change in the shape of the income curve", "", "", "", fp_(et_("2023-2025", "yil_farki_bicim")))
+t2_rows[[length(t2_rows) + 1]] <- c("Equality of the 2023 and 2025 curves, Wald F (5 df)", "", "", "", fp_(et_("2023-2025", "yil_farki_egri", "bagli_kume")))
+t2_gir <- c(t2_gir, length(t2_rows))
+t2_rows[[length(t2_rows) + 1]] <- c("Equality of curve shape, 2023 and 2025, Wald F (4 df)", "", "", "", fp_(et_("2023-2025", "yil_farki_bicim", "bagli_kume")))
 t2_gir <- c(t2_gir, length(t2_rows))
 t2_disp <- as.data.table(do.call(rbind, t2_rows))
 setnames(t2_disp, c("Indicator", "2023", "2024", "2025", "2025 \u2212 2023"))
 n_hane_yil <- h[, .N, keyby = yil]$N
-tablo_cikar(t2_disp, "Table2", "Table 2. Food insecurity, income poverty and exclusion error of poverty-based identification, Turkey, 2023\u20132025.",
-            notlar = c(paste0("Estimates are weighted percentages (95% CI) unless stated otherwise; ", nfmt(n_hane_yil[1]), ", ", nfmt(n_hane_yil[2]), " and ", nfmt(n_hane_yil[3]), " households in 2023, 2024 and 2025. Food insecurity: household cannot afford a meal with meat, chicken or fish (or vegetarian equivalent) every second day (HE090). Exclusion error: share of food-insecure households (persons) not identified by the threshold."),
-                       paste0("Taylor-linearization intervals with households as units; the area-level clustering of the survey sample is not identified in the files, so intervals are approximate (design-effect sensitivity in Supplementary Table S", ek_no[["h1_duyarlilik"]],
-                              "). Differences assume independent samples. 2023 contains no households from TR63."),
+gk_metin <- paste(formatC(exp(gk), format = "f", digits = 2), collapse = ", ")
+tablo_cikar(t2_disp, "Table2", "Table 2. Meal-affordability deprivation, income poverty and exclusion error of poverty-based identification, T\u00fcrkiye, 2023\u20132025.",
+            notlar = c(paste0("Estimates are weighted percentages (95% CI) unless stated otherwise; ", nfmt(n_hane_yil[1]), ", ", nfmt(n_hane_yil[2]), " and ", nfmt(n_hane_yil[3]), " households in 2023, 2024 and 2025. Meal-affordability deprivation: household cannot afford a meal with meat, chicken or fish, or a vegetarian equivalent, every second day (HE090 = 2). Exclusion error: share of meal-deprived households (persons) not identified by the threshold."),
+                       paste0("Taylor-linearization intervals; the area-level clustering of the survey sample is not identified in the files, so intervals are approximate (design-effect sensitivity in Supplementary Table S", ek_no[["h1_duyarlilik"]],
+                              "). Year differences and year tests count households matched across survey years (in at least one pair of years) as one cluster; re-interviews that could not be detected are treated as independent. 2023 contains no households from TR63."),
                        "MSD, material and social deprivation; 12 of the 13 Eurostat items (meat item excluded).",
-                       paste0("Income gradient: survey-weighted logistic regression of food insecurity on log relative income (restricted cubic spline, five knots). Non-linearity: Wald test of the three non-linear terms. Step: indicator for income below the 60% line added to the spline; difference in predicted probability at the line (sensitivity: seven knots, and a piecewise-linear model with a slope change and a jump at the line). Knots at quantiles of pooled 2023\u20132025 log relative income. Change in shape: Wald test of the year interaction with the slope and spline terms, 2023 and 2025 pooled; the test treats the two years as independent samples, although at least ",
-                              round(100 * h[yil == 2025, mean(eslesen_2023)]), "% of 2025 households were matched to a 2023 household, and ignores area clustering, so its p value is optimistic.")),
+                       paste0("Income gradient: survey-weighted logistic regression of meal-affordability deprivation on log relative income (restricted cubic spline, five knots at the 5th, 27.5th, 50th, 72.5th and 95th percentiles of pooled 2023\u20132025 log relative income, i.e., ", gk_metin,
+                              " times the median). Association: Wald test that all four income terms are zero. Departure from linearity: Wald test of the three non-linear terms. Step: indicator for income below the 60% line added to the spline; difference in predicted probability at the line (sensitivity: seven knots, and a piecewise-linear model with a slope change and a jump at the line). Equality of curves: Wald test of the year term and its interactions with the four income terms, 2023 and 2025 pooled; equality of shape: the four interactions only.")),
             grup_satir = t2_grup, girinti = t2_gir)
 sure_ekle("Table 2", t0)
 
@@ -1649,13 +1941,13 @@ c_pov <- kp[kapsama_noktasi == "yoksulluk_orani", kapsama]
 c_fi <- kp[kapsama_noktasi == "FI_yayginligi", kapsama]
 t3 <- t3_tablo("temiz")
 n_temiz <- h2oz$n_test$temiz
-tablo_cikar(t3$disp, "Table3", "Table 3. Share of food-insecure households identified by alternative targeting rules at equal targeting rates, 2025 test set.",
-            ust = list(degerler = c("Method", paste0("Targeting rate = poverty rate (", f1(c_pov), "%)"), "Targeting rate 30%", paste0("Targeting rate = FI prevalence (", f1(c_fi), "%)")), genislik = c(1, 4, 2, 1), dikey = 1),
+tablo_cikar(t3$disp, "Table3", "Table 3. Share of meal-deprived households identified by alternative targeting rules at equal targeting rates, 2025 test set.",
+            ust = list(degerler = c("Method", paste0("Targeting rate = poverty rate (", f1(c_pov), "%)"), "Targeting rate 30%", paste0("Targeting rate = prevalence of meal-affordability deprivation (", f1(c_fi), "%)")), genislik = c(1, 4, 2, 1), dikey = 1),
             notlar = c(paste0("Models were trained on the 2023 and 2024 surveys and evaluated on ", nfmt(n_temiz), " households of the 2025 survey that could not be matched to a 2023 or 2024 household by member signature or reference-person key (Supplementary Table S3); weights HB040."),
-                       paste0("Sensitivity: weighted share of food-insecure households selected (95% CI, household bootstrap, ", nfmt(h2oz$bootstrap$B), " replicates; intervals conditional on the fitted models). PPV: share of selected households that are food insecure. Children: share of children living in food-insecure households who are selected."),
+                       paste0("Sensitivity: weighted share of meal-deprived households selected (95% CI, household bootstrap, ", nfmt(h2oz$bootstrap$B), " replicates; intervals conditional on the fitted models). PPV: share of selected households that are meal-deprived. Children: share of children living in meal-deprived households who are selected."),
                        "\u0394: paired bootstrap difference from the poverty line. Targeting rules select the highest-scoring households until the targeting rate is reached; households tied at the cut-off (for a tree, a whole leaf) are selected fractionally, i.e., with expected random tie-breaking. \u2013, not applicable (the poverty line has a fixed targeting rate) or identical to the poverty line by construction.",
                        "Register-like subset: survey-measured features of the kind held in population, address, education or social-security registers (household composition, counts of employed, unemployed, retired and informally employed adults, work intensity, education, region, household type, dwelling type, tenure, car ownership, characteristics of the reference person); the structural set additionally contains self-reported housing and health items. Ridge logistic: linear terms only, or cubic B-splines with five quantile knots for continuous features. Lasso logistic: at most six variables selected on the L1 path, coefficients re-estimated with a minimal penalty (relaxed lasso). Rule set: depth-3 classification tree whose leaves are selected in order of training-year prevalence.",
-                       "Perfect ranking selects food-insecure households first; at a targeting rate below the prevalence its sensitivity equals the targeting rate divided by the prevalence."),
+                       "Perfect ranking selects meal-deprived households first; at a targeting rate below the prevalence its sensitivity equals the targeting rate divided by the prevalence."),
             grup_satir = t3$gs, girinti = t3$gi, yatay = TRUE)
 sure_ekle("Table 3", t0)
 
@@ -1703,7 +1995,7 @@ akis <- rbindlist(list(
 ))
 fwrite(akis, file.path(fdir, "fig1a_akis.csv"))
 fwrite(akis, "Results/akis_sayilari.csv")
-g_lab <- c("1" = "Food secure", "2" = "Food insecure, not poor", "3" = "Food insecure, poor")
+g_lab <- c("1" = "Not meal-deprived", "2" = "Meal-deprived, not poor", "3" = "Meal-deprived, poor")
 fig4a <- h3_ekler[analiz %in% c("C0_uc_grup", "C0_uc_grup_hane") & olcu %in% c("p_G1", "p_G2", "p_G3", "PD_G2_G1", "PD_G2_G3", "konum"), .(analiz, sonuc, olcu, tahmin, alt, ust, n, olay)]
 fwrite(fig4a, file.path(fdir, "fig5a_uc_grup.csv"))
 fig4b <- h3_ekler[analiz %in% c("C3_gelir_bandi", "C3_gelir_bandi_hane") & grepl("^p_B", olcu), .(analiz, sonuc, olcu, bant = sub("p_B", "", olcu), tahmin, alt, ust, n, olay)]
@@ -1716,12 +2008,17 @@ sure_ekle("Figur verileri (R)", t0)
 t0 <- Sys.time()
 ek_kl <- "Results/Supplementary"
 ek_cikar <- function(k, disp, metin, ...) tablo_cikar(disp, paste0("TableS", ek_no[[k]]), paste0("Table S", ek_no[[k]], ". ", metin), klasor = ek_kl, ...)
+he090_eksik <- h[, .(n = sum(is.na(HE090))), keyby = yil]
+tuketim_notu <- "Frequency of consumption; quantities, intake and diet quality not measured."
 degisken_tanim <- rbindlist(list(
-  data.table(Variable = "Food insecurity (FI)", Definition = "Household cannot afford a meal with meat, chicken or fish (or vegetarian equivalent) every second day (HE090 = 2)", Source = "HE090", Universe = "Households; assigned to members"),
+  data.table(Variable = "Meal-affordability deprivation", Definition = paste0("Household cannot afford a meal with meat, chicken or fish, or a vegetarian equivalent, every second day (HE090 = 2). TurkStat codebook wording, identical in 2023\u20132025: \u201cHaneniz ekonomik olarak; 2 g\u00fcnde bir et, tavuk ya da bal\u0131k i\u00e7eren yeme\u011fi kar\u015f\u0131layabilecek durumda m\u0131? (Vejeteryanlar i\u00e7in e\u015fde\u011fer yiyecekler)\u201d [Is your household economically able to afford a meal containing meat, chicken or fish every second day? (Equivalent foods for vegetarians)]. Codes 1 = yes, 2 = no; deprived = 2. No recall period: ability to afford at the time of the interview. Missing values: ",
+                                                                                  he090_eksik$n[1], " in 2023, ", he090_eksik$n[2], " in 2024 and ", he090_eksik$n[3], " in 2025. The household value is assigned to all members."),
+             Source = "HE090 (TurkStat microdata, household file); EU-SILC target variable HS050 (Capacity to afford a meal with meat, chicken, fish (or vegetarian equivalent) every second day) in Eurostat coding; in the TurkStat files HS050 denotes a different item",
+             Universe = "Households; household questionnaire, answered for the household by the household respondent; assigned to members"),
   data.table(Variable = "Income poor", Definition = "Equivalized disposable income below 60% of the national median of the survey year (modified OECD scale; TurkStat income concept)", Source = "yoksul_60", Universe = "Persons; household property"),
   data.table(Variable = "50% and 70% poverty lines", Definition = "As above with 50% and 70% of the median", Source = "yoksul_50, yoksul_70", Universe = "Persons; household property"),
-  data.table(Variable = "Missed household", Definition = "Food insecure and not income poor", Source = "derived", Universe = "Households"),
-  data.table(Variable = "Exclusion error", Definition = "Weighted share of food-insecure households (persons) that are not identified by a threshold", Source = "derived", Universe = "Food-insecure households (persons)"),
+  data.table(Variable = "Missed household", Definition = "Meal-deprived and not income poor", Source = "derived", Universe = "Households"),
+  data.table(Variable = "Exclusion error", Definition = "Weighted share of meal-deprived households (persons) that are not identified by a threshold", Source = "derived", Universe = "Meal-deprived households (persons)"),
   data.table(Variable = "MSD \u22655 (meat item excluded)", Definition = "Deprivation in at least 5 of the 12 Eurostat material and social deprivation items other than the meat item; value of the reference person", Source = "msy_* items", Universe = "Households"),
   data.table(Variable = "Very low work intensity", Definition = "Any member aged 0\u201359 lives in a household with work intensity below 0.20 (TurkStat-calibrated definition); households without working-age members counted as 0 when used as a threshold", Source = "dusuk_is_yogunlugu", Universe = "Households"),
   data.table(Variable = "Relative income (log)", Definition = "Natural logarithm of equivalized income divided by the survey-year median (floored at 0.01)", Source = "goreli_esdeger_gelir", Universe = "Households"),
@@ -1736,21 +2033,26 @@ degisken_tanim <- rbindlist(list(
   data.table(Variable = "Durable goods", Definition = "Ownership of computer, internet, washing machine, dishwasher, air conditioner and car (yes/no); the 'cannot afford' distinction is used only in the deprivation layer", Source = "HH180\u2013HH240", Universe = "Households"),
   data.table(Variable = "Matched to an earlier survey", Definition = "Household matched to a household of an earlier survey year by member signature (sorted birth year, birth month and sex of all members of multi-person households) or by reference-person key (birth year, birth month and sex of the reference person, NUTS 2 region, dwelling type, tenure); each signature or key occurring exactly once in both years", Source = "FK080, FK075, FK090, HB031, HH010, HH020", Universe = "Households, 2023\u20132025"),
   data.table(Variable = "Main test set", Definition = "2025 households matched neither to a 2024 nor to a 2023 household", Source = "derived", Universe = "2025 households"),
-  data.table(Variable = "Low meat intake", Definition = "Eats meat, chicken or fish less than once a week (vegetarian or vegan adults excluded; included as low intake in a sensitivity analysis)", Source = "MODUL2_F_5", Universe = "Adults \u226518, 2025"),
-  data.table(Variable = "Low fruit intake", Definition = "Eats fruit less than once a day", Source = "MODUL1_F_8", Universe = "Adults \u226518, 2025"),
-  data.table(Variable = "Low vegetable intake", Definition = "Eats vegetables or salad less than once a day", Source = "MODUL1_F_9", Universe = "Adults \u226518, 2025"),
-  data.table(Variable = "Heavy health-cost burden", Definition = "Medical examination or treatment costs, or medicine costs, were a heavy burden in the past 12 months", Source = "MODUL1_H_1, MODUL1_H_3", Universe = "Households, 2025"),
+  data.table(Variable = "Low meat, chicken or fish consumption frequency", Definition = paste("Eats meat, chicken or fish less than once a week (code 15); vegetarian or vegan adults (code 19) excluded, and counted as low frequency in a sensitivity analysis. TurkStat codebook wording: \u201cFerdin son 12 ay i\u00e7erisinde ferdin et, tavuk veya bal\u0131k yeme s\u0131kl\u0131\u011f\u0131\u201d [Frequency with which the person ate meat, chicken or fish in the last 12 months]; codes 1 every day, 2 every week (not every day), 15 less than once a week, 19 never, vegetarian or vegan. Recall period: last 12 months.", tuketim_notu),
+             Source = "MODUL2_F_5 (2025 energy and environment module, person file)", Universe = "Adults \u226518 with an individual questionnaire, 2025"),
+  data.table(Variable = "Low fruit consumption frequency", Definition = paste("Eats fruit less than once a day (codes 13, 14, 15, 6). TurkStat codebook wording: \u201cFerdin ola\u011fan/normal bir haftada (7 g\u00fcn) meyve yeme s\u0131kl\u0131\u011f\u0131 (Konserve veya kuru meyveler dahil olup her \u00e7e\u015fit meyve sular\u0131 hari\u00e7tir.)\u201d [Frequency with which the person eats fruit in an ordinary week (7 days); canned or dried fruit included, all fruit juices excluded]; codes 11 twice a day or more, 12 once a day, 13 4\u20136 times a week, 14 1\u20133 times a week, 15 less than once a week, 6 never. Recall period: an ordinary week.", tuketim_notu),
+             Source = "MODUL1_F_8 (2025 health module, person file)", Universe = "Adults \u226518 with an individual questionnaire, 2025"),
+  data.table(Variable = "Low vegetable consumption frequency", Definition = paste("Eats vegetables or salad less than once a day (codes 13, 14, 15, 6). TurkStat codebook wording: \u201cFerdin sebze veya salata yeme s\u0131kl\u0131\u011f\u0131 (patates, \u00e7orba ve herhangi bir sebze suyu hari\u00e7)\u201d [Frequency with which the person eats vegetables or salad, excluding potatoes, soup and any vegetable juice]; codes as for fruit. Recall period: not stated in the codebook (the same daily and weekly response scale as the fruit item, which refers to an ordinary week).", tuketim_notu),
+             Source = "MODUL1_F_9 (2025 health module, person file)", Universe = "Adults \u226518 with an individual questionnaire, 2025"),
+  data.table(Variable = "Heavy health-cost burden", Definition = "Medical examination or treatment costs, or medicine costs, were a heavy burden in the last 12 months (code 1 on either item). TurkStat codebook wording: \u201cSon 12 ay i\u00e7erisinde hanehalk\u0131n\u0131n t\u0131bbi muayene veya tedaviler i\u00e7in yapt\u0131\u011f\u0131 t\u00fcm harcamalar\u0131n haneye y\u00fck getirme durumu\u201d [Extent to which all household expenditure on medical examinations or treatments in the last 12 months was a burden] and \u201cSon 12 ay i\u00e7erisinde hanehalk\u0131n\u0131n ila\u00e7 i\u00e7in (re\u00e7eteli veya re\u00e7etesiz) yapt\u0131\u011f\u0131 t\u00fcm masraflar\u0131n haneye y\u00fck getirme durumu\u201d [the same for prescribed or non-prescribed medicines]; codes 1 a heavy burden, 2 somewhat of a burden, 3 not a burden, 4 no such expenditure (counted as not heavily burdened). Recall period: last 12 months.",
+             Source = "MODUL1_H_1, MODUL1_H_3 (2025 health module, household file)", Universe = "Households, 2025"),
   data.table(Variable = "Unmet medical need due to cost", Definition = "Could not consult a doctor at least once because of cost, among adults who needed care", Source = "FS050, FS060", Universe = "Adults with a care need, 2025"),
-  data.table(Variable = "Groups G1\u2013G3", Definition = "G1 food secure; G2 food insecure, not poor; G3 food insecure and poor", Source = "HE090, yoksul_60", Universe = "Households and adults, 2025")
+  data.table(Variable = "Groups G1\u2013G3", Definition = "G1 not meal-deprived; G2 meal-deprived, not poor; G3 meal-deprived and poor", Source = "HE090, yoksul_60", Universe = "Households and adults, 2025")
 ))
 fwrite(degisken_tanim, "Results/degisken_tanimlari.csv")
-ek_cikar("degisken", degisken_tanim, "Definitions of derived variables.")
+ek_cikar("degisken", degisken_tanim, "Definitions of the outcome, the consumption-frequency and health-cost items, and derived variables.", yatay = TRUE,
+         notlar = c("Turkish wording: TurkStat micro data codebooks (variable lists of the household, person and 2025 module files); no questionnaire was available, so the codebook wording is quoted. English translations by the authors. HS050 is the EU-SILC target-variable code in Eurostat's documentation; the TurkStat files use their own codes."))
 
 oz_set <- fromJSON(file.path(ddir, "ml", "ozellik_setleri.json"))
 katm <- if (!is.null(oz_set$katmanlar)) oz_set$katmanlar else list(T1 = setdiff(oz_set$A1, oz_set$A2), T2 = oz_set$A2, T3 = setdiff(oz_set$A3, oz_set$A1), T4 = setdiff(oz_set$A4, oz_set$A3), T2_idari = character(0))
 nominal_v <- c("HB030", "HB031", "HB050", "reis_medeni", "reis_calisma7", "HH010", "HH020", "HH080", "HH100", "HH110", "HE010", "HE020", "HE030", "HE070", "HE120", "HH180", "HH190", "HH200", "HH220", "HH230", "HH240")
 sirali_v <- c("hane_gelir_dilim5", "reis_egitim", "egitim_max", "egitim_min", "reis_saglik", "reis_gali", "HE040", "HE060", "HH145")
-katman_ad <- c(T1 = "T1 Income", T2 = "T2 Structural (no income information)", T3 = "T3 Financial strain (self-reported)", T4 = "T4 Deprivation items (upper bound only)")
+katman_ad <- c(T1 = "T1 Income", T2 = "T2 Structural (no income information)", T3 = "T3 Financial strain (self-reported)", T4 = "T4 Other deprivation items, same battery as the outcome (upper bound only)")
 ozk <- list()
 gs_ <- integer(0)
 for (k in names(katman_ad)) {
@@ -1808,7 +2110,7 @@ s3_ekle("% of second-year households", f1(oe$birlesik_pay_2))
 o_disp <- as.data.table(do.call(rbind, s3_sat))
 setnames(o_disp, c("Measure", paste0(oe$yil_1, "\u2013", oe$yil_2)))
 ob <- function(tn, tt) ortusme_bilesim[tanim == tn & test_temiz == tt]
-ob_metin <- function(tn) paste0(nfmt(ob(tn, 1)$n), " households (", f1(ob(tn, 1)$agirlikli_pay), "% of weighted households; ", f1(ob(tn, 1)$tek_kisili_agirlikli), "% one-person, weighted; food insecure ",
+ob_metin <- function(tn) paste0(nfmt(ob(tn, 1)$n), " households (", f1(ob(tn, 1)$agirlikli_pay), "% of weighted households; ", f1(ob(tn, 1)$tek_kisili_agirlikli), "% one-person, weighted; meal-deprived ",
                                 f1(ob(tn, 1)$FI_yuzde), "%, poor ", f1(ob(tn, 1)$yoksul_yuzde), "%)")
 ek_cikar("ortusme", o_disp, "Households matched across survey years and composition of the 2025 test sets.", grup_satir = s3_gs, girinti = setdiff(seq_len(nrow(o_disp)), s3_gs),
          notlar = c("Signature: sorted birth year, birth month and sex of all members of multi-person households; signatures occurring once in both years were matched (reproduces the data review report). Reference-person key: birth year, birth month and sex of the reference person, NUTS 2 region, dwelling type and tenure, matched when unique in both years; added for pairs not matched by signature. Precision: share of key matches among multi-person households of unchanged size that the signature also matches. Recall: share of signature-matched pairs that the key also matches; the three reasons for a miss sum to 100 minus recall.",
@@ -1841,7 +2143,7 @@ ev_tur <- function(v) if (v == "is_yogunlugu") "yapisal" else if (startsWith(v, 
 ev_islem_h2 <- "LightGBM ve CART: dogal; ridge, lasso, MLP: medyan + eksiklik gostergesi (sayisal) ya da 'bos' kategorisi (kategorik), her katta yalniz egitim verisinden ogrenilir"
 diger_oz <- setdiff(oz_tum, c(katm$T1, eksik_oz))
 ev_rows <- list(
-  ev_satir("FI", "Food insecurity (HE090)", "Outcome and income", c(ev_h2(function(d) d$FI), list(h3_yetiskin = yt$FI, h3_hane = hn$FI)), "yok", "\u2013"),
+  ev_satir("FI", "Meal-affordability deprivation (HE090)", "Outcome and income", c(ev_h2(function(d) d$FI), list(h3_yetiskin = yt$FI, h3_hane = hn$FI)), "yok", "\u2013"),
   ev_satir("T1", paste0("Income features (T1, ", length(katm$T1), " variables)"), "Outcome and income",
            c(ev_h2(function(d) fifelse(rowSums(is.na(d[, katm$T1, with = FALSE])) > 0, NA_real_, 1)), list(h3_yetiskin = yt$log_goreli_gelir, h3_hane = hn$log_goreli_gelir)), "yok", "\u2013"))
 for (v in eksik_oz) ev_rows[[length(ev_rows) + 1]] <- ev_satir(v, deg_et(v), "Features with missing values", ev_h2(function(d) d[[v]]), ev_tur(v), ev_islem_h2)
@@ -1894,15 +2196,20 @@ tablo_cikar(ev_disp, "Ek_eksik_veri", "Table S\u2013. Missing values by variable
                        paste0("H3: complete cases; the household model uses the highest adult education for the ", reis_yedek, " households whose reference person has no individual record, and an unknown category for marital and activity status; ",
                               yt[et_tavuk_balik_siklik == 0, .N], " vegetarian or vegan adults are excluded from the meat outcome by definition. Households answering that they had no such expenditure (a response category of both health-cost items) are counted as not heavily burdened.")))
 
-ok_ornek <- list(y2023 = h[yil == 2023], y2024 = h[yil == 2024], test2025 = h[yil == 2025 & test_temiz == 1], cikarilan2025 = h[yil == 2025 & test_temiz == 0], y2025 = h[yil == 2025])
+kal_w <- as.data.table(read_parquet(file.path(ddir, "ml", "kalibre_agirlik_test_2025.parquet")))
+test_kal <- merge(h[yil == 2025 & test_temiz == 1], kal_w[, .(hane_kimlik, w_kalibre, w_ozgun)], by = "hane_kimlik")
+stopifnot(nrow(test_kal) == h[yil == 2025 & test_temiz == 1, .N], max(abs(test_kal$HB040 - test_kal$w_ozgun)) < 1e-6)
+test_kal[, HB040 := w_kalibre]
+kal_oz <- fromJSON("Results/log/kalibrasyon_ozet.json")
+ok_ornek <- list(y2023 = h[yil == 2023], y2024 = h[yil == 2024], test2025 = h[yil == 2025 & test_temiz == 1], test2025_kalibre = test_kal, cikarilan2025 = h[yil == 2025 & test_temiz == 0], y2025 = h[yil == 2025])
 ok_gel <- h[yil %in% 2023:2024]
 wm_ <- function(x, w) { ok <- !is.na(x); sum(w[ok] * x[ok]) / sum(w[ok]) }
 wv_ <- function(x, w) { ok <- !is.na(x); m <- wm_(x, w); sum(w[ok] * (x[ok] - m)^2) / sum(w[ok]) }
 wmed_ <- function(x, w) { ok <- !is.na(x); x <- x[ok]; w <- w[ok]; o <- order(x); cw <- cumsum(w[o]) / sum(w); x[o][which(cw >= 0.5)[1]] }
 ok_deg <- list(
   list("n", "Households, n", "n", function(d) rep(1, nrow(d))),
-  list("n_FI", "Food-insecure households, n", "n", function(d) d$FI),
-  list("FI", "Food insecure, %", "p", function(d) d$FI),
+  list("n_FI", "Meal-deprived households, n", "n", function(d) d$FI),
+  list("FI", "Meal-deprived, %", "p", function(d) d$FI),
   list("yoksul", "Income poor, %", "p", function(d) d$yoksul),
   list("tek_kisi", "One-person household, %", "p", function(d) as.numeric(d$HB050 == 1)),
   list("cocuklu", "Household with children, %", "p", function(d) as.numeric(d$n_cocuk > 0)),
@@ -1931,6 +2238,17 @@ orneklem_kar <- rbindlist(lapply(ok_deg, function(o) {
   r
 }))
 fwrite(orneklem_kar, "Results/orneklem_karsilastirma.csv")
+kal_denge <- rbindlist(list(
+  rbindlist(lapply(Filter(function(o) o[[3]] != "n", ok_deg), function(o) data.table(blok = "standart_fark_tum_2025", degisken = o[[1]], etiket = o[[2]],
+                                                                                    once = ok_smd(o[[3]], ok_ornek$test2025, ok_ornek$y2025, o[[4]]), sonra = ok_smd(o[[3]], test_kal, ok_ornek$y2025, o[[4]])))),
+  data.table(blok = "agirlik_orani", degisken = names(kal_oz$oran), etiket = "calibrated / scaled original weight", once = NA_real_, sonra = unlist(kal_oz$oran)),
+  data.table(blok = "kish_etkin_n", degisken = "kish", etiket = "Kish effective sample size", once = kal_oz$kish_etkin_n_ozgun, sonra = kal_oz$kish_etkin_n_kalibre),
+  data.table(blok = "yakinsama", degisken = c("yineleme", "en_buyuk_marj_sapmasi", "replikat_en_cok_yineleme", "replikat_en_buyuk_marj_sapmasi", "sinirda_hane_alt", "sinirda_hane_ust"),
+             etiket = "raking", once = NA_real_, sonra = c(kal_oz$yineleme, kal_oz$en_buyuk_marj_sapmasi, kal_oz$replikat_en_cok_yineleme, kal_oz$replikat_en_buyuk_marj_sapmasi, kal_oz$sinirda_hane$alt, kal_oz$sinirda_hane$ust)),
+  as.data.table(kal_oz$marjlar)[, .(blok = "marj", degisken = marj, etiket = kategori, once = 100 * ozgun_pay, sonra = 100 * kalibre_pay, hedef = 100 * hedef_pay)]), fill = TRUE)
+fwrite(kal_denge, "Results/H2_kalibrasyon_denge.csv")
+cat("\nKalibrasyon dengesi (standart farklar, tum 2025'e gore):\n")
+print(kal_denge[blok == "standart_fark_tum_2025", .(degisken, once = round(once, 3), sonra = round(sonra, 3))])
 gel_cift <- eslesme_bir[yil_1 == 2023 & yil_2 == 2024, .N]
 gel_benzersiz <- list(hane_yil = nrow(ok_gel), cift_2023_2024 = gel_cift, benzersiz_en_cok = nrow(ok_gel) - gel_cift,
                       cift_imza = eslesme_bir[yil_1 == 2023 & yil_2 == 2024 & yontem == "imza", .N], cift_reis_anahtari = eslesme_bir[yil_1 == 2023 & yil_2 == 2024 & yontem == "reis_anahtari", .N])
@@ -1938,7 +2256,7 @@ ok_fmt <- function(tur, x) switch(tur, n = nfmt(x), p = f1(x), m = f1(x), med = 
 ok_disp <- data.table(Characteristic = orneklem_kar$etiket)
 for (s in names(ok_ornek)) set(ok_disp, j = s, value = unname(mapply(ok_fmt, orneklem_kar$tur, orneklem_kar[[s]])))
 ok_disp[, SMD := fifelse(is.na(orneklem_kar$smd_test_gelistirme), "", f2(orneklem_kar$smd_test_gelistirme))]
-setnames(ok_disp, c("Characteristic", "2023 (development)", "2024 (development)", "2025 main test set", "2025, matched (excluded from testing)", "2025, all", "SMD, main test vs development"))
+setnames(ok_disp, c("Characteristic", "2023 (development)", "2024 (development)", "2025 main test set", "2025 main test set, calibrated weights", "2025, matched (excluded from testing)", "2025, all", "SMD, main test vs development"))
 tablo_cikar(ok_disp, "Ek_orneklem_karsilastirma", "Table S\u2013. Characteristics of the development samples, the 2025 main test set and the 2025 households excluded from testing.", klasor = ek_kl, yatay = TRUE,
             notlar = c(paste0("Percentages, means and medians weighted (HB040); counts unweighted. Development: ", nfmt(gel_benzersiz$hane_yil), " household-years in 2023 and 2024; ", nfmt(gel_cift), " pairs are matched across the two years (",
                               nfmt(gel_benzersiz$cift_imza), " by member signature, ", nfmt(gel_benzersiz$cift_reis_anahtari), " by reference-person key), so the development data contain at most ", nfmt(gel_benzersiz$benzersiz_en_cok),
@@ -1969,14 +2287,14 @@ ek_cikar("ayar", hp_disp, "LightGBM hyperparameters selected by year-blocked cro
 
 h3t <- fread("Results/H3_model_tanilari.csv")
 sonuc_ad <- c(et_az = "Meat <1/week", meyve_az = "Fruit <1/day", sebze_az = "Vegetables <1/day", saglik_yuk = "Health costs heavy burden", et_az_veg = "Meat <1/week (vegetarians included)", karsilanmayan_odeme = "Unmet need due to cost")
-kar_ad <- c(C1 = "C1: G2 vs G1 (non-poor)", C2 = "C2: G2 vs G3 (food insecure)")
+kar_ad <- c(C1 = "C1: G2 vs G1 (non-poor)", C2 = "C2: G2 vs G3 (meal-deprived)")
 aday_en <- c(FB100 = "marital status", FI010 = "activity status", FS020 = "chronic illness", FS030 = "activity limitation", HB050 = "household type", HH020 = "tenure")
 h3m_disp <- h3t[, .(Comparison = kar_ad[karsilastirma], Outcome = sonuc_ad[sonuc], Age = yas, `Added covariates` = sapply(strsplit(ek_kovaryat, ", "), function(z) if (identical(z, "none")) "none" else paste(aday_en[z], collapse = ", ")),
                     `Interaction p: region / sex / income` = paste(pfmt(em_p_bolge), pfmt(em_p_cinsiyet), fifelse(is.na(em_p_gelir), "\u2013", pfmt(em_p_gelir)), sep = " / "),
                     `Main model` = fifelse(ana_model == "esnek", "fully interacted", "main effects"), AL_p = pfmt(al_p), `Max. calibration gap, pp` = f1(al_maks_fark),
                     `Events per parameter` = f1(epp), DEFF = f2(deff), `Bootstrap shift, pp` = f2(boot_oynama))]
 setnames(h3m_disp, "AL_p", "Archer\u2013Lemeshow p")
-ek_cikar("h3_model", h3m_disp, "Model specification and diagnostics for the dietary and health-cost comparisons (H3), 2025.", yatay = TRUE,
+ek_cikar("h3_model", h3m_disp, "Model specification and diagnostics for the consumption-frequency and health-cost comparisons (H3), 2025.", yatay = TRUE,
          notlar = c("Core covariates: age, sex, education, region (NUTS 1), household size, number of children; C1 additionally relative income (log, natural spline). Household outcome: characteristics of the reference person.",
                     "Covariates added when they changed the risk difference by \u22650.5 percentage points or the prevalence ratio by \u226510% (no p-value-based selection). Fully interacted model used when an interaction p < 0.01.",
                     "DEFF, design effect of household clustering for the risk difference. Bootstrap shift: largest change in 95% limits between 1,000, 2,000 and 4,000 replicates."))
@@ -1997,14 +2315,14 @@ ss <- copy(sim_senaryo)
 dk_fmt <- function(x) if (x < 0.05) "<0.1 min" else paste0(f1(x), " min")
 sim_disp <- rbindlist(list(
   data.table(Study = "S1 Panel overlap", Scenarios = paste0(ss[calisma == "S1", .N], " (latent ICC 0.3, 0.6 \u00d7 overlap 30%, observed, 60%)"), Replicates = nfmt(ss[calisma == "S1", tekrar][1]),
-             `Data-generating model` = "Small LightGBM fitted to 2024\u20132025 food insecurity; shared household random effect for matched 2024\u20132025 pairs; intercept recalibrated to the observed prevalence",
+             `Data-generating model` = "Small LightGBM fitted to 2024\u20132025 meal-affordability deprivation; shared household random effect for matched 2024\u20132025 pairs; intercept recalibrated to the observed prevalence",
              Evaluation = "Model with the A1 tuning (fixed trees and learning rate) trained on simulated 2024, tested on simulated 2025 (full, unmatched, and unmatched with a share of re-interviewed households left undetected); optimism = metric with shared minus independent random effects"),
   data.table(Study = "S2 Outcome misclassification", Scenarios = paste0(ss[calisma == "S2", .N], " (Se 0.80\u20130.95 \u00d7 Sp 0.90\u20130.99; non-differential and income-differential) and ", s2tas[izgara == FALSE, .N],
                                                                        " near-error-free (Se 0.98\u20131.00 \u00d7 Sp 0.999\u20131.000); compatible with the observed data: ", s2tas[izgara == TRUE & uyumlu_A == TRUE, .N], " + ", s2tas[izgara == FALSE & uyumlu_A == TRUE, .N],
                                                                        " under design A, ", s2tas[uyumlu_B == TRUE, .N], " under design B"),
              Replicates = nfmt(ss[calisma == "S2", max(tekrar)]),
-             `Data-generating model` = "Design A: true status assigned from observed HE090 by Bayes' rule within cells of equivalized income quintile \u00d7 poverty status, using each cell's observed prevalence; design B: the same Se and Sp for every household, true status assigned from the recalibrated out-of-time LightGBM probability of reporting food insecurity; differential: Sp 5 pp lower in income quintiles 1\u20132",
-             Evaluation = "Exclusion error (simulated and closed form), food insecurity among the poor, rule-set, LightGBM and poverty-line sensitivity recomputed with assigned true status; realized Se and Sp by decile of LightGBM risk"),
+             `Data-generating model` = "Design A: true status assigned from observed HE090 by Bayes' rule within cells of equivalized income quintile \u00d7 poverty status, using each cell's observed prevalence; design B: the same Se and Sp for every household, true status assigned from the recalibrated out-of-time LightGBM probability of reporting meal-affordability deprivation; differential: Sp 5 pp lower in income quintiles 1\u20132",
+             Evaluation = "Exclusion error (simulated and closed form), meal-affordability deprivation among the poor, rule-set, LightGBM and poverty-line sensitivity recomputed with assigned true status; realized Se and Sp by decile of LightGBM risk"),
   data.table(Study = "S3 Interval coverage", Scenarios = "1", Replicates = paste0(nfmt(ss[calisma == "S3", tekrar][1]), " data sets \u00d7 ", nfmt(ss[calisma == "S3", bootstrap][1]), " bootstrap replicates"),
              `Data-generating model` = "Pseudo-population of 2025 households with HB040 weights and calibrated LightGBM probabilities; equal-probability resampling of households",
              Evaluation = "Coverage of 95% percentile household-bootstrap intervals for exclusion error, rule-set sensitivity and PPV")
@@ -2012,8 +2330,13 @@ sim_disp <- rbindlist(list(
 ek_cikar("sim_senaryo", sim_disp, "Design of the plasmode simulation studies.", yatay = TRUE, notlar = paste0("Seeds: scenario seed 20261101 + 1000 \u00d7 scenario number; replicate seeds derived from the scenario seed; S2 design B and the added near-error-free scenarios: numpy SeedSequence (20261101, design, scenario)."))
 
 kir_ad <- c(gelir_dilim5 = "Equivalized income quintile", HB050 = "Household type", cocuk_var = "Children in household", yasli_var = "Member aged \u226565", HH020 = "Tenure status",
-            calisan_var = "Employed adult in household", is_yog_grup = "Work intensity", reis_faaliyet3 = "Activity status of reference person", HB030 = "Region (NUTS 1)")
-k25 <- h1_kir[yil == 2025 & kirilim %in% names(kir_ad)]
+            calisan_var = "Employed adult in household", is_yog_grup = "Work intensity", reis_faaliyet3 = "Activity status of reference person", HB030 = "Region (NUTS 1)",
+            gelir_yili_degisim = "Change in main activity since the income reference year", he040_4 = "Ability to make ends meet", msy_etsiz_grup = "Other deprivation items (of 12)")
+kir_lab_ek <- list(gelir_yili_degisim = c("1" = "An adult stopped working, none started", "2" = "An adult started working, none stopped", "3" = "Both changes", "4" = "No change",
+                                          "5" = "Not determined (adult without individual record)"),
+                   he040_4 = c("1" = "With great difficulty", "2" = "With difficulty", "3" = "With some difficulty", "4" = "Fairly easily or more easily"),
+                   msy_etsiz_grup = c("1" = "None", "2" = "1\u20132", "3" = "3\u20134", "4" = "\u22655"))
+k25 <- rbind(h1_kir[yil == 2025 & kirilim %in% names(kir_ad)], h1_kir_ek[yil == 2025], fill = TRUE)
 kk_rows <- list()
 gs_ <- integer(0)
 for (k in names(kir_ad)) {
@@ -2026,7 +2349,7 @@ for (k in names(kir_ad)) {
   for (i in seq_len(nrow(kh))) {
     r <- kh[i]
     rp <- kp[kategori == r$kategori]
-    lab <- if (k %in% c("cocuk_var", "yasli_var", "calisan_var")) c("0" = "No", "1" = "Yes")[[r$kategori]] else if (k == "gelir_dilim5") c("Q1 (lowest)", "Q2", "Q3", "Q4", "Q5 (highest)")[as.integer(r$kategori)] else kat_et(k, r$kategori)
+    lab <- if (!is.null(kir_lab_ek[[k]])) kir_lab_ek[[k]][[r$kategori]] else if (k %in% c("cocuk_var", "yasli_var", "calisan_var")) c("0" = "No", "1" = "Yes")[[r$kategori]] else if (k == "gelir_dilim5") c("Q1 (lowest)", "Q2", "Q3", "Q4", "Q5 (highest)")[as.integer(r$kategori)] else kat_et(k, r$kategori)
     sup <- r$kucuk_hucre == "suppressed"
     taut <- !is.na(r$dislama_se) && r$dislama_se < 1e-8
     kk_rows[[length(kk_rows) + 1]] <- data.table(Characteristic = lab, n = nfmt(r$n), FI = ga(r$FI, r$FI - 1.96 * r$FI_se, r$FI + 1.96 * r$FI_se),
@@ -2035,10 +2358,12 @@ for (k in names(kir_ad)) {
   }
 }
 kk <- rbindlist(kk_rows)
-setnames(kk, c("Characteristic", "n", "Food insecure, % (95% CI)", "Exclusion error, % (95% CI)", "Share of missed households, %", "Exclusion error, persons, %"))
-ek_cikar("h1_kirilim", kk, "Food insecurity and exclusion error of the 60% poverty line by household characteristics, 2025.", grup_satir = gs_, girinti = setdiff(seq_len(nrow(kk)), gs_), yatay = TRUE,
-         notlar = c(paste("n, unweighted number of households; percentages and prevalences weighted.", "Exclusion error: % of food-insecure households not poor. Share of missed households: distribution of food-insecure, non-poor households across categories."),
-                    "^{a} 20\u201350 food-insecure households in the cell; \u2013, fewer than 20 (not shown). ^{b} Determined by construction: all households in the category lie on the same side of the poverty line."))
+setnames(kk, c("Characteristic", "n", "Meal-deprived, % (95% CI)", "Exclusion error, % (95% CI)", "Share of missed households, %", "Exclusion error, persons, %"))
+ek_cikar("h1_kirilim", kk, "Meal-affordability deprivation and exclusion error of the 60% poverty line by household characteristics, 2025.", grup_satir = gs_, girinti = setdiff(seq_len(nrow(kk)), gs_), yatay = TRUE,
+         notlar = c(paste("n, unweighted number of households; percentages and prevalences weighted.", "Exclusion error: % of meal-deprived households not poor. Share of missed households: distribution of meal-deprived, non-poor households across categories."),
+                    "Change in main activity: adults aged \u226518 with an individual record; worked mainly in the income reference year, at least 7 months in full- or part-time work (FI260 + FI270); working at the interview, current activity status employed (FI010 1\u20134). Households with an adult without an individual record are not classified.",
+                    "Ability to make ends meet: HE040. Other deprivation items: number of the 12 Eurostat material and social deprivation items other than the meal item that the household (reference person for personal items) lacks.",
+                    "^{a} 20\u201350 meal-deprived households in the cell; \u2013, fewer than 20 (not shown). ^{b} Determined by construction: all households in the category lie on the same side of the poverty line."))
 
 duy_rows <- list()
 for (dz in c("hane", "kisi")) for (yy in 2023:2025) {
@@ -2068,10 +2393,89 @@ r <- ci_fark[yil_2 == 2025]
 duy_rows[[length(duy_rows) + 1]] <- data.table(Level = "Erreygers index (persons)", Year = "2025 \u2212 2023", Main = ga(r$fark, r$alt, r$ust, 3), `Excluding TR63` = "\u2013", `NUTS 2 pseudo-strata` = "\u2013",
                                                `Design effect 2` = ga(r$fark, r$fark - 1.96 * sqrt(2) * r$se_fark, r$fark + 1.96 * sqrt(2) * r$se_fark, 3))
 duy <- rbindlist(duy_rows)
-ek_cikar("h1_duyarlilik", duy, "Exclusion error of the 60% poverty line: sensitivity to the TR63 region and to the variance estimator, and income-related concentration of food insecurity.",
-         notlar = c("Exclusion error, % of food-insecure households (persons) not poor (95% CI). TR63 (Hatay, Kahramanmara\u015f, Osmaniye) has no households in 2023. Pseudo-strata: NUTS 2 regions used as strata in the linearization variance.",
-                    "Design effect 2: intervals with the variance doubled, as a stand-in for the area-level clustering of the survey sample, which is not identified in the files.",
-                    "Erreygers concentration index of food insecurity by equivalized-income rank (persons, FK050); negative values indicate concentration among lower-income persons. Differences assume independent samples. \u2013, not computed."))
+duy_bas <- function(m) data.table(Level = m, Year = "", Main = "", `Excluding TR63` = "", `NUTS 2 pseudo-strata` = "", `Design effect 2` = "")
+duy_sat <- function(lv, yr, m, tr = "\u2013", ps = "\u2013", de = "\u2013") data.table(Level = lv, Year = yr, Main = m, `Excluding TR63` = tr, `NUTS 2 pseudo-strata` = ps, `Design effect 2` = de)
+fp2_ <- function(F, df1, df2, k = 1) { F <- F / k; p <- pf(F, df1, df2, lower.tail = FALSE); paste0(formatC(F, format = "f", digits = 1), " (p ", if (p < 0.001) "< 0.001" else paste0("= ", formatC(p, format = "f", digits = 3)), ")") }
+fark_ad <- function(yp) paste0(yp[2], " \u2212 ", yp[1])
+s12 <- list(duy_bas("Exclusion error by year, and year differences assuming independent samples"), duy, duy_bas("Year differences with households matched across survey years as clusters"))
+for (dz in c("hane", "kisi")) for (yp in yil_ciftleri) {
+  ff <- h1_fark_bag[duzey == dz & yil_1 == yp[1] & yil_2 == yp[2] & olcu == "dislama" & esik == "e_yoksul_60"]
+  f0 <- ff[tr63_haric == FALSE]
+  f1_ <- ff[tr63_haric == TRUE]
+  s12[[length(s12) + 1]] <- duy_sat(paste0("Exclusion error, ", if (dz == "hane") "households" else "persons"), fark_ad(yp), ga(f0$fark, f0$alt, f0$ust), ga(f1_$fark, f1_$alt, f1_$ust), "\u2013",
+                                    ga(f0$fark, f0$fark - 1.96 * sqrt(2) * f0$se_fark, f0$fark + 1.96 * sqrt(2) * f0$se_fark))
+}
+for (dz in c("hane", "kisi")) {
+  ff <- h1_fark_bag[duzey == dz & yil_1 == 2023 & yil_2 == 2025 & olcu == "FI" & esik == ""]
+  f0 <- ff[tr63_haric == FALSE]
+  f1_ <- ff[tr63_haric == TRUE]
+  s12[[length(s12) + 1]] <- duy_sat(paste0("Meal-affordability deprivation, ", if (dz == "hane") "households" else "persons"), "2025 \u2212 2023", ga(f0$fark, f0$alt, f0$ust), ga(f1_$fark, f1_$alt, f1_$ust), "\u2013",
+                                    ga(f0$fark, f0$fark - 1.96 * sqrt(2) * f0$se_fark, f0$fark + 1.96 * sqrt(2) * f0$se_fark))
+}
+s12[[length(s12) + 1]] <- duy_sat("Erreygers index (persons)", "2025 \u2212 2023", ga(ery_bag$fark, ery_bag$alt, ery_bag$ust, 3), "\u2013", "\u2013",
+                                  ga(ery_bag$fark, ery_bag$fark - 1.96 * sqrt(2) * ery_bag$se_fark, ery_bag$fark + 1.96 * sqrt(2) * ery_bag$se_fark, 3))
+s12[[length(s12) + 1]] <- duy_bas("Income gradient of meal-affordability deprivation: Wald tests, F (p)")
+for (ts in c("genel_iliski", "dogrusal_olmama")) for (yy in as.character(2023:2025)) {
+  r <- egri_test_genis[yil == yy & test == ts]
+  s12[[length(s12) + 1]] <- duy_sat(c(genel_iliski = "Association with log relative income (4 df)", dogrusal_olmama = "Departure from linearity (3 df)")[[ts]], yy, fp2_(r$F, r$df1, r$df2), de = fp2_(r$F, r$df1, r$df2, 2))
+}
+for (ts in c("yil_farki_egri", "yil_farki_bicim")) for (vr in c("bagli_kume", "bagimsiz")) for (yp in yil_ciftleri) {
+  r <- egri_test_genis[yil == paste0(yp[1], "-", yp[2]) & test == ts & varyans == vr]
+  s12[[length(s12) + 1]] <- duy_sat(paste0(c(yil_farki_egri = "Equality of the two curves (5 df)", yil_farki_bicim = "Equality of curve shape (4 df)")[[ts]], if (vr == "bagimsiz") ", independent samples" else ""),
+                                    paste0(yp[1], " and ", yp[2]), fp2_(r$F, r$df1, r$df2), de = fp2_(r$F, r$df1, r$df2, 2))
+}
+for (ts in c("yil_farki_egri_3yil", "yil_farki_bicim_3yil")) {
+  r <- egri_test_genis[test == ts]
+  s12[[length(s12) + 1]] <- duy_sat(c(yil_farki_egri_3yil = "Equality of the three curves (10 df)", yil_farki_bicim_3yil = "Equality of curve shape, three years (8 df)")[[ts]], "2023\u20132025", fp2_(r$F, r$df1, r$df2), de = fp2_(r$F, r$df1, r$df2, 2))
+}
+gfmt2 <- function(g) formatC(g, format = "f", digits = if (g %in% c(1.25)) 2 else 1)
+s12[[length(s12) + 1]] <- duy_bas("Predicted probability of meal-affordability deprivation at selected relative incomes, % (95% CI)")
+for (g in gelir_nokta) for (yy in as.character(2023:2025)) {
+  r <- egri_tah[tur == "tahmin" & yil == yy & goreli_gelir == g]
+  s12[[length(s12) + 1]] <- duy_sat(paste0("Relative income ", gfmt2(g)), yy, ga(r$tahmin, r$alt, r$ust))
+}
+s12[[length(s12) + 1]] <- duy_bas("Year differences in predicted probability at selected relative incomes, pp (95% CI), matched households as clusters")
+for (yp in yil_ciftleri) for (g in gelir_nokta) {
+  r <- egri_tah[tur == "fark" & yil == paste0(yp[2], "-", yp[1]) & goreli_gelir == g]
+  rb <- r[varyans == "bagli_kume"]
+  rt <- r[varyans == "bagli_kume_tr63_haric"]
+  rd <- r[varyans == "bagli_kume_deff2"]
+  s12[[length(s12) + 1]] <- duy_sat(paste0("Relative income ", gfmt2(g)), fark_ad(yp), ga(rb$tahmin, rb$alt, rb$ust), ga(rt$tahmin, rt$alt, rt$ust), "\u2013", ga(rd$tahmin, rd$alt, rd$ust))
+}
+s12[[length(s12) + 1]] <- duy_bas("Year differences in predicted probability, pp (95% CI), assuming independent samples")
+for (g in gelir_nokta) {
+  r <- egri_tah[tur == "fark" & yil == "2025-2023" & goreli_gelir == g & varyans == "bagimsiz"]
+  s12[[length(s12) + 1]] <- duy_sat(paste0("Relative income ", gfmt2(g)), "2025 \u2212 2023", ga(r$tahmin, r$alt, r$ust))
+}
+s12[[length(s12) + 1]] <- duy_bas("Number of spline knots: design-based AIC (difference from five knots), largest difference from the five-knot curve, and 2025 \u2212 2023 differences")
+for (k in names(dugum_k)) {
+  for (yy in as.character(2023:2025)) {
+    r <- dugum_duy[dugum_sayisi == as.integer(k) & yil == yy]
+    s12[[length(s12) + 1]] <- duy_sat(paste0(k, " knots (", paste(dugum_konum[[k]], collapse = ", "), ")", if (k == "5") ", main" else ""), yy,
+                                      paste0("dAIC ", f1(r$dAIC_5dugum_farki), "; largest difference ", f2(r$en_buyuk_mutlak_fark_5dugum_pp), " pp"))
+  }
+  r <- dugum_duy[dugum_sayisi == as.integer(k) & yil == "2025-2023"]
+  s12[[length(s12) + 1]] <- duy_sat(paste0(k, " knots"), "2025 \u2212 2023", paste0("0.6: ", ga(r$fark_0.6, r$fark_0.6_alt, r$fark_0.6_ust), "; 2.0: ", ga(r$fark_2.0, r$fark_2.0_alt, r$fark_2.0_ust)))
+}
+s12[[length(s12) + 1]] <- duy_bas("The 60% line in real terms")
+for (i in seq_len(nrow(esik_reel))) {
+  r <- esik_reel[i]
+  yr <- paste0(r$yil, " (income ", r$gelir_yili, ")")
+  s12[[length(s12) + 1]] <- duy_sat("60% line, TRY per equivalent adult per year, income-year prices", yr, formatC(r$esik_60, format = "f", digits = 0, big.mark = ","))
+  s12[[length(s12) + 1]] <- duy_sat("60% line at 2022 prices, TRY", yr, paste0(formatC(r$esik_60_2022_fiyat, format = "f", digits = 0, big.mark = ","), if (!is.na(r$esik_60_2022_fiyat_degisim_onceki)) paste0(" (", if (r$esik_60_2022_fiyat_degisim_onceki >= 0) "+" else "", f1(r$esik_60_2022_fiyat_degisim_onceki), "% from the previous survey)") else ""))
+  s12[[length(s12) + 1]] <- duy_sat("Consumer price index, survey year / income year", yr, formatC(r$anket_gelir_yili_tufe_orani, format = "f", digits = 3))
+}
+s12 <- rbindlist(s12)
+s12_gs <- which(s12$Year == "" & s12$Main == "")
+ek_cikar("h1_duyarlilik", s12, "Exclusion error of the 60% poverty line: sensitivity analyses, income-gradient estimates and income-related concentration of meal-affordability deprivation.",
+         grup_satir = s12_gs, girinti = setdiff(seq_len(nrow(s12)), s12_gs),
+         notlar = c("Exclusion error, % of meal-deprived households (persons) not poor (95% CI). TR63 (Hatay, Kahramanmara\u015f, Osmaniye) has no households in 2023. Pseudo-strata: NUTS 2 regions used as strata in the linearization variance.",
+                    "Design effect 2: intervals with the variance doubled (Wald F halved), a sensitivity value for the area-level clustering of the survey sample, which is not identified in the files; it is not a design-based variance estimate.",
+                    paste0("Matched households as clusters: households linked by member signature or reference-person key in any pair of survey years form one cluster (", nfmt(uniqueN(h$bag_kimlik)), " clusters for ", nfmt(nrow(h)), " household-years; ", bag_ayni_yil, " clusters contain two households of the same year). Re-interviews that could not be detected are treated as independent."),
+                    paste0("Income gradient: survey-weighted logistic regression on log relative income, restricted cubic spline with five knots at the 5th, 27.5th, 50th, 72.5th and 95th percentiles of pooled 2023\u20132025 log relative income (", gk_metin,
+                           " times the median), Harrell's default; the income-curve analysis was added after the written analysis plan. Two-curve tests pool the two years with year interactions; the three-year tests pool all years. Predictions and differences on the probability scale (delta method, full covariance matrix of the pooled model). Knot positions as quantiles of pooled log relative income; dAIC, design-based AIC (Lumley and Scott); largest difference over the 5th\u201395th weighted percentiles of relative income in each year."),
+                    "Real value: the 60% line is 0.6 times the median equivalized disposable income of the income reference year (persons, FK050), deflated with the annual average consumer price index of the income year (2003 = 100: 2022, 967.71; 2023, 1,488.91; 2024, 2,360.03; 2025, 3,183.23).",
+                    "Erreygers concentration index of meal-affordability deprivation by equivalized-income rank (persons, FK050); negative values indicate concentration among lower-income persons. \u2013, not computed."))
 sure_ekle("Ek tablolar 2", t0)
 
 t0 <- Sys.time()
@@ -2103,12 +2507,12 @@ for (s_ in names(set_en)) {
 }
 kr <- rbindlist(kr_rows)
 setnames(kr, c("Feature", "McFadden R^{2}", "AUC 2025", "McFadden R^{2} ", "AUC 2025 "))
-ek_cikar("kesif", kr, "Univariable association of features with food insecurity (ten strongest per layer) and multivariable comparison of feature layers.",
+ek_cikar("kesif", kr, "Univariable association of features with meal-affordability deprivation (ten strongest per layer) and multivariable comparison of feature layers.",
          ust = list(degerler = c("Feature", "All households", "Non-poor households"), genislik = c(1, 2, 2), dikey = 1), grup_satir = gs_, girinti = setdiff(seq_len(nrow(kr)), gs_),
          notlar = c("Univariable: weighted logistic regression per survey year (numeric features as 3-df natural splines); McFadden R^{2} averaged over 2023\u20132025; weighted AUC in 2025. Exploratory output used to assign layers; not a test.",
                     paste0("Layer combinations: McFadden R^{2} in the 2023 training data and weighted AUC in 2025. ^{a}Screened candidate not used as a model feature (Supplementary Table S", ek_no[["ozellik"]], ")."))) 
 
-kol_ad2 <- c(kol_ad[names(kol_ad) != "logit_lin_A1"], lgb_A4 = "LightGBM, + deprivation items (upper bound)", logit_A2 = "Ridge logistic, structural only", lgb_B1 = "LightGBM, structural + relative income", lgb_B2 = "LightGBM, structural only",
+kol_ad2 <- c(kol_ad[names(kol_ad) != "logit_lin_A1"], lgb_A4 = "LightGBM, upper bound: + other deprivation items (same battery as the outcome)", logit_A2 = "Ridge logistic, structural only", lgb_B1 = "LightGBM, structural + relative income", lgb_B2 = "LightGBM, structural only",
              lgb_B3 = "LightGBM, + financial strain", logit_B1 = "Ridge logistic, structural + relative income", cart_B_T2 = "Rule set (depth-3 tree), structural", cart_B_T2gelir = "Rule set (depth-3 tree), structural + relative income",
              l1_B_T2 = "Lasso logistic (\u22646 variables), structural", lgb_A1_2023 = "LightGBM, income + structural (trained 2023)", cart_T2_2023 = "Rule set (depth-3 tree), structural (trained 2023)",
              logit_A1_2023 = "Ridge logistic (trained 2023)", lgb_B1_2023 = "LightGBM, structural + relative income (trained 2023)", gelir_sirasi = "Ranking by relative income",
@@ -2175,10 +2579,10 @@ for (k in names(l1_ad)) {
   }
 }
 ku <- rbindlist(ku_rows)
-setnames(ku, c("Rule (leaf) or term", "Share of households, %", "Food insecure, %", "Share of households, % ", "Food insecure, % ", "Odds ratio (lasso)"))
+setnames(ku, c("Rule (leaf) or term", "Share of households, %", "Meal-deprived, %", "Share of households, % ", "Meal-deprived, % ", "Odds ratio (lasso)"))
 ek_cikar("kurallar", ku, "Sparse rule sets: leaves of the depth-3 trees in plain language and terms of the lasso logistic models.", grup_satir = gs_, girinti = setdiff(seq_len(nrow(ku)), gs_), yatay = TRUE,
          ust = list(degerler = c("Rule (leaf) or term", "Training (2023\u20132024)", "Test (2025)", "Odds ratio (lasso)"), genislik = c(1, 2, 2, 1), dikey = c(1, 6)),
-         notlar = c("Leaves are ordered by the training-year share food insecure; a rule set at a given targeting rate selects leaves in this order. Shares and prevalences weighted (HB040).",
+         notlar = c("Leaves are ordered by the training-year share meal-deprived; a rule set at a given targeting rate selects leaves in this order. Shares and prevalences weighted (HB040).",
                     "Lasso: largest penalty path point with at most six variables, refitted with a weak ridge penalty. Categorical variables enter as indicators for every category (no reference category), so their ORs are relative to the average of the categories. Intercept: odds when every term, including the missing-value indicators not shown, is zero; intercepts, all coefficients and the preprocessing parameters are provided with the code (Results/modeller)."))
 
 ym <- fread("Results/H2_yil_matrisi.csv")
@@ -2308,6 +2712,21 @@ for (k in c("gelir_sirasi", "cart_B_T2", "cart_B_T2gelir", "l1_B_T2", "logit_B1"
   r_e <- h2e[sema == "temiz" & nufus == "B" & kol == k]
   d_rows[[length(d_rows) + 1]] <- s15_satir(c(kol_ad2[[k]], hucre, if (nrow(r_e)) formatC(r_e$auc_agirliksiz, format = "f", digits = 3) else ""))
 }
+h2k <- fread("Results/H2_kalibre_test.csv")
+h2t <- fread("Results/H2_tr63_haric.csv")
+kol_ad3 <- c(kol_ad, kol_ad2[setdiff(names(kol_ad2), names(kol_ad))], mlp_A1 = "Multilayer perceptron, income + structural", mlp_A2 = "Multilayer perceptron, structural only")
+s20_kol <- c("yoksul_60", "gelir_sirasi", "cart_T2", "cart_T2idari", "cart_T1T2", "l1_T2", "l1_T1T2", "logit_lin_A1", "logit_A1", "lgb_A2i", "lgb_A2", "lgb_A1", "lgb_A3", "lgb_A4", "mlp_A1", "mlp_A2")
+for (blk in list(list(x = h2k[test_seti == "ana_test_kalibre"], ad = "All households, main test set calibrated to the 2025 household population: sensitivity at the poverty line's targeting rate (", n = h2oz$n_test$temiz),
+                 list(x = h2t, ad = "All households, main test set excluding TR63: sensitivity at the poverty line's targeting rate (", n = kal_oz$tr63_haric_n))) {
+  c_ <- blk$x[tur == "metrik" & kol == "yoksul_60" & metrik == "kapsama", deger]
+  d_rows[[length(d_rows) + 1]] <- s15_satir(c(paste0(blk$ad, f1(c_), "%; n\u00a0=\u00a0", nfmt(blk$n), ")"), rep("", 11)))
+  gs_ <- c(gs_, length(d_rows))
+  for (k in s20_kol) {
+    s_ <- blk$x[tur == "metrik" & kol == k & kapsama_noktasi == "yoksulluk_orani" & metrik == "duyarlilik"]
+    f_ <- blk$x[tur == "fark" & kol == k & karsilastirma == "yoksul_60" & metrik == "duyarlilik"]
+    d_rows[[length(d_rows) + 1]] <- s15_satir(c(kol_ad3[[k]], f1(s_$deger), if (k == "yoksul_60") "" else if (k == "gelir_sirasi") "\u2013" else ga(f_$deger, f_$alt, f_$ust), rep("", 9)))
+  }
+}
 d_t <- rbindlist(d_rows)
 setnames(d_t, c("Method", paste0(rep(c("Sensitivity, %", "\u0394, pp (95% CI)"), 5), rep(c("", " ", "  ", "   ", "    "), each = 2)), "AUC, unweighted"))
 n_23 <- h[yil == 2025 & test_temiz_2023 == 1, .N]
@@ -2318,7 +2737,54 @@ ek_cikar("h2_duyarlilik", d_t, "Sensitivity of the targeting comparison to the d
          notlar = c(paste0("Main test set: 2025 households not matched to 2023 or 2024 by member signature or reference-person key. Strict cleaning: additionally excludes households whose reference-person key or member signature occurs in 2023 or 2024 at all, including keys shared by several households. ",
                            "Signature-only cleaning: households unmatched by member signature alone (keeps re-interviewed one-person households and households whose composition changed). Full 2025 sample: all households. Trained on 2023 only: models trained on 2023 and tested on 2025 households not matched to 2023; hyperparameters were taken from the main tuning, whose folds include a 2024 training fold (no 2025 data were used)."),
                     paste0("\u0394: paired bootstrap difference in sensitivity from the poverty line at its targeting rate (all households) or from income ranking at the same targeting rate (non-poor households), in the same test set; 95% CI from ",
-                           nfmt(h2oz$bootstrap$B), " household bootstrap replicates. \u2013, identical to the poverty line by construction.")))
+                           nfmt(h2oz$bootstrap$B), " household bootstrap replicates. \u2013, identical to the poverty line by construction."),
+                    paste0("Last two blocks (values in the main-test-set columns): calibrated, HB040 weights of the main test set raked to the weighted 2025 household totals of household type, household size (1\u20135, \u22656), NUTS 1 region, age group of the reference person, tenure (owner; tenant; employer-provided or rent-free) and relative income band, with weight ratios bounded to [0.2, 5] (observed ",
+                           f2(kal_oz$oran$min), "\u2013", f2(kal_oz$oran$max), "); raking repeated in every bootstrap replicate; the performance estimates refer to the 2025 household population rather than to households not matched to an earlier survey. Excluding TR63: the ",
+                           nfmt(kal_oz$tr63_ana_testte_n), " main-test-set households of TR63 removed, original weights, targeting rate equal to the poverty rate of this subset (the 2023 training data contain no TR63 households).")))
+h2_ulusal_kol <- c("cart_T2", "cart_T2idari", "l1_T2", "cart_T1T2", "l1_T1T2", "logit_lin_A1", "logit_A1", "lgb_A2i", "lgb_A2", "lgb_A1", "lgb_A3", "lgb_A4", "mlp_A1", "mlp_A2")
+n_fi_25 <- kal_oz$FI_hane_toplam_2025
+n_cocuk_fi_25 <- 1e6 * h1_ana[yil == 2025 & duzey == "kisi" & olcu == "cocuk_FI_milyon" & !tr63_haric & !ibbs2_tabaka, tahmin]
+stopifnot(abs(n_cocuk_fi_25 / kal_oz$FI_hanelerde_cocuk_HB040 - 1) < 1e-6)
+hk_ <- h2k[test_seti == "ana_test_kalibre"]
+h2_ulusal <- rbindlist(lapply(h2_ulusal_kol, function(k) rbindlist(lapply(c("duyarlilik", "cocuk"), function(m) {
+  f_ <- hk_[tur == "fark" & kol == k & karsilastirma == "yoksul_60" & metrik == m]
+  olc <- if (m == "duyarlilik") n_fi_25 else n_cocuk_fi_25
+  data.table(kol = k, birim = if (m == "duyarlilik") "hane" else "cocuk", fark_pp = f_$deger, fark_alt = f_$alt, fark_ust = f_$ust, olcek = olc,
+             ek_bin = f_$deger / 100 * olc / 1000, ek_bin_alt = f_$alt / 100 * olc / 1000, ek_bin_ust = f_$ust / 100 * olc / 1000)
+}))))
+h2_ulusal_olcek <- data.table(kalem = c("meal_deprived_households_2025", "children_in_meal_deprived_households_2025", "poor_households_selected_by_the_line_2025", "meal_deprived_non_poor_households_missed_2025",
+                                         "calibrated_sensitivity_poverty_line", "calibrated_child_share_poverty_line"),
+                              deger = c(n_fi_25, n_cocuk_fi_25, kal_oz$yoksul_hane_toplam_2025, 1e6 * h1_ana[yil == 2025 & duzey == "hane" & olcu == "kacirilan_hane_milyon" & !tr63_haric & !ibbs2_tabaka, tahmin],
+                                        hk_[tur == "metrik" & kol == "yoksul_60" & metrik == "duyarlilik", deger], hk_[tur == "metrik" & kol == "yoksul_60" & metrik == "cocuk", deger]))
+fwrite(rbind(h2_ulusal, h2_ulusal_olcek, fill = TRUE), "Results/H2_ulusal_karsilik.csv")
+cat("\nUlusal karsilik (kalibre; bin):\n")
+print(h2_ulusal[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])
+uk_rows <- list()
+uk_gs <- integer(0)
+for (g in names(t3_gruplar)) {
+  kk_ <- intersect(c(t3_gruplar[[g]], if (g == "Prediction models") c("mlp_A1", "mlp_A2"), if (g == "Upper bound") "lgb_A4"), h2_ulusal_kol)
+  if (!length(kk_)) next
+  uk_rows[[length(uk_rows) + 1]] <- data.table(M = g, a = "", b = "", c = "", d = "")
+  uk_gs <- c(uk_gs, length(uk_rows))
+  for (k in kk_) {
+    a_ <- h2_ulusal[kol == k & birim == "hane"]
+    b_ <- h2_ulusal[kol == k & birim == "cocuk"]
+    gab_ <- function(e, l, u) paste0(formatC(round(e), format = "d", big.mark = ","), " (", formatC(round(l), format = "d", big.mark = ","), ", ", formatC(round(u), format = "d", big.mark = ","), ")")
+    uk_rows[[length(uk_rows) + 1]] <- data.table(M = kol_ad3[[k]], a = ga(a_$fark_pp, a_$fark_alt, a_$fark_ust), b = gab_(a_$ek_bin, a_$ek_bin_alt, a_$ek_bin_ust),
+                                                 c = ga(b_$fark_pp, b_$fark_alt, b_$fark_ust), d = gab_(b_$ek_bin, b_$ek_bin_alt, b_$ek_bin_ust))
+  }
+}
+uk_t <- rbindlist(uk_rows)
+setnames(uk_t, c("Method", "\u0394 sensitivity, pp", "Additional households reached, thousands", "\u0394 children, pp", "Additional children reached, thousands"))
+tablo_cikar(uk_t, "Ek_ulusal_karsilik", "Table S\u2013. Additional meal-deprived households and children reached at the poverty line's caseload, 2025 population (thousands).", klasor = ek_kl,
+            ust = list(degerler = c("Method", "Meal-deprived households", "Children living in meal-deprived households"), genislik = c(1, 2, 2), dikey = 1), grup_satir = uk_gs, girinti = setdiff(seq_len(nrow(uk_t)), uk_gs),
+            notlar = c(paste0("Differences from the poverty line at its targeting rate in the main test set calibrated to the 2025 household population (95% CI, paired household bootstrap, ", nfmt(h2oz$bootstrap$B),
+                              " replicates with raking repeated in each), multiplied by the weighted number of meal-deprived households in 2025 (", formatC(n_fi_25 / 1e6, format = "f", digits = 2), " million, HB040) or of children living in them (",
+                              formatC(n_cocuk_fi_25 / 1e6, format = "f", digits = 2), " million, FK050): households (children) reached when the same number of households is selected."),
+                       paste0("Scale: the poverty line selects ", formatC(kal_oz$yoksul_hane_toplam_2025 / 1e6, format = "f", digits = 2), " million households and misses ",
+                              formatC(h2_ulusal_olcek[kalem == "meal_deprived_non_poor_households_missed_2025", deger] / 1e6, format = "f", digits = 2), " million meal-deprived households in 2025; its calibrated sensitivity is ",
+                              f1(h2_ulusal_olcek[kalem == "calibrated_sensitivity_poverty_line", deger]), "% and it reaches ", f1(h2_ulusal_olcek[kalem == "calibrated_child_share_poverty_line", deger]),
+                              "% of the children living in meal-deprived households. The population totals are treated as fixed. Upper bound: model with the other deprivation items of the same battery as the outcome.")))
 sure_ekle("Ek tablolar 4", t0)
 
 t0 <- Sys.time()
@@ -2345,12 +2811,12 @@ for (dz in c("yetiskin", "hane")) for (kar in c("C1", "C2")) for (v in unique(h3
 }
 h3_t <- rbindlist(h3_rows)
 setnames(h3_t, c("Model", "n", "Reference, %", "G2, %", "Difference, pp (95% CI)", "Difference, linearization 95% CI", "Prevalence ratio (95% CI)"))
-ek_cikar("h3_tam", h3_t, "Standardized prevalence of low dietary frequency and heavy health-cost burden among food-insecure, non-poor adults and households, by model specification, 2025.",
+ek_cikar("h3_tam", h3_t, "Standardized prevalence of low consumption frequency and heavy health-cost burden among meal-deprived, non-poor adults and households, by model specification, 2025.",
          grup_satir = gs_, girinti = setdiff(seq_len(nrow(h3_t)), gs_), yatay = TRUE,
-         notlar = c("Reference: G1 (food secure, not poor) in C1 and G3 (food insecure and poor) in C2. Standardized by g-computation to the comparison population; weights FB030 (adults) or HB040 (households). Crude: weighted prevalences in the same analytic sample without adjustment or standardization.",
+         notlar = c("Reference: G1 (not meal-deprived, not poor) in C1 and G3 (meal-deprived and poor) in C2. Standardized by g-computation to the comparison population; weights FB030 (adults) or HB040 (households). Crude: weighted prevalences in the same analytic sample without adjustment or standardization.",
                     "95% CI: household bootstrap (Rao\u2013Wu\u2013Yue rescaled bootstrap; 4,000 replicates for the main model, 2,000 otherwise, including the crude rows); linearization CI from influence functions with household clusters."))
 
-hh_grup_ad <- c(G1 = "G1 food secure, all", G1_yoksul_degil = "G1 food secure, not poor (reference in C1)", G2 = "G2 food insecure, not poor", G3 = "G3 food insecure and poor (reference in C2)")
+hh_grup_ad <- c(G1 = "G1 not meal-deprived, all", G1_yoksul_degil = "G1 not meal-deprived, not poor (reference in C1)", G2 = "G2 meal-deprived, not poor", G3 = "G3 meal-deprived and poor (reference in C2)")
 hh_rows <- list()
 gs_ <- integer(0)
 for (dz in c("yetiskin", "hane")) for (v in unique(h3_ham[duzey == dz, sonuc])) {
@@ -2363,11 +2829,11 @@ for (dz in c("yetiskin", "hane")) for (v in unique(h3_ham[duzey == dz, sonuc])) 
 }
 hh_t <- rbindlist(hh_rows)
 setnames(hh_t, c("Group", "n", "Events", "Weighted prevalence, % (95% CI)"))
-tablo_cikar(hh_t, "Ek_H3_ham_oranlar", "Table S\u2013. Analytic samples of the dietary and health-cost comparisons: numbers, events and crude weighted prevalences by group, 2025.", klasor = ek_kl,
+tablo_cikar(hh_t, "Ek_H3_ham_oranlar", "Table S\u2013. Analytic samples of the consumption-frequency and health-cost comparisons: numbers, events and crude weighted prevalences by group, 2025.", klasor = ek_kl,
             grup_satir = gs_, girinti = setdiff(seq_len(nrow(hh_t)), gs_),
             notlar = c(paste0("Unweighted numbers; prevalences weighted (FB030 for adults, HB040 for households); 95% CI from ", nfmt(B_diger), " household bootstrap replicates (Rao\u2013Wu\u2013Yue), the multiplier matrix shared with the adjusted estimates. The meat outcome excludes ",
                               yt[et_tavuk_balik_siklik == 0, .N], " vegetarian or vegan adults by definition."),
-                       paste0("C1 compares G2 with food-secure adults who are not poor, so its reference is not all of G1. Crude differences and prevalence ratios are the first row of each block in Supplementary Table S", ek_no[["h3_tam"]], ".")))
+                       paste0("C1 compares G2 with adults who are neither meal-deprived nor poor, so its reference is not all of G1. Crude differences and prevalence ratios are the first row of each block in Supplementary Table S", ek_no[["h3_tam"]], ".")))
 
 s17_ad <- c(h3_y, "saglik_yuk")
 s17_sat <- list()
@@ -2381,15 +2847,15 @@ s17_x <- function(an) lapply(s17_ad, function(v) h3_ekler[analiz %in% an & sonuc
 s17_n <- function(xs) sapply(xs, function(x) paste0(nfmt(x$n[1]), " (", nfmt(x$olay[1]), ")"))
 s17_ekle("Three groups standardized to all adults (households), no income adjustment")
 x0 <- s17_x(c("C0_uc_grup", "C0_uc_grup_hane"))
-lab0 <- c(p_G1 = "G1 food secure, %", p_G2 = "G2 food insecure, not poor, %", p_G3 = "G3 food insecure and poor, %", PD_G2_G1 = "G2 \u2212 G1, pp", PD_G2_G3 = "G2 \u2212 G3, pp",
+lab0 <- c(p_G1 = "G1 not meal-deprived, %", p_G2 = "G2 meal-deprived, not poor, %", p_G3 = "G3 meal-deprived and poor, %", PD_G2_G1 = "G2 \u2212 G1, pp", PD_G2_G3 = "G2 \u2212 G3, pp",
           konum = "Position of G2 between G1 (0) and G3 (1)")
 for (o in names(lab0)) s17_ekle(lab0[[o]], sapply(x0, function(x) gfmt(x, o, if (o == "konum") 2 else 1)))
 s17_ekle("n (events)", s17_n(x0))
-s17_ekle("Food-insecure adults (households) by equivalized income relative to the median, %")
+s17_ekle("Meal-deprived adults (households) by equivalized income relative to the median, %")
 x3 <- s17_x(c("C3_gelir_bandi", "C3_gelir_bandi_hane"))
 for (bb in levels(yt$f_band)) s17_ekle(c("1" = "<0.6", "2" = "0.6\u20130.8", "3" = "0.8\u20131.0", "4" = "1.0\u20131.5", "5" = ">1.5")[[bb]], sapply(x3, function(x) gfmt(x, paste0("p_B", bb))))
 s17_ekle("n (events)", s17_n(x3))
-s17_ekle("Meat <1/week with vegetarian or vegan adults counted as low intake")
+s17_ekle("Meat <1/week with vegetarian or vegan adults counted as low frequency")
 for (an in c("C1_vejetaryen_dahil", "C2_vejetaryen_dahil")) {
   x <- h3_ekler[analiz == an]
   s17_ekle(paste0(if (an == "C1_vejetaryen_dahil") "C1, G2 \u2212 G1" else "C2, G2 \u2212 G3", ", pp; prevalence ratio (n\u00a0=\u00a0", nfmt(x$n[1]), ")"), c(paste0(gfmt(x, "PD"), "; ", gfmt(x, "PR", 2)), "", "", ""))
@@ -2398,7 +2864,7 @@ ek_t <- as.data.table(do.call(rbind, s17_sat))
 setnames(ek_t, c("Estimate", "Meat, chicken or fish <1/week", "Fruit <1/day", "Vegetables or salad <1/day", "Medical costs a heavy burden (households)"))
 ku1 <- h3_ekler[analiz == "C1_karsilanmayan_odeme_minimal"]
 ku2 <- h3_ekler[analiz == "C2_karsilanmayan_odeme_minimal"]
-ek_cikar("h3_ek", ek_t, "Additional dietary and health-cost estimates: three-group standardization, income gradient among the food insecure, and sensitivity analyses, 2025.",
+ek_cikar("h3_ek", ek_t, "Additional consumption-frequency and health-cost estimates: three-group standardization, income gradient among the meal-deprived, and sensitivity analyses, 2025.",
          grup_satir = gs_, girinti = setdiff(seq_len(nrow(ek_t)), gs_), yatay = TRUE,
          notlar = c("Covariates as in C2 (age, sex, education, region, household size, number of children and covariates selected for C2); income is not adjusted because it defines the groups. Position: (G2 \u2212 G1) / (G3 \u2212 G1). Estimates with 95% CI from 2,000 household bootstrap replicates.",
                     paste0("Unmet medical need due to cost, among adults reporting a need for medical care (few events; minimal model: age, sex; income in C1): C1 ", gfmt(ku1, "PD"), " pp, prevalence ratio ", gfmt(ku1, "PR", 2),
@@ -2452,13 +2918,13 @@ sm_t <- rbindlist(sm_rows)
 setnames(sm_t, c("Specificity", "Sensitivity", "Households", "Persons", "Rule set", "LightGBM", "Rule set ", "LightGBM ", "Compatible design"))
 huc_min <- s2huc[which.min(gozlenen_FI)]
 rsk_min <- s2rsk[denetimde == TRUE][which.min(gozlenen_FI)]
-ek_cikar("sim_s2", sm_t, "Simulation S2: exclusion error and targeting performance under misclassification of the food insecurity item, by design of the misclassification.", grup_satir = gs_, girinti = setdiff(seq_len(nrow(sm_t)), gs_),
+ek_cikar("sim_s2", sm_t, "Simulation S2: exclusion error and targeting performance under misclassification of the meal item, by design of the misclassification.", grup_satir = gs_, girinti = setdiff(seq_len(nrow(sm_t)), gs_),
          ust = list(degerler = c("Specificity", "Sensitivity", "Exclusion error, % (closed form)", "Design A: difference from the poverty line, pp", "Design B: difference from the poverty line, pp", "Compatible design"),
                     genislik = c(1, 1, 2, 2, 2, 1), dikey = c(1, 2, 9)), yatay = TRUE,
-         notlar = c(paste0("Exclusion error: share of food-insecure households (persons) that are not income poor, implied by sensitivity (Se), specificity (Sp) and the observed prevalences in cells of equivalized income quintile \u00d7 poverty status (closed form; the same under both designs). ",
+         notlar = c(paste0("Exclusion error: share of meal-deprived households (persons) that are not income poor, implied by sensitivity (Se), specificity (Sp) and the observed prevalences in cells of equivalized income quintile \u00d7 poverty status (closed form; the same under both designs). ",
                            "Differences: sensitivity at the poverty line's targeting rate minus that of the poverty line in the 2025 main test set, mean of ", max(s2o$M), " simulated assignments of true status; rule set, depth-3 tree on structural features; LightGBM, income + structural features; observed ",
                            f1(s2_gozlenen$kural_eksi_esik), " and ", f1(s2_gozlenen$lgb_eksi_esik), " pp."),
-                    "Design A: Se and Sp hold within each cell, and true status is assigned by Bayes' rule from the cell's observed prevalence, so within a cell it depends on household characteristics only through the observed item. Design B: Se and Sp hold for every household, and true status is assigned from each household's calibrated probability of reporting food insecurity (out-of-time LightGBM score recalibrated on 2025 households with cell indicators and a restricted cubic spline of its logit).",
+                    "Design A: Se and Sp hold within each cell, and true status is assigned by Bayes' rule from the cell's observed prevalence, so within a cell it depends on household characteristics only through the observed item. Design B: Se and Sp hold for every household, and true status is assigned from each household's calibrated probability of reporting meal-affordability deprivation (out-of-time LightGBM score recalibrated on 2025 households with cell indicators and a restricted cubic spline of its logit).",
                     paste0("Compatible with the observed data: A, every cell's observed prevalence lies within [1 \u2212 Sp, Se] (Sp \u2265 ", f3(s2kf$uyumlu_en_kucuk_Sp[1]), ", Se \u2265 ", f3(s2kf$uyumlu_en_kucuk_Se[1]),
                            "); B, fewer than 1% of households (weighted) have a calibrated probability outside [1 \u2212 Sp, Se], and these were truncated (Sp \u2265 ", f3(s2_bk$B_en_kucuk_Sp), ", Se \u2265 ", f3(s2_bk$B_en_kucuk_Se),
                            "). In deciles of LightGBM risk the lowest decile has an observed prevalence of ", f1(rsk_min$gozlenen_FI), "%, which requires Sp \u2265 ", f3(s2kf$risk_en_kucuk_Sp[1]), " (", f3(s2kf$risk_en_kucuk_Sp_2se[1]),
@@ -2475,6 +2941,72 @@ sm_t <- rbindlist(sm_rows)
 setnames(sm_t, c("Measure", "True value, %", "Bias, pp", "Empirical SE", "Mean bootstrap SE", "Coverage, % (MCSE)"))
 ek_cikar("sim_s3", sm_t, "Simulation S3: bias and coverage of household bootstrap intervals.",
          notlar = c("95% percentile intervals from 200 household bootstrap replicates (Rao\u2013Wu\u2013Yue rescaled bootstrap) per simulated sample; MCSE, Monte Carlo standard error. SE, standard error. True value: the value in the pseudo-population, whose outcomes are model-based, so it differs from the observed exclusion error (68.1%)."))
+h2sd <- fread("Results/H2_fark_bootstrap_sd.csv")
+h2mm <- fread("Results/H2_model_model_farklar.csv")[sema == "temiz" & kapsama_noktasi == "yoksulluk_orani"]
+de_sat <- function(grp, ad, est, se, alt = est - 1.96 * se, ust = est + 1.96 * se, d = 1) data.table(grup = grp, karsilastirma = ad, tahmin = est, se = se, alt = alt, ust = ust, ondalik = d)
+de_rows <- list()
+g1_ <- "H1: differences between 2025 and 2023, households matched across survey years as clusters"
+for (x in list(list("dislama", "e_yoksul_60", "hane", "Exclusion error of the 60% line, households, pp"), list("dislama", "e_yoksul_60", "kisi", "Exclusion error of the 60% line, persons, pp"),
+               list("FI", "", "kisi", "Prevalence of meal-affordability deprivation, persons, pp"))) {
+  r <- h1_fark_bag[olcu == x[[1]] & esik == x[[2]] & duzey == x[[3]] & yil_1 == 2023 & yil_2 == 2025 & !tr63_haric]
+  de_rows[[length(de_rows) + 1]] <- de_sat(g1_, x[[4]], r$fark, r$se_fark)
+}
+for (g in c(0.6, 2.0)) {
+  r <- egri_tah[tur == "fark" & yil == "2025-2023" & goreli_gelir == g & varyans == "bagli_kume"]
+  de_rows[[length(de_rows) + 1]] <- de_sat(g1_, paste0("Income curve at ", formatC(g, format = "f", digits = 1), " times the median, pp"), r$tahmin, r$se)
+}
+de_rows[[length(de_rows) + 1]] <- de_sat(g1_, "Erreygers concentration index", ery_bag$fark, ery_bag$se_fark, d = 3)
+g2_ <- "H2: paired differences at the poverty line's targeting rate, 2025 main test set (bootstrap SE)"
+for (k in c("cart_T2", "cart_T2idari", "l1_T2", "cart_T1T2", "l1_T1T2", "logit_lin_A1", "logit_A1", "lgb_A2i", "lgb_A2", "lgb_A1", "lgb_A3")) {
+  r <- h2sd[tur == "fark" & kol == k & karsilastirma == "yoksul_60" & metrik == "duyarlilik"]
+  e <- h2f[sema == "temiz" & nufus == "A" & kol == k & karsilastirma == "yoksul_60" & metrik == "duyarlilik"]
+  stopifnot(abs(r$deger - e$fark) < 1e-9, abs(r$alt - e$alt) < 1e-9)
+  de_rows[[length(de_rows) + 1]] <- de_sat(g2_, paste0("\u0394 sensitivity from the poverty line, ", kol_ad3[[k]], ", pp"), r$deger, r$se_boot, r$alt, r$ust)
+}
+for (x in list(list("l1_T1T2", "lgb_A1", "cocuk", "Children: lasso \u2212 LightGBM, income + structural, pp"), list("lgb_A1", "lgb_A2", "duyarlilik", "Marginal contribution of income, LightGBM (income + structural \u2212 structural only), pp"),
+               list("logit_lin_A1", "logit_lin_A2", "duyarlilik", "Marginal contribution of income, ridge logistic (linear), pp"))) {
+  r <- h2sd[tur == "fark" & kol == x[[1]] & karsilastirma == x[[2]] & metrik == x[[3]]]
+  e <- h2mm[kol == x[[1]] & karsilastirma == x[[2]] & metrik == x[[3]]]
+  stopifnot(abs(r$deger - e$fark) < 1e-9, abs(r$alt - e$alt) < 1e-9)
+  de_rows[[length(de_rows) + 1]] <- de_sat(g2_, x[[4]], r$deger, r$se_boot, r$alt, r$ust)
+}
+g3_ <- "H3: standardized differences, 2025 (bootstrap SE)"
+for (x in list(list("yetiskin", "C1", "et_az"), list("yetiskin", "C1", "meyve_az"), list("yetiskin", "C1", "sebze_az"), list("hane", "C1", "saglik_yuk"), list("yetiskin", "C2", "et_az"))) {
+  r <- h3_tab[ana_model == TRUE & duzey == x[[1]] & karsilastirma == x[[2]] & sonuc == x[[3]] & olcu == "PD"]
+  stopifnot(nrow(r) == 1)
+  de_rows[[length(de_rows) + 1]] <- de_sat(g3_, paste0(kar_ad[[x[[2]]]], ", ", sonuc_ad[[x[[3]]]], ", pp"), r$tahmin, r$se_boot, r$alt, r$ust)
+}
+for (x in list(list("C0_uc_grup", "et_az"), list("C0_uc_grup", "meyve_az"), list("C0_uc_grup", "sebze_az"), list("C0_uc_grup_hane", "saglik_yuk"))) {
+  r <- h3_ekler[analiz == x[[1]] & sonuc == x[[2]] & olcu == "PD_G2_G3"]
+  stopifnot(nrow(r) == 1)
+  de_rows[[length(de_rows) + 1]] <- de_sat(g3_, paste0("Three groups standardized to all adults (households): G2 \u2212 G3, ", sonuc_ad[[x[[2]]]], ", pp"), r$tahmin, r$se_boot, r$alt, r$ust)
+}
+tasarim_etk <- rbindlist(de_rows)
+tasarim_etk[, `:=`(k_yildiz = (abs(tahmin) / (1.96 * se))^2, alt_deff2 = tahmin - 1.96 * se * sqrt(2), ust_deff2 = tahmin + 1.96 * se * sqrt(2), alt_deff3 = tahmin - 1.96 * se * sqrt(3), ust_deff3 = tahmin + 1.96 * se * sqrt(3))]
+fwrite(tasarim_etk, "Results/tasarim_etkisi_devrilme.csv")
+de_disp <- list()
+de_gs <- integer(0)
+for (g in unique(tasarim_etk$grup)) {
+  de_disp[[length(de_disp) + 1]] <- data.table(C = g, a = "", b = "", c = "", d = "", e = "")
+  de_gs <- c(de_gs, length(de_disp))
+  x <- tasarim_etk[grup == g]
+  for (i in seq_len(nrow(x))) {
+    r <- x[i]
+    dd <- r$ondalik
+    de_disp[[length(de_disp) + 1]] <- data.table(C = r$karsilastirma, a = ga(r$tahmin, r$alt, r$ust, dd), b = formatC(r$se, format = "f", digits = dd + 1),
+                                                 c = if (r$k_yildiz < 1) paste0(formatC(r$k_yildiz, format = "f", digits = 2), "^{a}") else if (r$k_yildiz >= 100) formatC(r$k_yildiz, format = "f", digits = 0, big.mark = ",") else f1(r$k_yildiz),
+                                                 d = ga(r$tahmin, r$alt_deff2, r$ust_deff2, dd), e = ga(r$tahmin, r$alt_deff3, r$ust_deff3, dd))
+  }
+}
+de_t <- rbindlist(de_disp)
+setnames(de_t, c("Contrast", "Estimate (95% CI)", "SE", "Design effect at which the 95% CI includes zero", "95% CI, design effect 2", "95% CI, design effect 3"))
+tablo_cikar(de_t, "Ek_tasarim_etkisi", "Table S\u2013. Design effect at which the 95% confidence interval of each principal contrast would include zero, and intervals under design effects of 2 and 3.", klasor = ek_kl,
+            grup_satir = de_gs, girinti = setdiff(seq_len(nrow(de_t)), de_gs), yatay = TRUE,
+            notlar = c("The released files contain no stratum, primary-sampling-unit, rotation-group or replicate-weight variables, so the design effect of the area-level clustering cannot be estimated. Design effect at which the interval includes zero: k* = (|estimate| / (1.96 \u00d7 SE))^{2}; an interval computed with the variance multiplied by k* just reaches zero. Intervals under design effects of 2 and 3: estimate \u00b1 1.96 \u00d7 SE \u00d7 \u221ak. These are sensitivity values, not design-based variance estimates.",
+                       paste0("SE: linearization (H1, households matched across survey years as clusters) or standard deviation of the household bootstrap replicates (H2, ", nfmt(h2oz$bootstrap$B), " replicates; H3, ", nfmt(B_ana),
+                              " replicates for the main models and ", nfmt(B_diger), " for the three-group standardization); the 95% CI in the second column is the main-analysis interval (percentile interval for bootstrap estimates). ^{a} The 95% CI already includes zero.")))
+cat("\nTasarim etkisi devrilme noktalari:\n")
+print(tasarim_etk[, .(karsilastirma = substr(karsilastirma, 1, 70), tahmin = round(tahmin, 3), se = round(se, 3), k_yildiz = round(k_yildiz, 2))])
 sure_ekle("Ek tablolar 5", t0)
 
 t0 <- Sys.time()
@@ -2504,7 +3036,11 @@ sayilar <- list(
             farklar_bootstrap = yuv(h1_fark_bs, 4), kapasite_tabani = yuv(h1_taban, 3),
             ibbs2_se_orani = list(medyan = round(median(se_oran$oran), 3), min = round(min(se_oran$oran), 3), max = round(max(se_oran$oran), 3)),
             erreygers = yuv(h1_ci, 4), erreygers_farklar = yuv(ci_fark, 4), gelir_egrisi = yuv(egri_test, 4),
-            kirilimlar_2025 = yuv(h1_kir[yil == 2025, .(duzey, kirilim, kategori, n, n_FI, FI, FI_se, dislama, dislama_se, kacirilan_bilesim, kucuk_hucre)], 2)),
+            kirilimlar_2025 = yuv(h1_kir[yil == 2025, .(duzey, kirilim, kategori, n, n_FI, FI, FI_se, dislama, dislama_se, kacirilan_bilesim, kucuk_hucre)], 2),
+            bagli_kume = list(bilesen = uniqueN(h$bag_kimlik), hane_yil = nrow(h), ayni_yil_iki_hane_bilesen = bag_ayni_yil, dagilim = bag_dagilim),
+            farklar_bagli_kume = yuv(h1_fark_bag[, .(olcu, esik, duzey, tr63_haric, yil_1, yil_2, fark, se_fark, alt, ust, p, se_orani)], 4),
+            gelir_egrisi_ek = yuv(egri_ek, 4), dugumler = list(log = round(gk, 6), goreli_gelir = round(exp(gk), 6)), egri_tahminleri = yuv(egri_tah, 3), dugum_duyarliligi = yuv(dugum_duy, 3),
+            erreygers_bagli_kume = yuv(ery_bag, 4), gelir_yili_uyumsuzlugu = yuv(gyu, 2), madde_gradyan = yuv(h1_kir_ek[kirilim %in% c("he040_4", "msy_etsiz_grup")], 2), esik_reel_deger = yuv(esik_reel, 3)),
   H2 = list(ozet = h2oz, hiperparametreler = yuv(hp, 5), metrikler_temiz = yuv(h2m[sema == "temiz"], 2), metrikler_tam = yuv(h2m[sema == "tam"], 2), metrikler_2023 = yuv(h2m[sema == "temiz_2023"], 2),
             metrikler_temiz_imza = yuv(h2m[sema == "temiz_imza"], 2), metrikler_temiz_siki = yuv(h2m[sema == "temiz_siki"], 2), bicim_merdiveni = yuv(bm, 4), etkilesim_H = yuv(hs, 4), etkilesim_H_ozellik = yuv(hso, 4),
             eslesik_farklar = yuv(h2f, 2), esiksiz = yuv(h2e, 4), kurallar = yuv(kr2, 2), yil_matrisi = yuv(ym, 4), psi = yuv(psi, 4), shap_spearman = yuv(rhoS, 3),
@@ -2512,7 +3048,10 @@ sayilar <- list(
             aralik_yontemleri = yuv(fread("Results/H2_aralik_yontemleri.csv"), 3), tavan = yuv(tv, 3), kazanc_payi = yuv(fread("Results/H2_kazanc_payi.csv"), 2),
             model_model_farklar = yuv(fread("Results/H2_model_model_farklar.csv"), 2), secilen_profil = yuv(fread("Results/H2_secilen_profil.csv"), 3),
             esiksiz_GA = yuv(fread("Results/H2_esiksiz_metrikler_GA.csv"), 4), arama_uzayi_satir = nrow(fread("Results/H2_arama_uzayi_tanim.csv")),
-            modeller = list(liste = fread("Results/modeller/model_listesi.csv"), tahmin_uygula_denetim = fread("Results/modeller/tahmin_uygula_denetim.csv"))),
+            modeller = list(liste = fread("Results/modeller/model_listesi.csv"), tahmin_uygula_denetim = fread("Results/modeller/tahmin_uygula_denetim.csv")),
+            kalibrasyon = kal_oz, kalibrasyon_denge = yuv(kal_denge, 4), kalibre_test = yuv(h2k, 3), tr63_haric = yuv(h2t, 3), ulusal_karsilik = yuv(h2_ulusal, 2), ulusal_olcek = yuv(h2_ulusal_olcek, 3),
+            fark_bootstrap_sd = yuv(h2sd, 3)),
+  tasarim_etkisi = yuv(tasarim_etk, 4),
   H3 = list(ana = yuv(h3_tab[ana_model == TRUE, .(duzey, karsilastirma, sonuc, model, olcu, tahmin, alt, ust, se_if, se_boot, se_if_ibbs2, n, olay, n_A1, n_A0, npar, B)], 3),
             tum_modeller = yuv(h3_tab[, .(duzey, karsilastirma, sonuc, model, ana_model, olcu, tahmin, alt, ust, se_if, n, olay)], 3),
             ek = yuv(h3_ekler[, .(analiz, sonuc, olcu, tahmin, alt, ust, se_if, n, olay)], 3), tanilar = yuv(h3t, 4), kovaryat_secimi = yuv(kov_sec, 3),
@@ -2548,7 +3087,7 @@ writeLines(c(paste("Python:", py, "(uv sanal ortami)"), system2(py, "--version",
 strobe <- c("# Sample flow and STROBE notes (generated by analiz.R)", "",
   "## Flow", "",
   paste0("- ILCS cross-sections 2023-2025: ", nfmt(an[["kisi_toplam"]]), " persons in ", nfmt(an[["hane_toplam"]]), " households (2023: ", nfmt(an[["hane_2023"]]), "; 2024: ", nfmt(an[["hane_2024"]]), "; 2025: ", nfmt(an[["hane_2025"]]), " households)."),
-  "- H1: each survey year analyzed separately at household (HB040) and person (FK050, household clusters) level; no pooling. 2023 has no TR63 households.",
+  paste0("- H1: each survey year estimated separately at household (HB040) and person (FK050, household clusters) level; year differences and year tests pool two (or three) years with households matched across survey years as one cluster (", nfmt(uniqueN(h$bag_kimlik)), " clusters for ", nfmt(nrow(h)), " household-years). 2023 has no TR63 households."),
   paste0("- H2: training and year-blocked tuning on 2023 + 2024 (", nfmt(an[["egitim_hane"]]), " households; non-poor model: ", nfmt(an[["egitim_yoksul_degil"]]), "). Tuning validation folds restricted to households not matched to the training year (2024: ", nfmt(an[["kat_2024_temiz"]]), "; 2023: ", nfmt(an[["kat_2023_temiz"]]), ")."),
   paste0("- H2 main test set: ", nfmt(an[["test_temiz"]]), " 2025 households not matched to 2023 or 2024 (", nfmt(an[["test_temiz_tek_kisili"]]), " one-person); ", nfmt(an[["test_eslesen"]]), " matched households added back in the full-2025 sensitivity test."),
   paste0("- H3: ", nfmt(an[["yetiskin_2025"]]), " adults aged >=18 with an individual questionnaire in 2025 (G1 ", nfmt(an[["yetiskin_G1"]]), ", G2 ", nfmt(an[["yetiskin_G2"]]), ", G3 ", nfmt(an[["yetiskin_G3"]]), "); meat outcome excludes ", an[["vejetaryen"]], " vegetarian or vegan adults; health-cost outcome ", nfmt(an[["hane_2025_saglik"]]), " households."),
@@ -2556,27 +3095,27 @@ strobe <- c("# Sample flow and STROBE notes (generated by analiz.R)", "",
   "## STROBE checklist notes (cross-sectional)", "",
   "- Title/abstract (1): repeated cross-sections of TurkStat ILCS 2023-2025; household and person level.",
   "- Setting (5): fieldwork March-July 2023 and 2024, February-June 2025; income reference year preceding the survey.",
-  "- Variables (7): food insecurity HE090 (single item); income poverty at 60% of median; structural features in Supplementary Table S2; dietary outcomes MODUL1_F_8, MODUL1_F_9, MODUL2_F_5; health-cost burden MODUL1_H_1/H_3.",
-  "- Bias (9): rotational panel overlap handled by member-signature and reference-person-key matching and a cleaned test set (simulation S1 quantifies optimism from undetected overlap); single-item outcome misclassification (simulation S2).",
-  "- Statistical methods (12): survey-weighted estimation with household clusters; linearization and household bootstrap; g-computation; LightGBM, ridge, lasso and depth-3 trees; SHAP.",
-  "- Limitations (19): no stratum/PSU identifiers (intervals approximate; design-effect sensitivity in the supplement); HE090 is a single affordability item, not a validated food insecurity scale; households that moved or changed reference person cannot be matched; nominal incomes (relative measures used).")
+  "- Variables (7-8): meal-affordability deprivation, HE090 = 2 (single item: household cannot afford a meal with meat, chicken or fish, or a vegetarian equivalent, every second day; codebook wording, coding and missing values in Supplementary Table S1); income poverty at 60% of the median; structural features in Supplementary Table S2; consumption-frequency outcomes MODUL1_F_8, MODUL1_F_9, MODUL2_F_5 (frequency only; intake and diet quality not measured); health-cost burden MODUL1_H_1/H_3.",
+  "- Bias (9): rotational panel overlap handled by member-signature and reference-person-key matching, a cleaned test set and matched households as clusters in year comparisons (simulation S1 quantifies optimism from undetected overlap); single-item outcome misclassification (simulation S2); income reference year preceding the interview (classification by change in main activity since the income year); test set calibrated to the 2025 household population.",
+  "- Statistical methods (12): survey-weighted estimation; linearization with household or matched-household clusters and household bootstrap; restricted cubic splines (knot sensitivity 3-7 knots, design-based AIC); g-computation; LightGBM, ridge, lasso and depth-3 trees; SHAP; raking of test-set weights.",
+  "- Limitations (19): no stratum/PSU identifiers (intervals approximate; design effects at which each principal interval would include zero reported); HE090 is a single meal-affordability item, not a validated food insecurity scale; households that moved or changed reference person cannot be matched; nominal incomes (relative measures used; real value of the 60% line reported).")
 writeLines(strobe, "Results/strobe_akis.md")
 hpA1 <- hp[set == "A1"]
 tripod <- c("# TRIPOD+AI notes for the targeting models (generated by analiz.R)", "",
   "- Data source (5a-b): TurkStat ILCS cross-sections 2023-2025; household level, one record per household; development 2023-2024, evaluation 2025 (temporal validation).",
   "- Participants (6): all private households (Model A); households above the 60% poverty line (Model B).",
-  "- Outcome (7): household cannot afford a meal with meat, chicken or fish every second day (HE090 = 2); assessed at interview by one respondent; not blinded to predictors.",
-  "- Predictors (8): four layers (income; structural; financial strain; deprivation items); leakage list excludes items containing HE090 (Supplementary Table S2).",
+  "- Outcome (7): meal-affordability deprivation, household cannot afford a meal with meat, chicken or fish, or a vegetarian equivalent, every second day (HE090 = 2); assessed at interview by the household respondent; not blinded to predictors; a single-item proxy, so performance refers to this item.",
+  "- Predictors (8): four layers (income; structural; financial strain; other deprivation items of the same battery as the outcome, upper bound only); leakage list excludes items containing HE090 (Supplementary Table S2).",
   paste0("- Sample size (9): development ", nfmt(an[["egitim_hane"]]), " households; main test ", nfmt(an[["test_temiz"]]), " households with ", nfmt(h[yil == 2025 & test_temiz == 1, sum(FI)]), " events."),
   "- Missing data (10): native handling in LightGBM and trees; indicator plus median imputation in logistic models; no imputation of the outcome.",
   paste0("- Model development (12): LightGBM (binary log-loss, HB040 weights); three-stage random search (broad, focused, seed re-evaluation) plus boundary extension, year-blocked folds with overlap-cleaned validation sets, early stopping; final A1: learning rate ",
          formatC(hpA1$learning_rate, format = "f", digits = 4), ", ", hpA1$num_leaves, " leaves, min. data in leaf ", hpA1$min_data_in_leaf, ", ", hpA1$n_tur_final, " rounds; five seeds averaged. Ridge and lasso logistic (scikit-learn); depth-3 CART (minimum leaf weight, split criterion and cost-complexity parameter tuned, the last over the union of both folds' pruning paths evaluated in both folds; selected \u03b1 = ", paste(unique(sapply(h2oz$cart, function(z) trimws(formatC(z$alpha, format = "g", digits = 2)))), collapse = ", "), " for every rule set)."),
   "- Analysis history: hyperparameter search was widened after first results were seen (search boundaries reached); the test-set cleaning was extended to reference-person-key matching after peer review; both changes are logged in the analysis report.",
-  paste0("- Performance (12-13): weighted sensitivity, PPV, child coverage at fixed targeting rates; AUC, PR-AUC, Brier, calibration intercept and slope, decision curves; ", nfmt(h2oz$bootstrap$B), " household bootstrap replicates with identical draws for all methods."),
+  paste0("- Performance (12-13): weighted sensitivity, PPV, child coverage at fixed targeting rates; AUC, PR-AUC, Brier, calibration intercept and slope, decision curves; ", nfmt(h2oz$bootstrap$B), " household bootstrap replicates with identical draws for all methods; test set re-weighted (raked) to the 2025 household population, with raking repeated in each replicate, and absolute gains expressed as additional households and children reached nationally; TR63 excluded as a sensitivity analysis."),
   "- Model updating and drift (12, 23): 3 x 3 year matrix, calibration drift of the 2023 model, population stability index, SHAP rank stability.",
-  "- Fairness/subgroups (14): child coverage reported; results by household type for the poverty line (Supplementary Table S7).",
+  "- Fairness/subgroups (14): share of children living in meal-deprived households who are selected; results by household type for the poverty line (Supplementary Table S7).",
   "- Interpretability (12): TreeSHAP global importance and dependence; functional-form ladder (linear, smooth additive, boosted additive, pairwise, unrestricted) and Friedman H statistics for interactions; plain-language rule sets.",
-  "- Limitations (25): residual panel overlap among households that moved or changed reference person; simulation S1 quantifies optimism from undetected overlap; single-item outcome; external validity beyond Turkey not assessed.",
+  "- Limitations (25): residual panel overlap among households that moved or changed reference person; simulation S1 quantifies optimism from undetected overlap; single-item outcome; external validity beyond T\u00fcrkiye not assessed.",
   "- Model presentation (22): intercepts, coefficients and preprocessing parameters of the ridge and lasso models in Results/modeller; Codes/tahmin_uygula.py scores a household table with them. Trained gradient-boosting models are not distributed because individual trees contain leaves based on fewer than five training households; they are re-created exactly by the code from the licensed microdata.",
   "- Code and data availability (27): code in Codes/; micro data available from TurkStat on application.")
 writeLines(tripod, "Results/tripod_notlari.md")
