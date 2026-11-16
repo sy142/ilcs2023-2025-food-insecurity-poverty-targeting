@@ -1,0 +1,113 @@
+rev1_egitim.R basladi: 2026-11-16 19:52:54 
+R version 4.6.1 (2026-06-24 ucrt) | BLAS:  
+Veri: 239985 kisi satiri, 76693 hane
+
+Kapi 1 : 5 / 5 tuttu
+
+Kapi 2 : 48 / 48 tuttu
+
+Kapi 2 sonrasi, yazmadan once cikarilan egitim_max = 0 (bireysel kaydi olan yetiskini olmayan hane) satirlari: kirilim 6 , gelir besligi 2 
+Bastirilan (n_FI < 20) hucre: kirilim 0 , gelir besligi 4 
+
+Parca A, 2025 hane, en yuksek egitim:
+   kategori     n  n_FI    FI dislama bilesim kucuk_hucre
+     <char> <int> <int> <num>   <num>   <num>      <char>
+1:        1  1568  1137  71.5    55.8     8.7            
+2:        2  6215  3545  57.3    67.5    34.2            
+3:        3  2372  1177  47.2    59.0     9.6            
+4:        4  7047  2725  36.5    69.4    27.8            
+5:        5  8633  1480  17.0    81.1    19.7            
+   kategori     n    FI dislama
+     <char> <int> <num>   <num>
+1:        1  3197  73.5    38.7
+2:        2 16713  57.6    55.1
+3:        3  8405  46.8    44.9
+4:        4 24741  35.5    60.5
+5:        5 27149  16.4    74.6
+
+Gelir besligi x egitim (3 grup), 2025 hane FI %:
+Key: <gelir_dilim5>
+   gelir_dilim5     1     2     3
+          <int> <num> <num> <num>
+1:            1  79.0  71.9  61.0
+2:            2  66.3  51.6  47.9
+3:            3  57.4  39.2  28.0
+4:            4  41.7  23.2  16.2
+5:            5   9.7   7.0   3.2
+H3 yetiskin orneklemi: 57899 
+
+C1 et_az : genel PD 25.47 | PD_1 25.93 PD_2 25.8 PD_3 24.29 | PD_3_1 -1.64 | Wald p 0.896 
+
+C1 meyve_az : genel PD 14.16 | PD_1 14 PD_2 15.28 PD_3 12.92 | PD_3_1 -1.08 | Wald p 0.328 
+
+C1 sebze_az : genel PD 13.03 | PD_1 12.4 PD_2 13.28 PD_3 13.7 | PD_3_1 1.3 | Wald p 0.359 
+
+Kapi 3 : 57 / 57 tuttu
+       sonuc   olcu tahmin   alt   ust se_if
+      <char> <char>  <num> <num> <num> <num>
+ 1:    et_az     PD  25.47 22.49 29.61  1.54
+ 2:    et_az   PD_1  25.93 22.99 28.86  1.48
+ 3:    et_az   PD_2  25.80 22.33 29.80  1.80
+ 4:    et_az   PD_3  24.29 19.03 33.25  2.71
+ 5:    et_az PD_3_1  -1.64 -6.67  6.57  2.57
+ 6: meyve_az     PD  14.16 11.07 16.96  1.35
+ 7: meyve_az   PD_1  14.00 11.51 16.44  1.23
+ 8: meyve_az   PD_2  15.28 12.04 18.23  1.50
+ 9: meyve_az   PD_3  12.92  6.16 18.84  2.69
+10: meyve_az PD_3_1  -1.08 -7.03  4.35  2.53
+11: sebze_az     PD  13.03  9.67 16.67  1.63
+12: sebze_az   PD_1  12.40  9.55 15.30  1.42
+13: sebze_az   PD_2  13.28  9.53 16.84  1.77
+14: sebze_az   PD_3  13.70  7.09 21.29  3.25
+15: sebze_az PD_3_1   1.30 -5.08  8.35  3.03
+Key: <sonuc>
+      sonuc    wald_F    df    wald_p
+     <char>     <num> <int>     <num>
+1:    et_az 0.2725608     4 0.8958133
+2: meyve_az 1.1554487     4 0.3283827
+3: sebze_az 1.0903135     4 0.3593483
+
+S11 egitim blogu (2025):
+         Characteristic      n                FI         Exclusion Missed Exclusion_p
+                 <char> <char>            <char>            <char> <char>      <char>
+ 1:          No diploma  1,568 71.5 (68.8, 74.2) 55.8 (52.4, 59.2)    8.7        38.7
+ 2:             Primary  6,215 57.3 (55.8, 58.7) 67.5 (65.8, 69.3)   34.2        55.1
+ 3:     Lower secondary  2,372 47.2 (44.8, 49.6) 59.0 (55.7, 62.3)    9.6        44.9
+ 4:     Upper secondary  7,047 36.5 (35.2, 37.8) 69.4 (67.4, 71.4)   27.8        60.5
+ 5:            Tertiary  8,633 17.0 (16.1, 18.0) 81.1 (78.8, 83.4)   19.7        74.6
+ 6: Q1, Primary or less  2,413 79.0 (77.1, 80.9)                –b    0.0           –
+ 7:       Q1, Secondary  2,066 71.9 (69.6, 74.3)                –b    0.0           –
+ 8:        Q1, Tertiary    533 61.0 (56.0, 66.0)                –b    0.0           –
+ 9: Q2, Primary or less  2,306 66.3 (64.1, 68.5) 96.9 (95.9, 97.9)   20.7        95.7
+10:       Q2, Secondary  2,112 51.6 (49.1, 54.1) 95.9 (94.5, 97.3)   14.9        95.4
+11:        Q2, Tertiary    791 47.9 (43.8, 52.1) 96.6 (94.3, 98.8)    5.7        96.6
+12: Q3, Primary or less  1,624 57.4 (54.6, 60.1)                –b   14.4           –
+13:       Q3, Secondary  2,108 39.2 (36.8, 41.7)                –b   13.1           –
+14:        Q3, Tertiary  1,351 28.0 (25.2, 30.8)                –b    6.1           –
+15: Q4, Primary or less  1,016 41.7 (38.1, 45.2)                –b    7.1           –
+16:       Q4, Secondary  1,962 23.2 (21.0, 25.4)                –b    7.9           –
+17:        Q4, Tertiary  2,187 16.2 (14.3, 18.1)                –b    5.8           –
+18: Q5, Primary or less    424   9.7 (6.3, 13.1)                –b    0.7           –
+19:       Q5, Secondary  1,171    7.0 (5.2, 8.7)                –b    1.5           –
+20:        Q5, Tertiary  3,771    3.2 (2.5, 3.9)                –b    2.1           –
+         Characteristic      n                FI         Exclusion Missed Exclusion_p
+                 <char> <char>            <char>            <char> <char>      <char>
+
+S22 egitim blogu:
+Key: <olcu>
+     olcu             et_az          meyve_az         sebze_az
+   <char>            <char>            <char>           <char>
+1:   PD_1 25.9 (23.0, 28.9) 14.0 (11.5, 16.4) 12.4 (9.5, 15.3)
+2:   PD_2 25.8 (22.3, 29.8) 15.3 (12.0, 18.2) 13.3 (9.5, 16.8)
+3:   PD_3 24.3 (19.0, 33.2)  12.9 (6.2, 18.8) 13.7 (7.1, 21.3)
+4: PD_3_1  -1.6 (-6.7, 6.6)  -1.1 (-7.0, 4.3)  1.3 (-5.1, 8.3)
+5: wald_p             0.896             0.328            0.359
+                                                 adim dakika
+                                               <char>  <num>
+1:                                    okuma ve kapi 1   0.09
+2:                         Parca A (H1 eki) ve kapi 2   1.13
+3: Parca B hazirlik (carpan matrisi, yetiskin verisi)   0.68
+4:  Parca B (C1 egitim gruplari, bootstrap) ve kapi 3   3.10
+5:                                   tablolar ve JSON   1.14
+6:                                             toplam   6.13
+rev1_egitim.R bitti: 2026-11-16 19:59:02 
