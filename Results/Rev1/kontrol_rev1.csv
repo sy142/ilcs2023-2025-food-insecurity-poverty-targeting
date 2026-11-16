@@ -1,0 +1,111 @@
+kapi,kontrol,beklenen,bulunan,fark,tolerans,durum
+1,nrow(d),239985,239985,0,0,Tuttu
+1,2025 hane sayisi,25836,25836,0,0,Tuttu
+1,2025 hane sayisi (kisi verisinde hane_reisi == 1),25836,25836,0,0,Tuttu
+1,"H3 yetiskin evreni (2025, FK070 >= 18, f_kayit == 1)",57899,57899,0,0,Tuttu
+1,hane_kimlik yillar arasinda tekil,0,0,0,0,Tuttu
+2,2023 hane egitim_max kategori n toplami = toplam,24932,24932,0,0,Tuttu
+2,2023 hane egitim3_max kategori n toplami = toplam,24932,24932,0,0,Tuttu
+2,2023 hane q_egitim3 kategori n toplami = toplam,24932,24932,0,0,Tuttu
+2,2023 hane gelir beslikleri x egitim_max n toplami,24932,24932,0,0,Tuttu
+2,2023 hane gelir beslikleri x egitim3_max n toplami,24932,24932,0,0,Tuttu
+2,2023 hane FI (H1_temel_tahminler),37.3769484068,37.3769484068,2.1316282072803e-14,1e-06,Tuttu
+2,2023 hane FI SE (H1_temel_tahminler),0.364403981033,0.364403981033,9.99200722162641e-16,1e-06,Tuttu
+2,2023 hane dislama e_yoksul_60 (H1_temel_tahminler),70.3944024939,70.3944024939,3.12638803734444e-13,1e-06,Tuttu
+2,2023 hane dislama SE (H1_temel_tahminler),0.534646923394,0.534646923394,1.11022302462516e-16,1e-06,Tuttu
+2,2023 kisi egitim_max kategori n toplami = toplam,79052,79052,0,0,Tuttu
+2,2023 kisi egitim3_max kategori n toplami = toplam,79052,79052,0,0,Tuttu
+2,2023 kisi q_egitim3 kategori n toplami = toplam,79052,79052,0,0,Tuttu
+2,2023 kisi FI (H1_temel_tahminler),39.1417114653,39.1417114653,3.5527136788005e-13,1e-06,Tuttu
+2,2023 kisi FI SE (H1_temel_tahminler),0.43355088897,0.43355088897,3.44169137633799e-15,1e-06,Tuttu
+2,2023 kisi dislama e_yoksul_60 (H1_temel_tahminler),63.3095021741,63.3095021741,1.15107923193136e-12,1e-06,Tuttu
+2,2023 kisi dislama SE (H1_temel_tahminler),0.702238153225,0.702238153225,1.14352971536391e-14,1e-06,Tuttu
+2,2024 hane egitim_max kategori n toplami = toplam,25925,25925,0,0,Tuttu
+2,2024 hane egitim3_max kategori n toplami = toplam,25925,25925,0,0,Tuttu
+2,2024 hane q_egitim3 kategori n toplami = toplam,25925,25925,0,0,Tuttu
+2,2024 hane gelir beslikleri x egitim_max n toplami,25925,25925,0,0,Tuttu
+2,2024 hane gelir beslikleri x egitim3_max n toplami,25925,25925,0,0,Tuttu
+2,2024 hane FI (H1_temel_tahminler),38.3000474224,38.3000474224,9.2370555648813e-14,1e-06,Tuttu
+2,2024 hane FI SE (H1_temel_tahminler),0.360059034685,0.360059034685,6.10622663543836e-16,1e-06,Tuttu
+2,2024 hane dislama e_yoksul_60 (H1_temel_tahminler),70.3309689068,70.3309689068,2.8421709430404e-14,1e-06,Tuttu
+2,2024 hane dislama SE (H1_temel_tahminler),0.52776549727,0.52776549727,8.88178419700125e-16,1e-06,Tuttu
+2,2024 kisi egitim_max kategori n toplami = toplam,80727,80727,0,0,Tuttu
+2,2024 kisi egitim3_max kategori n toplami = toplam,80727,80727,0,0,Tuttu
+2,2024 kisi q_egitim3 kategori n toplami = toplam,80727,80727,0,0,Tuttu
+2,2024 kisi FI (H1_temel_tahminler),39.337336202,39.337336202,3.83693077310454e-13,1e-06,Tuttu
+2,2024 kisi FI SE (H1_temel_tahminler),0.431108808254,0.431108808254,1.72084568816899e-15,1e-06,Tuttu
+2,2024 kisi dislama e_yoksul_60 (H1_temel_tahminler),63.1583100179,63.1583100179,9.09494701772928e-13,1e-06,Tuttu
+2,2024 kisi dislama SE (H1_temel_tahminler),0.700261637111,0.700261637111,1.18793863634892e-14,1e-06,Tuttu
+2,2025 hane egitim_max kategori n toplami = toplam,25836,25836,0,0,Tuttu
+2,2025 hane egitim3_max kategori n toplami = toplam,25836,25836,0,0,Tuttu
+2,2025 hane q_egitim3 kategori n toplami = toplam,25836,25836,0,0,Tuttu
+2,2025 hane gelir beslikleri x egitim_max n toplami,25836,25836,0,0,Tuttu
+2,2025 hane gelir beslikleri x egitim3_max n toplami,25836,25836,0,0,Tuttu
+2,2025 hane FI (H1_temel_tahminler),36.9635610165,36.9635610165,3.5527136788005e-14,1e-06,Tuttu
+2,2025 hane FI SE (H1_temel_tahminler),0.351438891463,0.351438891463,8.88178419700125e-16,1e-06,Tuttu
+2,2025 hane dislama e_yoksul_60 (H1_temel_tahminler),68.0906489769,68.0906489769,1.27897692436818e-13,1e-06,Tuttu
+2,2025 hane dislama SE (H1_temel_tahminler),0.531094859669,0.531094859669,8.88178419700125e-16,1e-06,Tuttu
+2,2025 kisi egitim_max kategori n toplami = toplam,80206,80206,0,0,Tuttu
+2,2025 kisi egitim3_max kategori n toplami = toplam,80206,80206,0,0,Tuttu
+2,2025 kisi q_egitim3 kategori n toplami = toplam,80206,80206,0,0,Tuttu
+2,2025 kisi FI (H1_temel_tahminler),35.0717363416,35.0717363416,5.47117906535277e-13,1e-06,Tuttu
+2,2025 kisi FI SE (H1_temel_tahminler),0.405080804187,0.405080804187,6.43929354282591e-15,1e-06,Tuttu
+2,2025 kisi dislama e_yoksul_60 (H1_temel_tahminler),57.6405300468,57.6405300468,1.35003119794419e-13,1e-06,Tuttu
+2,2025 kisi dislama SE (H1_temel_tahminler),0.703309650301,0.703309650301,4.10782519111308e-15,1e-06,Tuttu
+3,C1 et_az ana model esnek (H3_model_tanilari),esnek,esnek,,0,Tuttu
+3,C1 et_az yas 4 df natural spline (H3_model_tanilari),4 df natural spline,4 df natural spline,,0,Tuttu
+3,C1 et_az ek kovaryat yok (H3_model_tanilari),none,none,,0,Tuttu
+3,C1 et_az p0 tahmin (H3_gcomp_sonuclari),24.4401396447,24.4401396447,7.46069872548105e-14,1e-04,Tuttu
+3,C1 et_az p1 tahmin (H3_gcomp_sonuclari),49.9091497021,49.9091497021,7.17648163117701e-13,1e-04,Tuttu
+3,C1 et_az PD tahmin (H3_gcomp_sonuclari),25.4690100574,25.4690100574,6.3948846218409e-13,1e-04,Tuttu
+3,C1 et_az PR tahmin (H3_gcomp_sonuclari),2.04209756685,2.04209756685,2.48689957516035e-14,1e-04,Tuttu
+3,C1 et_az n (H3_gcomp_sonuclari),45578,45578,0,0,Tuttu
+3,C1 et_az parametre sayisi (H3_gcomp_sonuclari),68,68,0,0,Tuttu
+3,C1 et_az p0 bootstrap alt sinir,23.526489899,23.526489899,3.87245790989255e-13,0.01,Tuttu
+3,C1 et_az p0 bootstrap ust sinir,25.3896042961,25.3896042961,1.66977542903624e-13,0.01,Tuttu
+3,C1 et_az p1 bootstrap alt sinir,47.03735855,47.03735855,6.3948846218409e-14,0.01,Tuttu
+3,C1 et_az p1 bootstrap ust sinir,53.8566762813,53.8566762813,3.69482222595252e-13,0.01,Tuttu
+3,C1 et_az PD bootstrap alt sinir,22.4918721218,22.4918721218,5.25801624462474e-13,0.01,Tuttu
+3,C1 et_az PD bootstrap ust sinir,29.6082098125,29.6082098125,3.09086090055644e-13,0.01,Tuttu
+3,C1 et_az PR bootstrap alt sinir,1.90603720939,1.90603720939,1.82076576038526e-14,0.01,Tuttu
+3,C1 et_az PR bootstrap ust sinir,2.21998456903,2.21998456903,7.105427357601e-15,0.01,Tuttu
+3,C1 et_az bootstrap tekrar sayisi,4000,4000,0,0,Tuttu
+3,C1 et_az IRLS sinira ulasan replikat,0,0,0,0,Tuttu
+3,C1 meyve_az ana model esnek (H3_model_tanilari),esnek,esnek,,0,Tuttu
+3,C1 meyve_az yas 4 df natural spline (H3_model_tanilari),4 df natural spline,4 df natural spline,,0,Tuttu
+3,C1 meyve_az ek kovaryat yok (H3_model_tanilari),none,none,,0,Tuttu
+3,C1 meyve_az p0 tahmin (H3_gcomp_sonuclari),57.8639988212,57.8639988212,3.48165940522449e-13,1e-04,Tuttu
+3,C1 meyve_az p1 tahmin (H3_gcomp_sonuclari),72.0282220069,72.0282220069,2.55795384873636e-13,1e-04,Tuttu
+3,C1 meyve_az PD tahmin (H3_gcomp_sonuclari),14.1642231857,14.1642231857,8.88178419700125e-14,1e-04,Tuttu
+3,C1 meyve_az PR tahmin (H3_gcomp_sonuclari),1.24478472754,1.24478472754,5.32907051820075e-15,1e-04,Tuttu
+3,C1 meyve_az n (H3_gcomp_sonuclari),45731,45731,0,0,Tuttu
+3,C1 meyve_az parametre sayisi (H3_gcomp_sonuclari),68,68,0,0,Tuttu
+3,C1 meyve_az p0 bootstrap alt sinir,56.9139534228,56.9139534228,5.96855898038484e-13,0.01,Tuttu
+3,C1 meyve_az p0 bootstrap ust sinir,58.7899588078,58.7899588078,2.1316282072803e-13,0.01,Tuttu
+3,C1 meyve_az p1 bootstrap alt sinir,69.0503862303,69.0503862303,2.27373675443232e-13,0.01,Tuttu
+3,C1 meyve_az p1 bootstrap ust sinir,74.7933993068,74.7933993068,6.25277607468888e-13,0.01,Tuttu
+3,C1 meyve_az PD bootstrap alt sinir,11.0695007192,11.0695007192,3.44613226843649e-13,0.01,Tuttu
+3,C1 meyve_az PD bootstrap ust sinir,16.95623499,16.95623499,2.34479102800833e-13,0.01,Tuttu
+3,C1 meyve_az PR bootstrap alt sinir,1.18991336329,1.18991336329,8.88178419700125e-16,0.01,Tuttu
+3,C1 meyve_az PR bootstrap ust sinir,1.29445869417,1.29445869417,2.88657986402541e-15,0.01,Tuttu
+3,C1 meyve_az bootstrap tekrar sayisi,4000,4000,0,0,Tuttu
+3,C1 meyve_az IRLS sinira ulasan replikat,0,0,0,0,Tuttu
+3,C1 sebze_az ana model esnek (H3_model_tanilari),esnek,esnek,,0,Tuttu
+3,C1 sebze_az yas 4 df natural spline (H3_model_tanilari),4 df natural spline,4 df natural spline,,0,Tuttu
+3,C1 sebze_az ek kovaryat yok (H3_model_tanilari),none,none,,0,Tuttu
+3,C1 sebze_az p0 tahmin (H3_gcomp_sonuclari),49.3845067376,49.3845067376,3.48165940522449e-13,1e-04,Tuttu
+3,C1 sebze_az p1 tahmin (H3_gcomp_sonuclari),62.4128993181,62.4128993181,2.8421709430404e-14,1e-04,Tuttu
+3,C1 sebze_az PD tahmin (H3_gcomp_sonuclari),13.0283925805,13.0283925805,3.80140363631654e-13,1e-04,Tuttu
+3,C1 sebze_az PR tahmin (H3_gcomp_sonuclari),1.26381538343,1.26381538343,1.06581410364015e-14,1e-04,Tuttu
+3,C1 sebze_az n (H3_gcomp_sonuclari),45731,45731,0,0,Tuttu
+3,C1 sebze_az parametre sayisi (H3_gcomp_sonuclari),68,68,0,0,Tuttu
+3,C1 sebze_az p0 bootstrap alt sinir,48.3795752308,48.3795752308,8.88178419700125e-13,0.01,Tuttu
+3,C1 sebze_az p0 bootstrap ust sinir,50.3803768818,50.3803768818,4.90274487674469e-13,0.01,Tuttu
+3,C1 sebze_az p1 bootstrap alt sinir,59.2006328687,59.2006328687,4.61852778244065e-13,0.01,Tuttu
+3,C1 sebze_az p1 bootstrap ust sinir,65.8770405182,65.8770405182,4.2632564145606e-14,0.01,Tuttu
+3,C1 sebze_az PD bootstrap alt sinir,9.66501075842,9.66501075842,7.99360577730113e-14,0.01,Tuttu
+3,C1 sebze_az PD bootstrap ust sinir,16.6728394779,16.6728394779,1.4210854715202e-13,0.01,Tuttu
+3,C1 sebze_az PR bootstrap alt sinir,1.19443738393,1.19443738393,1.31006316905768e-14,0.01,Tuttu
+3,C1 sebze_az PR bootstrap ust sinir,1.3404436769,1.3404436769,7.32747196252603e-15,0.01,Tuttu
+3,C1 sebze_az bootstrap tekrar sayisi,4000,4000,0,0,Tuttu
+3,C1 sebze_az IRLS sinira ulasan replikat,0,0,0,0,Tuttu
